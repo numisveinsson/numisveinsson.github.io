@@ -1,10 +1,11 @@
 ---
 layout: page
-title: project 6
-description: a project with no image
-img:
-importance: 4
-category: work
+title: automatic vessel tracking
+description: using machine learning to algorithmically track blood vessels without manual input
+img: assets/img/red-blood-cells.jpg
+importance: 1
+category: solo
+related_publications: 
 ---
 
 Every project has a beautiful feature showcase page.

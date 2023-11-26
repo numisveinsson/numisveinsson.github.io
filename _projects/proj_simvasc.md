@@ -1,10 +1,12 @@
 ---
 layout: page
-title: project 6
-description: a project with no image
-img:
-importance: 4
-category: work
+title: SimVascular
+description: a open-source software for patient-specific blood flow simulations
+img: assets/img/simvasc.png
+importance: 1
+category: collaboration
+redirect: https://simvascular.github.io
+related_publications:
 ---
 
 Every project has a beautiful feature showcase page.

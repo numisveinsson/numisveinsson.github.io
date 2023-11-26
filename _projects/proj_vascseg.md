@@ -1,10 +1,11 @@
 ---
 layout: page
-title: project 6
-description: a project with no image
-img:
-importance: 4
-category: work
+title: patient-specific vascular modeling
+description: a machine learning approach to segment CT and MR images 
+img: assets/img/ct_139_gt.svg
+importance: 2
+category: solo
+related_publications:
 ---
 
 Every project has a beautiful feature showcase page.
