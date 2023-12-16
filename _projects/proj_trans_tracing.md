@@ -2,7 +2,7 @@
 layout: page
 title: Transfomers for Tracking 
 description: Utilizing transformer neural network architecture to exploit the sequential nature of blood vessel tracking
-img: assets/img/bp_monitor.jpg
+img: assets/img/trans_tracing.png
 importance: 3
 category: collaboration
 related_publications:

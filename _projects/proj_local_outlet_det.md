@@ -2,7 +2,7 @@
 layout: page
 title: Object Detection for Blood Vessels 
 description: Utilizing deep object detection techniques for blood vessel detection in medical image data
-img: assets/img/bp_monitor.jpg
+img: assets/img/obj_det.png
 importance: 3
 category: collaboration
 related_publications:
