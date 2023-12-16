@@ -4,7 +4,7 @@ permalink: /cv/
 title: cv
 nav: true
 nav_order: 4
-cv_pdf: example_pdf.pdf
+cv_pdf: Numi_Resume_2023.pdf
 description: Download .pdf on the right on view below.
 toc:
   sidebar: left
