@@ -1,7 +1,7 @@
 ---
 layout: page
-title: Continuous blood pressure analysis
-description: understanding blood pressure waveforms from wearable devices
+title: Bioprinting; Modeling Cell Survival
+description: Modeling chemical concentration via diffusion equation to inform bioprinting template design
 img: assets/img/bp_monitor.jpg
 importance: 3
 category: collaboration
