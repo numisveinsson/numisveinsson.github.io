@@ -5,7 +5,7 @@ permalink: /projects/
 description: A collection of past and current project.
 nav: true
 nav_order: 1
-display_categories: [solo, collaboration, fun]
+display_categories: [solo, collaboration, coursework]
 horizontal: false
 ---
 
