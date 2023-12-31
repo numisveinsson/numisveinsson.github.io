@@ -5,7 +5,7 @@
     "image": "",
     "email": "numisveinsson@gmail.com",
     "phone": "",
-    "url": "https://numisveinsson.github.io",
+    "url": "https://numisveinsson.com",
     "summary": "A data scientist and engineer with a background in mechanical engineering and machine learning. I am passionate about using computation, data and modeling to solve real world problems and build products. I have experience in applied AI, graphics, scientific computing and modeling biomechanics. I am currently working on my PhD in biomechanical engineering at University of California, Berkeley.",
     "location": {
       "address": "2712 Broadway St",
@@ -27,15 +27,15 @@
       "name": "Department of Mechanical Engineering, University of California, Berkeley",
       "position": "Graduate Student Researcher",
       "url": "https://shaddenlab.berkeley.edu/",
-      "startDate": "2020-08-20",
-      "endDate": "2025-05-20",
+      "startDate": "2020",
+      "endDate": "",
       "summary": "Currently working on my PhD in biomechanical engineering at University of California, Berkeley. Working on developing automatic methods to contruct 3D models of human blood vessels from medical images. Also working on developing methods to simulate blood flow in the human body.",
       "highlights": [
+        "Biomechanics",
+        "Fluid mechanics",
         "Medical imaging",
         "Machine learning",
-        "Scientific computing",
-        "Biomechanics",
-        "Fluid mechanics"
+        "Scientific computing"
       ]
     }
   ],
@@ -45,8 +45,8 @@
       "url": "https://www.berkeley.edu/",
       "area": "Mechanical Engineering",
       "studyType": "MSc / PhD",
-      "startDate": "2020-08-20",
-      "endDate": "2025-05-20",
+      "startDate": "2020",
+      "endDate": "",
       "score": "3.9",
       "courses": [
         "Biomechanics",
@@ -64,8 +64,8 @@
       "url": "https://english.hi.is/",
       "area": "Mechanical Engineering",
       "studyType": "BSc",
-      "startDate": "2016-08-20",
-      "endDate": "2019-05-20",
+      "startDate": "2016",
+      "endDate": "2019",
       "score": "4.0",
       "courses": [
         "Calculus",
