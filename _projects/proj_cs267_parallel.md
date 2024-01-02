@@ -3,7 +3,7 @@ layout: page
 title: Computational Parallelism to Boost Blood Vessel Tracking
 description: Final Project for CS267 - Applications of Parallel Computers
 img: assets/img/parallel.png
-importance: 1
+importance: 5
 category: coursework
 related_publications:
 ---
