@@ -3,7 +3,7 @@ layout: page
 title: Leveraging Transformers for Blood Vessel Tracing
 description: Final Project for CS282A - Designing and Understanding Deep Neural Networks
 img: assets/img/cs282.png
-importance: 1
+importance: 3
 category: coursework
 related_publications:
 ---

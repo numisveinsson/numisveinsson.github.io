@@ -3,7 +3,7 @@ layout: page
 title: Modeling Effect of Bad Working Posture on Vertebral Health
 description: Final Project for ME210 - Orthopaedic Biomechanics
 img: assets/img/me210.png
-importance: 1
+importance: 10
 category: coursework
 related_publications:
 ---

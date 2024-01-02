@@ -3,7 +3,7 @@ layout: page
 title: Learning Blood Vessel Centerline from Medical Images
 description: Final Project for CS280 - Computer Vision
 img: assets/img/cs280.png
-importance: 1
+importance: 2
 category: coursework
 redirect: 
 related_publications:
