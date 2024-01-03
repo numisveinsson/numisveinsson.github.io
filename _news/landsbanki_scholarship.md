@@ -5,4 +5,5 @@ inline: true
 related_posts: false
 ---
 
-Great news! Was awarded the Landsbankinn Scholarship 2023 to supplement my PhD funding.
+Great News! Awarded the Highly Competitive Landsbankinn Scholarship 2023 to Advance PhD Research.
+

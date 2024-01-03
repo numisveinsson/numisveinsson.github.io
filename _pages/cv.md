@@ -5,7 +5,7 @@ title: cv
 nav: true
 nav_order: 4
 cv_pdf: Numi_Resume_2023.pdf
-description: Download .pdf on the right on view below.
+description: Download .pdf on the right.
 toc:
   sidebar: left
 ---
