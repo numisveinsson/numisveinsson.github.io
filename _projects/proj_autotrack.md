@@ -8,11 +8,4 @@ category: solo
 related_publications: 
 ---
 
-To do 
-
-
-### Background - Why?
-
-### Objective - What?
-
-### Method - How?
+Website in progress.
