@@ -1,12 +1,20 @@
 ---
-layout: page
+layout: distill
 title: reduced-order blood flow modeling
 description: improving ROM parameters and automatizing medical image -> model pipeline
 img: assets/img/roms_0.png
 importance: 3
 category: solo
 related_publications: 
+
+toc:
+  - name: Introduction
+  - name: Methods
+  - name: Automatic Vascular Geometric Model Construction
+  - name: ROM Setup
 ---
+
+<img src="../../assets/img/roms_0.png" alt="Image." width="600"/>
 
 ## Introduction
 In the realm of blood flow simulation, addressing the computational demands of large-scale computational fluid dynamics (CFD) simulations for complex geometries, such as blood vessels and heart chambers, poses a significant challenge. These simulations can take hours to run even on high-performance computing clusters, adding to the computational burden of geometry construction, boundary condition definition, and material modeling. Reduced Order Modeling (ROM) offers a promising solution to mitigate these computational costs while maintaining a relatively accurate solution, albeit at a lower resolution.
@@ -16,6 +24,7 @@ ROM simplifies the computational domain by reducing it to one-dimensional meshes
 However, the success of ROM models relies heavily on accurate patient-specific geometric information as input. Currently, the reconstruction of patient-specific geometry from medical images is a time-consuming process, often requiring expertise from medical imaging specialists. This project aims to integrate automatic patient-specific geometric construction methods, developed as part of the researcher's PhD work, with ROM modeling setups to achieve nearly real-time blood flow simulation results.
 
 ## Methods
+
 ### Automatic Vascular Geometric Model Construction
 1. **SeqSeg Algorithm**: The vascular geometries are constructed using a deep learning-based algorithm called SeqSeg. This method requires training data, such as labeled aortas, and during inference, only a single seed point and a direction for initialization are needed. SeqSeg streamlines the process of reconstructing patient-specific vascular geometries from medical images, significantly reducing the manual intervention required.
 
