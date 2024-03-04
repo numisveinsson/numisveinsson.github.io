@@ -10,7 +10,7 @@ Announcements and news can be much longer than just quick inline posts. In fact,
 
 ---
 
-After turning in my master's thesis titled " " and giving a Master's presentation, I officially graduated on May ?? 2023. 
+After turning in my master's thesis titled "Automatic Construction of Patient-Specific Vascular Models for Simulation" and giving a Master's presentation, I officially graduated on May 17th 2023. 
 
 <div class="row justify-content-sm-center">
     <div class="col-sm mt-3 mt-md-0">

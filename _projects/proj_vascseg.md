@@ -28,7 +28,7 @@ The objective of this project is to automatically trace (construct pathlines) an
 
 ### Methods
 
-We approach this problem locally, processing only a small segment of a blood vessel at a time. Using a seed point to initialize tracing, a subvolume around the blood vessel segment is extracted, segmented using deep learning neural networks, processed into surface mesh representation, from which a centerline is extracted and used to determine the next point to move to, see Figure X. In the case of a bifurcation, other centerline branches as stores in queue for subsequent tracing, after the current branch has  been traced down.
+We approach this problem locally, processing only a small segment of a blood vessel at a time. Using a seed point to initialize tracing, a subvolume around the blood vessel segment is extracted, segmented using deep learning neural networks, processed into surface mesh representation, from which a centerline is extracted and used to determine the next point to move to, see Figure X. In the case of a bifurcation, other centerline branches are stored in queue for subsequent tracing, after the current branch has  been traced down.
 
 ### Results
 
