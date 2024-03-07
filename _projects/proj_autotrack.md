@@ -1,6 +1,6 @@
 ---
 layout: distill
-title: automatic vessel tracking
+title: Automatic Vessel Tracking
 description: using machine learning to algorithmically track blood vessels without manual input
 img: assets/img/red-blood-cells.jpg
 importance: 1
@@ -35,6 +35,8 @@ We take a local approach to the problem, processing only a small segment of a bl
 
 - **Output**: The next step to move to, and the radius of the vessel at that point. Potentially, there are multiple steps to move to, in the case of a bifurcation.
 
+- **Things to consider**: The tracking must start and stop in some way. The tracking must be able to handle bifurcations, where the vessel splits into two or more branches. The tracking must be able to handle noise and other artifacts in the image as well as low resolution and low contrast.
+
 ### Approach
 
 We use a combination of deep learning neural networks and traditional image processing techniques to achieve this. The ideas we are exploring include:
@@ -44,4 +46,3 @@ We use a combination of deep learning neural networks and traditional image proc
 2. **Deep Learning to Predict Next Points**: This is a more direct approach, where we use deep learning to predict the next point to move to, given the current point and the local image volume. The difficulty here are bifurcations, where multiple points must be predicted, and some order must be chosen.
 
 3. **Deep Learning to Predict Centerline**: This approach is somewhere between the two above. We use deep learning to predict the centerline of the vessel, and then move along this centerline. In order to do that we must represent the centerline in a way that is suitable for deep learning, and then train a model to predict that representation based on the local image volume.
-

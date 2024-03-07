@@ -29,7 +29,7 @@ Transformers are a type of neural network architecture. Transformers emmerged wi
 
 The objective of this project is twofold:
 1. Define the blood vessel tracking task as a sequential problem
-2. Apply a transformer neural network to learn to solve that problem
+2. Apply a transformer neural network to represent, learn and predict the sequential nature of the blood vessel tracking task.
 
 ## Method
 
