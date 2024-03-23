@@ -13,6 +13,8 @@ toc:
   - name: Methods
 ---
 
+<img src="../../assets/img/cardiac_combo.png" alt="Image." width="600"/>
+
 ## Motivation
 The goal of this research project is to develop an automatic pipeline that constructs simulation-ready meshes encompassing both the cardiac structures (heart chambers) and the associated vasculature (including the aorta and pulmonary arteries). By merging cardiac and vascular geometric modeling into a single workflow, the objective is to make the setup of complex simulations faster, more efficient, and more accessible. This integration aims to facilitate advanced medical research and clinical applications by providing comprehensive patient-specific cardiovascular simulations.
 
