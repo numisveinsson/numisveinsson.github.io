@@ -22,6 +22,15 @@ The primary objective of our project is to facilitate automatic centerline gener
 ## Introduction
 Employing state-of-the-art deep learning techniques, we are developing a novel approach to the landscape of blood vessel detection and tracing within complex 3D medical image volumes. This innovative approach utilizes the Mask RCNN neural network, pretrained on the COCO dataset, to achieve unprecedented precision and efficiency.
 
+<div class="row justify-content-sm-center">
+    <div class="col-sm mt-1 mt-md-0">
+        {% include figure.html path="assets/img/local_out.png" title="example image" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<div class="caption">
+    An example of blood vessel detection using Mask RCNN in a 2D slice of a medical image. From left: input raw image, predicted outlet/blood, and ground truth.
+</div>
+
 ## Methodology
 Our methodology focuses on a meticulous analysis of 2D slices extracted from 3D medical image data. By strategically deploying the Mask RCNN neural network, we can precisely identify 'outlets' at the boundaries of specific subvolumes within medical images. This strategic detection provides detailed insights into the trajectory of blood vessels, offering a comprehensive understanding of their directionality and identifying critical bifurcation points.
 
