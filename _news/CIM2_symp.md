@@ -1,7 +1,7 @@
 ---
 layout: post
 title: CIM2 Symposium 2024
-date: 2024-05-31 07:59:00-0400
+date: 2024-06-04 07:59:00-0400
 inline: false
 related_posts: false
 ---
