@@ -117,7 +117,15 @@
     }
   ],
   "certificates": [  ],
-  "publications": [],
+  "publications": [
+    {
+      "name": "SeqSeg: Learning Local Segments for Automatic Vascular Model Construction",
+      "publisher": "Annals of Biomedical Engineering",
+      "releaseDate": "2024-09-18",
+      "url": "https://doi.org/10.1007/s10439-024-03611-z",
+      "summary": "We present SeqSeg (sequential segmentation): a novel deep learning-based automatic tracing and segmentation algorithm for constructing image-based vascular models."
+    }
+  ],
   "skills": [],
   "languages": [
     {
