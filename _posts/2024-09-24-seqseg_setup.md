@@ -59,7 +59,7 @@ Next, we must change the naming structure to match nnU-Net. This is done with th
 
 The next step is to train the model. This is done with the specific nnU-Net commands, which are detailed in the [`nnU-Net`](https://github.com/MIC-DKFZ/nnUNet) repository.
 
-This requires two commands:
+This requires two commands (see [documentation](https://github.com/MIC-DKFZ/nnUNet/blob/master/documentation/how_to_use_nnunet.md) for more details):
 - `prepocessing` command
 - `train` command
 
@@ -70,4 +70,4 @@ You can train:
 
 ## 4. Inference
 
-The final step is to run [`SeqSeg`](https://github.com/numisveinsson/SeqSeg/) inference on new data. This is done with the `SeqSeg/auto_centerline.py` script. You need direct access to the directory containing the images and seed points, and another containing the trained model weights.
+The final step is to run [`SeqSeg`](https://github.com/numisveinsson/SeqSeg/) inference on new data. This is done with the `SeqSeg/seqseg.py` script. You need direct access to the directory containing the images and seed points, and another containing the trained model weights.
