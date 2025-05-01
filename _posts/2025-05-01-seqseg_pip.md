@@ -40,4 +40,4 @@ To get started with SeqSeg, you can follow the tutorial provided in the [SeqSeg 
 1. **Seed Point Definition**: Define seed points in the images where you want to start the segmentation.
 2. **Weight Downloading**: Download the pre-trained weights for the model.
 3. **Segmentation**: Run the segmentation algorithm on your images using the defined seed points and downloaded weights.
-4. Visualization: Visualize the segmentation results to assess the performance of the model.
+4. **Visualization**: Visualize the segmentation results to assess the performance of the model.
