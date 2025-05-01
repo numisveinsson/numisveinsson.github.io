@@ -5,7 +5,7 @@ description: A tutorial on setting up SeqSeg for medical image segmentation
 categories: data-science
 giscus_comments: false
 date: 2025-01-15
-featured: true
+featured: false
 related_posts: true
 
 authors:
