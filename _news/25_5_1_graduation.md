@@ -2,7 +2,7 @@
 layout: post
 title: Commencement 2025: PhD Graduation
 date: 2024-09-24 07:59:00-0400
-inline: true
+inline: false
 related_posts: false
 ---
 
