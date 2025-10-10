@@ -8,8 +8,8 @@ author={Sveinsson Cepero, Numi
 and Shadden, Shawn C.},
 title={SeqSeg: Learning Local Segments for Automatic Vascular Model Construction},
 journal={Annals of Biomedical Engineering},
-year={2024},
-month={Sep},
+year={2025},
+month={Jan},
 day={18},
 abstract={Computational modeling of cardiovascular function has become a critical part of diagnosing, treating and understanding cardiovascular disease. Most strategies involve constructing anatomically accurate computer models of cardiovascular structures, which is a multistep, time-consuming process. To improve the model generation process, we herein present SeqSeg (sequential segmentation): a novel deep learning-based automatic tracing and segmentation algorithm for constructing image-based vascular models. SeqSeg leverages local U-Net-based inference to sequentially segment vascular structures from medical image volumes. We tested SeqSeg on CT and MR images of aortic and aortofemoral models and compared the predictions to those of benchmark 2D and 3D global nnU-Net models, which have previously shown excellent accuracy for medical image segmentation. We demonstrate that SeqSeg is able to segment more complete vasculature and is able to generalize to vascular structures not annotated in the training data.},
 issn={1573-9686},
@@ -17,5 +17,52 @@ doi={10.1007/s10439-024-03611-z},
 url={https://doi.org/10.1007/s10439-024-03611-z},
 pdf={seqseg.pdf},
 preview={mr_model_tracing_fast_shorter.gif},
+selected={true}
+}
+
+@InProceedings{SveinssonCepero2024b,
+author="Sveinsson Cepero, Numi
+and Narayanan, Arjun
+and Shadden, Shawn C.",
+editor="Chabiniok, Radom{\'i}r
+and Zou, Qing
+and Hussain, Tarique
+and Nguyen, Hoang H.
+and Zaha, Vlad G.
+and Gusseva, Maria",
+title="Integrated Framework for Unified Cardiac and Vascular Mesh Construction from Medical Images",
+booktitle="Functional Imaging and Modeling of the Heart",
+year="2025",
+month={May},
+day={29},
+publisher="Springer Nature Switzerland",
+address="Cham",
+doi={10.1007/978-3-031-94562-5_10},
+pages="98--109",
+abstract="Patient-specific cardiovascular simulations have become an integral part of cardiovascular research. A primary factor hindering large patient cohort studies and clinical impact of cardiovascular simulations is their dependence on accurate patient-specific three dimensional geometric models which remain time-consuming and costly to construct from medical image data. Methods have been proposed to automate the model construction process, for either vascular or cardiac purposes. We propose a novel method, MeshGrow, that, automatically, reconstructs both the cardiac chambers as well as the aorta and its main sub-branches, and returns a simulation ready mesh with defined aortic valve connecting the two. We deploy two different methods of model construction for the cardiac chambers and vascular regions independently to address the specific challenges involved with each. The method is a two step approach; 1) meshing the cardiac structures and 2) growing the vasculature out from it. We present test results of our method on three CT image data and compare to ground truth manually constructed models. Additionally, we compare results with state-of-the-art methods. Results show that MeshGrow achieves higher metric scores than benchmark methods on test set. With this work, we demonstrate the advantage of anatomy specific modeling approaches for patient-specific cardiovascular simulation.",
+isbn="978-3-031-94562-5",
+preview={fimh_2025_cropped.png},
+selected={true},
+url={https://link.springer.com/chapter/10.1007/978-3-031-94562-5_10}
+}
+
+@Thesis{SveinssonCepero2024,
+author={Sveinsson Cepero, Numi},
+title={Doctoral Thesis: Automatic Vascular Model Construction from Medical Imaging Using Deep Learning},
+year={2025},
+month={Aug},
+day={1},
+abstract={Computational modeling of the cardiovascular system plays a vital role in understanding, diagnosing, and treating cardiovascular disease. However, traditional workflows for generating simulation-ready, patient-specific models are time-consuming, requiring extensive manual labor for geometric reconstruction and simulation setup. This dissertation introduces deep learning based methods designed to automate and accelerate the construction of image-based models to support hemodynamics simulation.
+First, we present SeqSeg (Sequential Segmentation), a novel deep learning method for automatic vascular segmentation. SeqSeg leverages a local U-Net-based architecture to iteratively track and segment vascular structures from medical imaging data. Compared to standard 2D and 3D global models such as nnU-Net, SeqSeg generates more complete vascular models and generalizes better to unannotated anatomy, enabling efficient geometric modeling from computed tomography (CT) and magnetic resonance (MR) data.
+Building upon this, we introduce MeshGrow, an integrated framework that combines automatic vascular and cardiac modeling to generate combined cardiovascular anatomies. MeshGrow can reconstruct both the heart and great vessels by employing a template deformation approach for the cardiac chambers and a step-wise growth-based method for vascular structures. The result is a simulation-ready mesh, including valve boundaries, constructed directly from medical images with minimal human intervention.
+In the third part of this work, we present MIROS (Medical Image to Reduced Order Simulation), a fully automated pipeline for performing reduced-order cardiovascular simulations. MIROS integrates SeqSeg-based geometry generation with reduced order modeling of blood flow and semi-automatic boundary condition assignment to produce hemodynamic simulations within minutes. This approach significantly reduces the computational and manual burden traditionally required, enabling rapid, patient-specific analyses and facilitating large-scale studies.
+Finally, building on SeqSeg and inspired by advances in human trajectory forecasting, we propose VesselTrajNet, a novel method for vasculature tracking in medical images. By adapting a U-Net-based Gaussian heat map encoder-decoder architecture for multiple goal-driven path prediction, VesselTrajNet accurately models complex vascular branching without requiring explicit bifurcation detection. We demonstrate its utility on coronary artery CT data, underscoring its potential for diagnostic and interventional imaging.
+Together, these contributions advance the state of the art in automated cardiovascular modeling and simulation. By harnessing deep learning for the modeling pipeline, this work aims to make high-fidelity cardiovascular simulations more accessible, scalable, and clinically relevant.},
+school={University of California, Berkeley},
+type={PhD Dissertation},
+address={Berkeley, CA, USA},
+url={https://escholarship.org/uc/item/3f93g4kj},
+pdf={thesis.png},
+preview={thesis.png},
 selected={true}
 }
