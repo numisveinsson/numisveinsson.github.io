@@ -2,11 +2,11 @@
 layout: about
 title: about
 permalink: /
-subtitle: <a href='https://shaddenlab.berkeley.edu/index.html'>Graduate Student Researcher</a> at University of California, Berkeley
+subtitle: <a href='https://shaddenlab.berkeley.edu/index.html'>Graduate Student Researcher</a> at University of California, Berkeley under supervision of <a href='https://me.berkeley.edu/people/shawn-shadden/'>Prof. Shawn Shadden</a>
 
 profile:
   align: right
-  image: prof_pic.jpg
+  image: prof_pic_headshot_final.jpeg
   image_circular: false # crops the image to make it circular
   more_info: >
 
@@ -19,7 +19,7 @@ social: true  # includes social icons at the bottom of the page
 ---
 
 
-Hey there! I'm a PhD candidate delving into the exciting world of biomechanical engineering at UC Berkeley. My research journey involves a passionate mix of biomechanics, machine learning, and computer modeling.
+Hey! I'm a PhD candidate delving into the exciting world of biomechanical engineering at UC Berkeley. My research journey involves a mix of biomechanics, machine learning, and computer modeling.
 
 Currently, I'm at the crossroads of cardiovascular health, computational modeling, and deep neural networks. I'm teaming up with the <a href='https://cbcl.stanford.edu'>Cardiovascular Biomechanics Computation Lab</a> at Stanford University to craft <a href='https://simvascular.github.io'>SimVascular</a>, an open-source software for patient-specific blood flow modeling. We're also building a free, open-access <a href='https://www.vascularmodel.com'>Vascular Model Repository</a> because sharing is caring, especially in the realm of cutting-edge research.
 
