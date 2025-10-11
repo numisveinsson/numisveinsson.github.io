@@ -1,15 +1,15 @@
 {
   "basics": {
     "name": "Numi Sveinsson Cepero",
-    "label": "Engineer, Applied AI and Data Scientist",
+    "label": "Biomechanics Engineer, Applied AI and Data Scientist",
     "image": "",
     "email": "numisveinsson@gmail.com",
     "phone": "",
     "url": "https://numisveinsson.com",
     "summary": "A data scientist and engineer with a background in mechanical engineering and machine learning. I am passionate about using computation, data and modeling to solve real world problems and build products. I have experience in applied AI, graphics, scientific computing and modeling biomechanics. I am currently working on my PhD in biomechanical engineering at University of California, Berkeley.",
     "location": {
-      "address": "2712 Broadway St",
-      "postalCode": "CA 94115",
+      "address": "",
+      "postalCode": "CA",
       "city": "San Francisco",
       "countryCode": "US",
       "region": "California"
@@ -66,7 +66,7 @@
       "area": "Mechanical Engineering",
       "studyType": "MSc / PhD",
       "startDate": "2020",
-      "endDate": "",
+      "endDate": "2025",
       "score": "3.9",
       "courses": [
         "Biomechanics",
@@ -99,6 +99,19 @@
         "Mechanical Design",
         "Mechanical Vibrations",
         "Control Systems"
+      ]
+    },
+    {
+      "institution": "Stanford University, Stanford, CA, USA",
+      "url": "https://www.stanford.edu/",
+      "area": "Bioengineering",
+      "studyType": "International Honors Program",
+      "startDate": "2018",
+      "endDate": "2018",
+      "score": "4.0",
+      "courses": [
+        "Physiology",
+        "Environmental Engineering"
       ]
     }
   ],
