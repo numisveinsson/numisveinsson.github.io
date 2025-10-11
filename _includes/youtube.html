@@ -1,0 +1,26 @@
+{% comment %}
+YouTube video include
+Usage: {% include youtube.html id="VIDEO_ID" title="Video Title" %}
+{% endcomment %}
+
+{%- assign video_id = include.id %}
+{%- if include.url %}
+  {%- if include.url contains 'youtube.com/watch?v=' %}
+    {%- assign video_id = include.url | split: 'v=' | last | split: '&' | first %}
+  {%- elsif include.url contains 'youtube.com/live/' %}
+    {%- assign video_id = include.url | split: '/live/' | last | split: '?' | first %}
+  {%- elsif include.url contains 'youtu.be/' %}
+    {%- assign video_id = include.url | split: 'youtu.be/' | last | split: '?' | first %}
+  {%- endif %}
+{%- endif %}
+
+<div class="youtube-container" style="position: relative; width: 100%; height: 0; padding-bottom: 56.25%; margin: 1.5rem 0;">
+  <iframe 
+    src="https://www.youtube.com/embed/{{ video_id }}{% if include.start %}?start={{ include.start }}{% endif %}"
+    title="{% if include.title %}{{ include.title }}{% else %}YouTube video{% endif %}"
+    frameborder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+    allowfullscreen
+    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 8px;">
+  </iframe>
+</div>
