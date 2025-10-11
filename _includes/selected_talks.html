@@ -1,0 +1,51 @@
+          <div class="talks">
+            {%- assign selected_talks = site.data.talks | where: "selected", true %}
+            {%- for talk in selected_talks limit: 3 %}
+              <div class="talk-entry" style="margin-bottom: 2rem; display: flex; gap: 1rem;">
+                {%- if talk.url contains 'youtube.com' or talk.url contains 'youtu.be' %}
+                  {%- assign video_id = '' %}
+                  {%- if talk.url contains 'youtube.com/watch?v=' %}
+                    {%- assign video_id = talk.url | split: 'v=' | last | split: '&' | first %}
+                  {%- elsif talk.url contains 'youtube.com/live/' %}
+                    {%- assign video_id = talk.url | split: '/live/' | last | split: '?' | first %}
+                  {%- elsif talk.url contains 'youtu.be/' %}
+                    {%- assign video_id = talk.url | split: 'youtu.be/' | last | split: '?' | first %}
+                  {%- endif %}
+                  
+                  {%- if video_id != '' %}
+                    <div style="flex-shrink: 0;">
+                      <a href="{{ talk.url }}" target="_blank" style="display: block; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                        <img src="https://img.youtube.com/vi/{{ video_id }}/mqdefault.jpg" 
+                             alt="{{ talk.title }} thumbnail" 
+                             style="width: 120px; height: 90px; object-fit: cover; display: block;">
+                      </a>
+                    </div>
+                  {%- endif %}
+                {%- endif %}
+                
+                <div style="flex: 1;">
+                  <h4 style="margin-bottom: 0.5rem; color: var(--global-text-color);">{{ talk.title }}</h4>
+                  <p style="margin-bottom: 0.3rem; font-weight: 600;"><strong>{{ talk.venue }}</strong></p>
+                  <p style="margin-bottom: 0.3rem; color: var(--global-text-color-light); font-size: 0.9rem;">{{ talk.location }} • {{ talk.date }}</p>
+                  {%- if talk.description %}
+                    <p class="talk-description" style="margin-bottom: 0.5rem; font-size: 0.95rem;">{{ talk.description }}</p>
+                  {%- endif %}
+                  {%- if talk.url %}
+                    <p style="margin-bottom: 0;">
+                      {%- if talk.url contains 'youtube.com' or talk.url contains 'youtu.be' %}
+                        <a href="{{ talk.url }}" target="_blank" style="color: var(--global-theme-color);">🎥 Watch video</a>
+                      {%- else %}
+                        <a href="{{ talk.url }}" target="_blank" style="color: var(--global-theme-color);">View slides/recording</a>
+                      {%- endif %}
+                    </p>
+                  {%- endif %}
+                </div>
+              </div>
+              {%- unless forloop.last %}<hr style="margin: 1.5rem 0; border: none; border-top: 1px solid var(--global-divider-color);">{%- endunless %}
+            {%- endfor %}
+            {%- if selected_talks.size > 3 %}
+              <p style="text-align: center; margin-top: 1rem;">
+                <a href="{{ '/talks/' | relative_url }}" style="color: var(--global-theme-color);">View all talks →</a>
+              </p>
+            {%- endif %}
+          </div>

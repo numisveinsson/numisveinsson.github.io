@@ -1,0 +1,50 @@
+- title: "SimVascular Workshop"
+  venue: "CMBBE 2025 (Computer Methods in Biomechanics and Biomedical Engineering)"
+  location: "Barcelona, Spain"
+  date: "September 2025"
+  description: "Led a SimVascular tutorial at an international workshop on cardiovascular simulation techniques."
+
+- title: "MeshGrow: Unified Cardiac and Vascular Mesh Construction from Medical Images"
+  venue: "FIMH 2025 (Functional Imaging and Modeling of the Heart)"
+  location: "Dallas, Texas, USA"
+  date: "June 2025"
+  description: "Presented MeshGrow, a unified framework for generating simulation-ready cardiac and vascular meshes from medical imaging data."
+
+- title: "SimVascular Workshop"
+  venue: " ASME SB3C Summer Bioengineering Conference 2025"
+  location: "Santa Ana Pueblo, New Mexico, USA"
+  date: "June 2025"
+  description: "Conducted a hands-on workshop on SimVascular for cardiovascular modeling and simulation."
+
+- title: "Automatic Construction Of Patient-Specific Vascular Models Of Diverse Anatomy"
+  venue: "ASME SB3C Summer Bioengineering Conference 2025"
+  location: "Santa Ana Pueblo, New Mexico, USA"
+  date: "June 2025"
+  description: "Presented a poster on integrated modeling and simulation workflows for vascular systems."
+
+- title: "Commencement Speech"
+  venue: "UC Berkeley College of Engineering Commencement 2025"
+  location: "Berkeley, California, USA"
+  date: "May 2025"
+  description: "Delivered the PhD commencement address reflecting on academic freedom, resilience during the pandemic, and the social responsibility of engineers."
+  url: "https://www.youtube.com/live/APxpg_MKBq4?si=tE0C2RvOHWU3s5mc&t=1381"
+  selected: true
+
+- title: "Automatic Vascular Model Construction from Medical Images"
+  venue: "Cardiac Imaging, Mechanics, and Modeling (CIM2) Symposium"
+  location: "Stanford, California, USA"
+  date: "August 2024"
+  description: "Presented research on automatic vascular model construction from medical images at the CIM2 Symposium hosted by Stanford Bioengineering."
+
+- title: "Automatic Image-Based Vascular Model Construction Using Sequential Segmentations"
+  venue: "ASME SB3C Summer Bioengineering Conference 2024"
+  location: "Geneva, Wisconsin, USA"
+  date: "June 2024"
+  description: "Introduced SeqSeg, a novel method for constructing patient-specific vascular models from medical image segmentations."
+  selected: false
+
+- title: "Automatic Image-Based Vascular Model Construction"
+  venue: "Cardiovascular Implant Durability Conference 2023"
+  location: "Monterrey, California, USA"
+  date: "October 2023"
+  description: "Presented SeqSeg, a method for automatic construction of patient-specific vascular models from medical images."
