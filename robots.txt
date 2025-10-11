@@ -1,4 +1,4 @@
 User-agent: *
 Disallow:
 
-Sitemap: https://numisveinsson.github.io/sitemap.xml
+Sitemap: https://numisveinsson.com/sitemap.xml
