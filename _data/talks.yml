@@ -41,7 +41,6 @@
   location: "Geneva, Wisconsin, USA"
   date: "June 2024"
   description: "Introduced SeqSeg, a novel method for constructing patient-specific vascular models from medical image segmentations."
-  selected: false
 
 - title: "Automatic Image-Based Vascular Model Construction"
   venue: "Cardiovascular Implant Durability Conference 2023"
