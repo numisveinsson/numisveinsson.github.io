@@ -1,202 +1,277 @@
 {
   "basics": {
-    "name": "Numi Sveinsson Cepero",
-    "label": "Biomechanics Engineer, Applied AI and Data Scientist",
+    "name": "Númi Sveinsson Cepero",
+    "label": "Ph.D. in Mechanical Engineering | Computational Modeling & Medical Imaging",
     "image": "",
-    "email": "numisveinsson@gmail.com",
+    "email": "numi@berkeley.edu",
     "phone": "",
     "url": "https://numisveinsson.com",
-    "summary": "A data scientist and engineer with a background in mechanical engineering and machine learning. I am passionate about using computation, data and modeling to solve real world problems and build products. I have experience in applied AI, graphics, scientific computing and modeling biomechanics. I am currently working on my PhD in biomechanical engineering at University of California, Berkeley.",
+    "summary": "Computational modeling and medical imaging researcher specializing in biofluid dynamics and deep learning for cardiovascular applications. Experienced in developing machine learning frameworks for vessel segmentation and automatic vascular model construction. Ph.D. in Mechanical Engineering from the University of California, Berkeley (2025).",
     "location": {
       "address": "",
       "postalCode": "CA",
-      "city": "San Francisco",
+      "city": "Berkeley",
       "countryCode": "US",
       "region": "California"
     },
     "profiles": [
       {
-        "network": "Twitter",
-        "username": "AlbertEinstein",
-        "url": "https://twitter.com/AlbertEinstein"
+        "network": "GitHub",
+        "username": "numisveinsson",
+        "url": "https://github.com/numisveinsson"
+      },
+      {
+        "network": "Website",
+        "username": "numisveinsson.com",
+        "url": "https://numisveinsson.com"
       }
     ]
   },
-    "education": [
+
+  "education": [
     {
-      "institution": "University of California, Berkeley, Berkeley, CA, USA",
+      "institution": "University of California, Berkeley",
       "url": "https://www.berkeley.edu/",
       "area": "Mechanical Engineering",
-      "studyType": "MS / PhD",
+      "studyType": "Ph.D.",
       "startDate": "2020",
       "endDate": "2025",
       "score": "3.9",
       "courses": [
         "Biomechanics",
-        "Biofluid Mechanics",
-        "Numerical Methods for PDEs",
-        "Parallel Computing",
-        "Finite Element Analysis",
         "Machine Learning",
-        "Computer Vision",
-        "Deep Learning"
-      ]
+        "Scientific Computing",
+        "Biofluid Dynamics",
+        "Finite Element Method",
+        "Deep Learning for Image Analysis"
+      ],
+      "details": "Major: Biomechanics | Minor 1: Machine Learning | Minor 2: Scientific Computing"
     },
     {
-      "institution": "University of Iceland, Reykjavik, Iceland",
+      "institution": "University of California, Berkeley",
+      "url": "https://www.berkeley.edu/",
+      "area": "Mechanical Engineering",
+      "studyType": "M.S.",
+      "startDate": "2020",
+      "endDate": "2023"
+    },
+    {
+      "institution": "Boston University",
+      "url": "https://www.bu.edu/",
+      "area": "Biomedical Engineering (Ph.D. coursework)",
+      "studyType": "Doctoral Transfer",
+      "startDate": "2019",
+      "endDate": "2020"
+    },
+    {
+      "institution": "University of Iceland",
       "url": "https://english.hi.is/",
       "area": "Mechanical Engineering",
-      "studyType": "BS",
+      "studyType": "B.S.",
       "startDate": "2016",
       "endDate": "2019",
-      "score": "4.0",
-      "courses": [
-        "Calculus",
-        "Linear Algebra",
-        "ODEs, PDEs",
-        "Physics",
-        "Fluid Mechanics",
-        "Thermodynamics",
-        "Heat Transfer",
-        "Mechanics of Materials",
-        "Mechanical Design",
-        "Mechanical Vibrations",
-        "Control Systems"
-      ]
+      "score": "9.7/10",
+      "summary": "Graduated with the highest GPA in program history."
     },
     {
-      "institution": "Stanford University, Stanford, CA, USA",
+      "institution": "Stanford University",
       "url": "https://www.stanford.edu/",
-      "area": "Bioengineering",
-      "studyType": "International Honors Program",
+      "area": "International Honors Program",
+      "studyType": "Visiting Scholar",
       "startDate": "2018",
-      "endDate": "2018",
-      "score": "4.0",
-      "courses": [
-        "Physiology",
-        "Environmental Engineering"
-      ]
+      "endDate": "2018"
     }
   ],
+
   "work": [
     {
-      "name": "Department of Mechanical Engineering, University of California, Berkeley",
-      "position": "Graduate Student Researcher",
+      "name": "University of California, Berkeley — Mechanical Engineering Department",
+      "position": "Graduate Researcher",
       "url": "https://shaddenlab.berkeley.edu/",
       "startDate": "2020",
-      "endDate": "",
-      "summary": "Currently working on my PhD in biomechanical engineering at University of California, Berkeley. Working on developing automatic methods to contruct 3D models of human blood vessels from medical images. Also working on developing methods to simulate blood flow in the human body.",
+      "endDate": "2025",
+      "summary": "Developed deep learning–based methods for automatic vascular model construction and trajectory-oriented vessel tracking in medical imaging. Integrated physics-based modeling and machine learning to enable patient-specific cardiovascular simulations.",
       "highlights": [
-        "Biomechanics",
-        "Fluid mechanics",
-        "Medical imaging",
-        "Machine learning",
-        "Scientific computing"
+        "Developed SeqSeg: a deep learning framework for coronary artery segmentation",
+        "Created MeshGrow: an automated pipeline for unified cardiac and vascular mesh generation",
+        "Contributed to SimVascular open-source cardiovascular modeling software",
+        "Mentored undergraduate and MEng teams in medical image analysis projects"
       ]
-    }
-  ],
-  "service": [
+    },
     {
-      "position": "Board of School of Engineering and Natural Sciences",
-      "startDate": "2018",
+      "name": "Kerecis",
+      "position": "Research Intern",
+      "url": "https://www.kerecis.com/",
+      "startDate": "2020",
+      "endDate": "2020",
+      "summary": "Worked on material property analysis for medical biomaterials.",
+      "highlights": [
+        "Collaborated on R&D for regenerative medical materials."
+      ]
+    },
+    {
+      "name": "University of Iceland — Department of Medicine",
+      "position": "Undergraduate Researcher",
+      "startDate": "2019",
       "endDate": "2019",
-      "summary": "Student representative on the board of School of Engineering and Natural Sciences at University of Iceland"
-    },
-    {
-      "position": "Vice Chair of Amnesty International Youth Council",
-      "summary": "Amnesty International",
-      "startDate": "2017",
-      "endDate": "2019"
-    },
-    {
-      "position": "Promotional Work for University of Iceland",
-      "summary": "Volunteer work for the University of Iceland campus",
-      "startDate": "2018",
-      "endDate": "2019"
+      "summary": "Developed computational models for new lung experimental technologies."
     }
   ],
-  "awards": [
-    {
-      "title": "Leif Eriksson Scholarship",
-      "date": "2021-01-01",
-      "awarder": "Leif Eriksson Foundation",
-      "summary": "Awarded for academic excellence, leadership and community service. Used to fund my PhD studies at UC Berkeley."
-    },
-    {
-      "title": "CV Presentation Award",
-      "date": "2023-10-23",
-      "awarder": "Cardiovascular Implant Durability Conference",
-      "summary": "Chosen to present my vascular modeling work at the conference."
-    }
-  ],
-  "certificates": [  ],
+
   "publications": [
     {
       "name": "SeqSeg: Learning Local Segments for Automatic Vascular Model Construction",
       "publisher": "Annals of Biomedical Engineering",
-      "releaseDate": "2025-01-18",
-      "url": "https://doi.org/10.1007/s10439-024-03611-z",
-      "summary": "We present SeqSeg (sequential segmentation): a novel deep learning-based automatic tracing and segmentation algorithm for constructing image-based vascular models."
+      "releaseDate": "2025",
+      "url": "",
+      "summary": "N. Sveinsson Cepero and S. C. Shadden. Presents a deep learning method for segmenting and reconstructing vascular models from medical imaging data."
+    },
+    {
+      "name": "Integrated Framework for Unified Cardiac and Vascular Mesh Construction from Medical Images",
+      "publisher": "Functional Imaging and Modeling of the Heart (FIMH 2025)",
+      "releaseDate": "2025",
+      "summary": "N. Sveinsson Cepero, A. Narayanan, and S. C. Shadden. Introduces MeshGrow, a unified framework for simulation-ready cardiovascular mesh generation."
+    },
+    {
+      "name": "Automatic Vascular Model Construction from Medical Imaging Using Deep Learning",
+      "publisher": "University of California, Berkeley",
+      "releaseDate": "2025",
+      "summary": "Ph.D. Dissertation. Explores deep learning for automated vascular model construction."
     }
+  ],
 
+  "service": [
+    {
+      "position": "Reviewer for MICCAI Conference (Medical Image Computing and Computer Assisted Intervention)",
+      "startDate": "2025",
+      "endDate": "2025",
+      "summary": "Reviewed scientific papers in medical image analysis and AI for healthcare."
+    },
+    {
+      "position": "Board Member and Vice President, SINE - Association of Icelandic Students Abroad",
+      "startDate": "2021",
+      "endDate": "2025",
+      "summary": "Organized initiatives for Icelandic students abroad and represented the community in international education forums."
+    },
+    {
+      "position": "Member, Departmental Panels, UC Berkeley Mechanical Engineering",
+      "startDate": "2021",
+      "endDate": "2025",
+      "summary": "Contributed to departmental curriculum and research initiative discussions."
+    },
+    {
+      "position": "Board Member, School of Engineering and Natural Sciences, University of Iceland",
+      "startDate": "2018",
+      "endDate": "2019"
+    },
+    {
+      "position": "Amnesty International Youth Council, Iceland",
+      "startDate": "2016",
+      "endDate": "2019"
+    }
   ],
-  "skills": [],
+
+  "awards": [
+    {
+      "title": "UC Berkeley Engineering Ph.D. Commencement Speaker",
+      "date": "2025-05-01",
+      "awarder": "UC Berkeley College of Engineering"
+    },
+    {
+      "title": "UC Berkeley Mechanical Engineering Department Scholarship",
+      "date": "2025-03-01",
+      "awarder": "University of California, Berkeley"
+    },
+    {
+      "title": "Landsbankinn Graduate Scholarship",
+      "date": "2024-06-22",
+      "awarder": "Landsbankinn, Iceland"
+    },
+    {
+      "title": "UC Berkeley Summer Fellowship",
+      "date": "2024-06-01",
+      "awarder": "UC Berkeley Mechanical Engineering Department"
+    },
+    {
+      "title": "CVID Student Presenter Award",
+      "date": "2023-10-01",
+      "awarder": "Cardiovascular Implant Durability Conference"
+    },
+    {
+      "title": "Leif Eiriksson Fellowship",
+      "date": "2021-01-01",
+      "awarder": "Leif Eiriksson Foundation"
+    },
+    {
+      "title": "Baccalaureate Commencement Speaker",
+      "date": "2019-06-01",
+      "awarder": "University of Iceland"
+    }
+  ],
+
+  "skills": [
+    {
+      "name": "Programming and Scripting",
+      "keywords": ["Python", "C++", "MATLAB", "Bash"]
+    },
+    {
+      "name": "Medical Image Processing",
+      "keywords": ["Segmentation", "Registration", "CT/MRI", "ITK", "VTK", "MONAI"]
+    },
+    {
+      "name": "Deep Learning and Computer Vision",
+      "keywords": ["U-Net", "Gaussian heatmaps", "Trajectory prediction", "Transfer learning"]
+    },
+    {
+      "name": "Computational Modeling and Simulation",
+      "keywords": ["Mesh generation", "CFD", "FSI", "SimVascular", "ANSYS", "ParaView"]
+    },
+    {
+      "name": "Software Development and Collaboration",
+      "keywords": ["Git", "GitHub", "Docker", "Linux", "Continuous Integration"]
+    },
+    {
+      "name": "Visualization and Data Analysis",
+      "keywords": ["Matplotlib", "ParaView", "VTK"]
+    },
+    {
+      "name": "General Tools and Workflow",
+      "keywords": ["LaTeX", "Overleaf", "HPC", "Slurm"]
+    }
+  ],
+
   "languages": [
-    {
-      "language": "English",
-      "fluency": "Native Speaker"
-    },
-    {
-      "language": "Icelandic",
-      "fluency": "Native Speaker"
-    },
-    {
-      "language": "Danish",
-      "fluency": "Intermediate"
-    },
-    {
-      "language": "Spanish",
-      "fluency": "Intermediate"
-    },
-    {
-      "language": "French",
-      "fluency": "Beginner"
-    }
+    { "language": "English", "fluency": "Fluent" },
+    { "language": "Icelandic", "fluency": "Native" },
+    { "language": "Danish", "fluency": "Intermediate" },
+    { "language": "Spanish", "fluency": "Intermediate" },
+    { "language": "French", "fluency": "Beginner" }
   ],
-  "interests": [
-    {
-      "name": "Physics",
-      "icon": "fa-solid fa-tag",
-      "keywords": [
-        "Quantum Mechanics",
-        "Quantum Computing",
-        "Quantum Information",
-        "Quantum Cryptography",
-        "Quantum Communication",
-        "Quantum Teleportation"
-      ]
-    }
-  ],
-  "references": [
-    {
-      "name": "Professor John Doe",
-      "icon": "fa-solid fa-laptop",
-      "reference": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam condimentum, diam quis convallis euismod, arcu mi ullamcorper lorem, a vestibulum nunc magna at sem. Sed in risus ac felis varius blandit. D"
-    },
-    {
-      "name": "Professor John Doe",
-      "icon": "fa-solid fa-thumbtack",
-      "reference": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam condimentum, diam quis convallis euismod, arcu mi ullamcorper lorem, a vestibulum nunc magna at sem. Sed in risus ac felis varius blandit. D"
-    }
-  ],
+
   "projects": [
     {
-      "name": "Quantum Computing",
-      "summary": "Quantum computing is the use of quantum-mechanical phenomena such as superposition and entanglement to perform computation. Computers that perform quantum computations are known as quantum computers.",
-      "highlights": ["Quantum Teleportation", "Quantum Cryptography"],
-      "startDate": "2018-01-01",
-      "endDate": "2018-01-01",
-      "url": "https://example.com"
+      "name": "SeqSeg",
+      "summary": "Deep learning–based framework for automated segmentation of coronary arteries from CT images.",
+      "url": "https://github.com/numisveinsson/SeqSeg"
+    },
+    {
+      "name": "MeshGrow",
+      "summary": "Framework for unified cardiac and vascular mesh construction from medical images."
+    },
+    {
+      "name": "SimVascular",
+      "summary": "Open-source cardiovascular modeling software. Contributed features and documentation.",
+      "url": "https://simvascular.github.io"
+    },
+    {
+      "name": "MIROS",
+      "summary": "Toolkit linking patient-specific medical imaging data to reduced-order hemodynamic simulations.",
+      "url": "https://github.com/BryannGan/MIROS"
+    },
+    {
+      "name": "Vascular Model Repository",
+      "summary": "Online platform for sharing and visualizing vascular geometries and simulation data.",
+      "url": "https://vascularmodel.com"
     }
   ]
 }
