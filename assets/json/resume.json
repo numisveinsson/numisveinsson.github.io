@@ -220,7 +220,7 @@
     },
     {
       "name": "Deep Learning and Computer Vision",
-      "keywords": ["U-Net", "Gaussian heatmaps", "Trajectory prediction", "Transfer learning"]
+      "keywords": ["CNN", "Transformers", "U-Net", "Gaussian heatmaps", "Trajectory prediction", "Transfer learning"]
     },
     {
       "name": "Computational Modeling and Simulation",
