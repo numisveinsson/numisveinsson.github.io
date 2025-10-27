@@ -2,7 +2,7 @@
 layout: about
 title: about
 permalink: /
-subtitle: <a href='https://shaddenlab.berkeley.edu/index.html'>Postdoctoral Fellow</a> at University of Texas, Austin under supervision of <a href='https://oden.utexas.edu/people/directory/Charley%20Taylor/'>Prof. Charley Taylor</a>
+subtitle: <a href='https://oden.utexas.edu/research/centers-and-groups/center-for-computational-medicine/'>Postdoctoral Fellow</a> at University of Texas, Austin under supervision of <a href='https://oden.utexas.edu/people/directory/Charley%20Taylor/'>Prof. Charley Taylor</a>
 
 profile:
   align: right
