@@ -2,7 +2,7 @@
 layout: about
 title: about
 permalink: /
-subtitle: <a href='https://shaddenlab.berkeley.edu/index.html'>Graduate Student Researcher</a> at University of California, Berkeley under supervision of <a href='https://me.berkeley.edu/people/shawn-shadden/'>Prof. Shawn Shadden</a>
+subtitle: <a href='https://shaddenlab.berkeley.edu/index.html'>Postdoctoral Fellow</a> at University of Texas, Austin under supervision of <a href='https://oden.utexas.edu/people/directory/Charley%20Taylor/'>Prof. Charley Taylor</a>
 
 profile:
   align: right
@@ -20,10 +20,10 @@ social: true  # includes social icons at the bottom of the page
 ---
 
 
-Hey! I'm a PhD candidate delving into the exciting world of biomechanical engineering at UC Berkeley. My research journey involves a mix of biomechanics, machine learning, and computer modeling.
+I'm a Postdoctoral Fellow at the Center for Computational Medicine at the Oden Institute for Computational Engineering and Sciences at UT Austin, working with Prof. Charley Taylor on computational and AI-driven methods for cardiovascular and respiratory modeling and digital twin development.
 
-Currently, I'm at the crossroads of cardiovascular health, computational modeling, and deep neural networks. I'm teaming up with the <a href='https://cbcl.stanford.edu'>Cardiovascular Biomechanics Computation Lab</a> at Stanford University to craft <a href='https://simvascular.github.io'>SimVascular</a>, an open-source software for patient-specific blood flow modeling. We're also building a free, open-access <a href='https://www.vascularmodel.com'>Vascular Model Repository</a> because sharing is caring, especially in the realm of cutting-edge research.
+I completed my Ph.D. with Prof. Shawn Shadden at UC Berkeley, where my research combined biomechanics, machine learning, and computational modeling to better understand cardiovascular health. My current work extends these ideas to the intersection of cardiovascular and respiratory modeling, artificial intelligence, and simulation, in collaboration with the <a href="https://cbcl.stanford.edu">Cardiovascular Biomechanics Computation Lab</a> at Stanford University and the <a href="https://shaddenlab.berkeley.edu">Shadden Lab</a> at UC Berkeley. I also contribute to <a href="https://simvascular.github.io">SimVascular</a>, an open-source platform for patient-specific blood flow simulation, and the <a href="https://www.vascularmodel.com">Vascular Model Repository</a>, a public resource for sharing high-quality vascular data and models.
 
-I thrive on collaboration and adore applying engineering and machine learning to real-world problems. Let's connect and brainstorm some groundbreaking ideas!
+I’m passionate about collaborative, translational research and about using engineering and data-driven approaches to address real medical challenges.
 
-Outside the lab, I find joy in exploring history, jet-setting to new destinations, nurturing green life, and whipping up culinary wonders with friends. Life's an adventure, and I'm here for it all!
+Outside the lab, I enjoy exploring history, traveling, gardening, and cooking with friends.
