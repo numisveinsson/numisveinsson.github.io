@@ -1,49 +1,9 @@
 ---
 layout: page
 permalink: /404.html
-title: "404 - Page Not Found"
-description: "The page you're looking for doesn't exist. Return to the homepage or explore other sections of the site."
-nav: false
+title: "Page not found"
+description: "Looks like there has been a mistake. Nothing exists here."
+redirect: true
 ---
 
-<div style="text-align: center; padding: 3rem 0;">
-  <h1 style="font-size: 4rem; font-weight: 300; margin-bottom: 1rem; color: var(--global-theme-color);">404</h1>
-  <h2 style="font-size: 2rem; font-weight: 400; margin-bottom: 1.5rem;">Page Not Found</h2>
-  <p style="font-size: 1.1rem; margin-bottom: 2rem; max-width: 600px; margin-left: auto; margin-right: auto; color: var(--global-text-color);">
-    Sorry, the page you're looking for doesn't exist or has been moved. 
-    The link may be broken, or the page may have been removed.
-  </p>
-  
-  <div style="margin: 2.5rem 0;">
-    <a href="{{ '/' | relative_url }}" class="btn btn-primary" style="margin: 0.5rem; padding: 0.75rem 2rem; text-decoration: none; display: inline-block;">
-      <i class="fas fa-home"></i> Go to Homepage
-    </a>
-    <a href="{{ '/blog/' | relative_url }}" class="btn btn-outline-primary" style="margin: 0.5rem; padding: 0.75rem 2rem; text-decoration: none; display: inline-block;">
-      <i class="fas fa-blog"></i> View Blog
-    </a>
-  </div>
-
-  <div style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--global-divider-color);">
-    <h3 style="font-size: 1.3rem; margin-bottom: 1.5rem; font-weight: 400;">You might be looking for:</h3>
-    <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1.5rem; max-width: 800px; margin: 0 auto;">
-      <a href="{{ '/' | relative_url }}" style="text-decoration: none; color: var(--global-theme-color);">
-        <i class="fas fa-user"></i> About
-      </a>
-      <a href="{{ '/publications/' | relative_url }}" style="text-decoration: none; color: var(--global-theme-color);">
-        <i class="fas fa-book"></i> Publications
-      </a>
-      <a href="{{ '/projects/' | relative_url }}" style="text-decoration: none; color: var(--global-theme-color);">
-        <i class="fas fa-project-diagram"></i> Projects
-      </a>
-      <a href="{{ '/talks/' | relative_url }}" style="text-decoration: none; color: var(--global-theme-color);">
-        <i class="fas fa-microphone"></i> Talks
-      </a>
-      <a href="{{ '/news/' | relative_url }}" style="text-decoration: none; color: var(--global-theme-color);">
-        <i class="fas fa-newspaper"></i> News
-      </a>
-      <a href="{{ '/cv/' | relative_url }}" style="text-decoration: none; color: var(--global-theme-color);">
-        <i class="fas fa-file-alt"></i> CV
-      </a>
-    </div>
-  </div>
-</div>
+<p>You will be redirected to the main page within 3 seconds. If not redirected, please go back to the <a href="{{ site.baseurl }}/">home page</a>.</p>
