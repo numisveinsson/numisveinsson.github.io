@@ -264,11 +264,6 @@
       "url": "https://simvascular.github.io"
     },
     {
-      "name": "MIROS",
-      "summary": "Toolkit linking patient-specific medical imaging data to reduced-order hemodynamic simulations.",
-      "url": "https://github.com/BryannGan/MIROS"
-    },
-    {
       "name": "Vascular Model Repository",
       "summary": "Online platform for sharing and visualizing vascular geometries and simulation data.",
       "url": "https://vascularmodel.com"

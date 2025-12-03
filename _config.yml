@@ -8,11 +8,11 @@ middle_name:
 last_name: Sveinsson Cepero
 email: numisveinsson@gmail.com
 description: > # the ">" symbol means to ignore newlines until "footer_text:"
-  A simple, whitespace theme for academics. Based on [*folio](https://github.com/bogoli/-folio) design.
+  Postdoctoral Fellow at the Center for Computational Medicine, Oden Institute, UT Austin. Research focuses on computational cardiovascular and respiratory modeling, AI-driven methods, and digital twin development. Ph.D. from UC Berkeley. Contributor to SimVascular and the Vascular Model Repository.
 footer_text: >
   Hosted by <a href="https://pages.github.com/" target="_blank">GitHub Pages</a>.
-  Photos from <a href="https://unsplash.com" target="_blank">Unsplash</a>.
-keywords: jekyll, jekyll-theme, academic-website, portfolio-website # add your own keywords or leave empty
+keywords: computational biomechanics, cardiovascular modeling, respiratory modeling, machine learning, artificial intelligence, biomedical engineering, digital twins, hemodynamics, finite element methods, computational fluid dynamics, patient-specific modeling, SimVascular, Vascular Model Repository, biomechanics, computational medicine, blood flow simulation, cardiovascular health, translational research, UC Berkeley, UT Austin  # add your own keywords or leave empty
+
 lang: en # the language of your site (for example: en, fr, cn, ru, etc.)
 icon: ⚛️ # the emoji used as the favicon (alternatively, provide image name in /assets/img/)
 
@@ -63,7 +63,7 @@ max_width: 930px
 # see https://schema.org/docs/faq.html for more information
 serve_og_meta: false # Include Open Graph meta tags in the HTML head
 serve_schema_org: false # Include Schema.org in the HTML head
-og_image: # The site-wide (default for all links) Open Graph preview image
+og_image: https://numisveinsson.com/assets/img/prof_pic_headshot_final.jpeg # The site-wide (default for all links) Open Graph preview image
 
 # -----------------------------------------------------------------------------
 # Analytics and search engine verification
