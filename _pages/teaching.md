@@ -2,60 +2,92 @@
 layout: page
 permalink: /teaching/
 title: teaching
-description: Materials for courses you taught. Replace this text with your description.
+description: Teaching experience and courses taught.
 nav: true
 nav_order: 5
 ---
-<!-- 
-For now, this page is assumed to be a static description of your courses. You can convert it to a collection similar to `_projects/` so that you can have a dedicated page for each course.
 
-Organize your courses by years, topics, or universities, however you like! -->
+# Teaching Experience
 
-# Courses Taught
+## Graduate Courses
 
-## 🏛 Graduate Courses
+### Introduction to Finite Element Method
+- **Institution**: University of California, Berkeley  
+- **Department**: Mechanical Engineering  
+- **Year**: Fall 2024  
+- **Role**: Graduate Student Instructor (GSI)  
+- **Instructor**: [Prof. Shawn C. Shadden](https://shaddenlab.berkeley.edu)  
+- **Location**: Berkeley, CA, USA  
+- **Responsibilities**: 
+  - Delivered two full guest lectures on *Linear Solvers*
+  - Chose and organized material for weekly discussion sections
+  - Led weekly discussion sections
+  - Held office hours
+  - Helped create homework assignments
+  - Graded assignments and exams
 
-### Computational Biomechanics
-- **Year**: 2024  
-- **Role**: Instructor  
-- **Level**: Graduate  
-- **Enrollment**: ~30 students  
-- **Topics**: Finite element methods, hemodynamics simulations, Python-based modeling  
-- **Teaching Methods**: Interactive Jupyter Notebooks, live coding, group projects  
-- **Student Achievements**: One student published a journal paper based on their final project  
+I completed my teaching assistantship for this graduate course in the Fall of 2024. I enjoyed working with the students and faculty, and I am grateful for the opportunity to contribute to the teaching and learning experience in computational mechanics and engineering.
 
-### Machine Learning for Bioengineering
-- **Year**: 2023  
-- **Role**: Teaching Assistant (TA)  
-- **Level**: Graduate  
-- **Enrollment**: ~50 students  
-- **Topics**: Convolutional Neural Networks (CNNs), medical image analysis, deep learning  
-- **Teaching Methods**: Hands-on coding sessions, PyTorch tutorials, project-based learning  
-- **Notes**: Led weekly discussions and graded final projects  
+#### Teaching Evaluations
 
-## 🎓 Undergraduate Courses
+The course received strong student evaluations, with scores above the department average:
 
-### Introduction to Biomechanics
-- **Year**: 2022  
-- **Role**: Teaching Assistant (TA)  
-- **Level**: Undergraduate  
-- **Enrollment**: ~100 students  
-- **Topics**: Mechanics of materials, biofluid dynamics, MATLAB simulations  
-- **Teaching Methods**: Recitation sessions, problem-solving workshops  
-- **Notes**: Designed practice exams and held office hours  
+- **GSI's instructional activities enhanced my learning**: 6.71/7 (department average: 6.03)
+- **GSI created an inclusive learning environment**: 6.81/7 (department average: 6.07)
+- **Overall teaching effectiveness**: 6.50/7 (department average: 5.91)
 
-## 📊 Summary Table
+#### Student Feedback
 
-| Course | Year | Role | Level | Topics | Notes |
-|--------|------|------|-------|--------|-------|
-| Computational Biomechanics | 2024 | Instructor | Graduate | FEM, Hemodynamics | Student published paper |
-| Machine Learning for Bioengineering | 2023 | TA | Graduate | CNNs, Medical Imaging | Led hands-on coding sessions |
-| Introduction to Biomechanics | 2022 | TA | Undergraduate | Biofluid Dynamics, MATLAB | Created practice exams |
+> "Numi was the best GSI I have ever had. I would not have made it through the course without his help."
 
-## 🌟 Additional Contributions
-- Developed interactive coding exercises in **Python & MATLAB**  
-- Provided mentorship to students, one of whom won **conference awards & got into a PhD program**  
-- Designed innovative teaching materials for **machine learning & biomechanics**  
+> "Numi was awesome. Was great at going over important things that might have been difficult to understand and implement just from lecture alone, and was very accessible and helpful both in office hours and outside of office hours through Ed Discussion or email."
 
+> "I wouldn't have been able to survive this course without Numi. An amazing GSI who made learning the material fun and interesting. Was always patient with every student in answering their questions. Very responsive to the needs of the class and effective at responding to questions. Discussion and office hours were well worth their weight in gold. Numi is an exemplary GSI."
+
+> "Numi make the office hour environment very inclusive and thus make it easy for student to approach and best utilize the office hour by asking questions."
+
+> "Very helpful teaching climate and always available."
+
+> "Numi has a great energy and is encouraging."
+
+---
+
+## Undergraduate Courses
+
+### Numerical Analysis
+- **Institution**: University of Iceland  
+- **Department**: Department of Physical Sciences  
+- **Year**: 2019  
+- **Role**: Undergraduate Teaching Assistant  
+- **Instructor**: Prof. Sigurður Freyr Hafstein  
+- **Location**: Reykjavík, Iceland  
+- **Responsibilities**: 
+  - Led weekly discussion sections
+  - Held office hours
+  - Graded assignments and exams
+
+---
+
+### Differential Equations and Complex Analysis
+- **Institution**: University of Iceland  
+- **Department**: Department of Physical Sciences  
+- **Year**: 2018  
+- **Role**: Undergraduate Teaching Assistant  
+- **Instructor**: Prof. Sigurður Örn Stefánsson  
+- **Location**: Reykjavík, Iceland  
+- **Responsibilities**: 
+  - Led weekly discussion sections
+  - Held office hours
+  - Graded assignments and exams
+
+---
+
+## Summary
+
+| Course | Institution | Year | Role | Level |
+|--------|-------------|------|------|-------|
+| Introduction to Finite Element Method | UC Berkeley | 2024 | Graduate TA | Graduate |
+| Numerical Analysis | University of Iceland | 2019 | Undergraduate TA | Undergraduate |
+| Differential Equations and Complex Analysis | University of Iceland | 2018 | Undergraduate TA | Undergraduate |
 
 

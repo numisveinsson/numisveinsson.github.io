@@ -4,5 +4,9 @@ github_users:
 repo_description_lines_max: 2
 
 github_repos:
-  - SimVascular/Simvascular
-  - numisveinsson/SeqSeg
+  - name: SimVascular/SimVascular
+    description: Open-source software for patient-specific blood flow simulation and cardiovascular modeling
+  - name: numisveinsson/SeqSeg
+    description: Sequence segmentation tools for medical imaging and vascular analysis
+  - name: numisveinsson/vascular-segment-sampler
+    description: Blood vessel image data processing functionality for vascular segmentation and analysis

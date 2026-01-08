@@ -1,47 +1,36 @@
-{% assign repo_url = include.repository | split: '/' %}
+{% comment %} Handle both string and object formats {% endcomment %}
+{% if include.repository.name %}
+  {% assign repo_name = include.repository.name %}
+  {% assign repo_description = include.repository.description %}
+{% else %}
+  {% assign repo_name = include.repository %}
+  {% assign repo_description = "" %}
+{% endif %}
+
+{% assign repo_url = repo_name | split: '/' %}
 {% if site.data.repositories.github_users contains repo_url.first %}
   {% assign show_owner = false %}
 {% else %}
   {% assign show_owner = true %}
 {% endif %}
 
-{% assign lang = site.lang | split: '-' | first %}
-
-{% case lang %}
-  {% when 'pt' %}
-    {% assign lang = site.lang %}
-
-  {% when 'zh' %}
-    {% assign lang_last = site.lang | split: '-' | last %}
-    {% case lang_last %}
-      {% when 'cn', 'sg', 'my', 'hans' %}
-        {% assign lang = 'cn' %}
-      {% when 'tw', 'hk', 'mo', 'hant' %}
-        {% assign lang = 'zh-tw' %}
-    {% endcase %}
-
-    {% comment %} Add a new language using when... if needed {% endcomment %}
-    {% comment %} If you still encounter language-display issues, check the available locale codes in github-readme-stats (different from ISO-639 standard used in your website) {% endcomment %}
-    {% comment %} https://github.com/anuraghazra/github-readme-stats?tab=readme-ov-file#available-locales {% endcomment %}
-{% endcase %}
-
-{% if site.data.repositories.repo_description_lines_max %}
-  {% assign max_lines = site.data.repositories.repo_description_lines_max %}
-{% else %}
-  {% assign max_lines = 2 %}
-{% endif %}
-
-<div class="repo p-2 text-center">
-  <a href="https://github.com/{{ include.repository }}">
-    <img
-      class="only-light w-100"
-      alt="{{ include.repository }}"
-      src="https://github-readme-stats.vercel.app/api/pin/?username={{ repo_url[0] }}&repo={{ repo_url[1] }}&theme={{ site.repo_theme_light }}&locale={{ lang }}&show_owner={{ show_owner }}&description_lines_count={{ max_lines }}"
-    >
-    <img
-      class="only-dark w-100"
-      alt="{{ include.repository }}"
-      src="https://github-readme-stats.vercel.app/api/pin/?username={{ repo_url[0] }}&repo={{ repo_url[1] }}&theme={{ site.repo_theme_dark }}&locale={{ lang }}&show_owner={{ show_owner }}&description_lines_count={{ max_lines }}"
-    >
+<div class="repo p-2">
+  <a href="https://github.com/{{ repo_name }}" class="repo-card-link" style="text-decoration: none; display: block;">
+    <div class="repo-card" style="padding: 1.5rem; background: var(--global-card-bg-color); border-radius: 8px; border: 1px solid var(--global-divider-color); transition: transform 0.2s, box-shadow 0.2s; height: 100%;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 8px rgba(0,0,0,0.1)';" onmouseout="this.style.transform=''; this.style.boxShadow='';">
+      <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
+        <i class="fab fa-github" style="font-size: 1.75rem; color: var(--global-theme-color);"></i>
+        <div style="flex: 1;">
+          <strong style="color: var(--global-text-color); font-size: 1.1rem; display: block;">{{ repo_url[1] }}</strong>
+          <span style="color: var(--global-text-color-light); font-size: 0.9rem;">{{ repo_url[0] }}</span>
+        </div>
+      </div>
+      {% if repo_description %}
+      <p style="color: var(--global-text-color-light); font-size: 0.9rem; margin: 0 0 1rem 0; line-height: 1.4;">{{ repo_description }}</p>
+      {% endif %}
+      <div style="display: flex; align-items: center; gap: 0.5rem; color: var(--global-theme-color); font-size: 0.9rem;">
+        <span>View on GitHub</span>
+        <i class="fas fa-external-link-alt" style="font-size: 0.8rem;"></i>
+      </div>
+    </div>
   </a>
 </div>

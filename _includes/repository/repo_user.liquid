@@ -18,17 +18,15 @@
     {% comment %} https://github.com/anuraghazra/github-readme-stats?tab=readme-ov-file#available-locales {% endcomment %}
 {% endcase %}
 
-<div class="repo p-2 text-center">
-  <a href="https://github.com/{{ include.username }}">
-    <img
-      class="only-light w-100"
-      alt="{{ include.username }}"
-      src="https://github-readme-stats.vercel.app/api/?username={{ include.username }}&theme={{ site.repo_theme_light }}&locale={{ lang }}&show_icons=true"
-    >
-    <img
-      class="only-dark w-100"
-      alt="{{ include.username }}"
-      src="https://github-readme-stats.vercel.app/api/?username={{ include.username }}&theme={{ site.repo_theme_dark }}&locale={{ lang }}&show_icons=true"
-    >
+<div class="repo p-2">
+  <a href="https://github.com/{{ include.username }}" class="repo-card-link" style="text-decoration: none; display: block;">
+    <div class="repo-card" style="padding: 2rem; background: var(--global-card-bg-color); border-radius: 8px; border: 1px solid var(--global-divider-color); text-align: center; transition: transform 0.2s, box-shadow 0.2s; height: 100%;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 8px rgba(0,0,0,0.1)';" onmouseout="this.style.transform=''; this.style.boxShadow='';">
+      <i class="fab fa-github" style="font-size: 3.5rem; color: var(--global-theme-color); margin-bottom: 1rem; display: block;"></i>
+      <strong style="color: var(--global-text-color); font-size: 1.3rem; display: block; margin-bottom: 0.5rem;">{{ include.username }}</strong>
+      <p style="color: var(--global-text-color-light); margin: 0; font-size: 0.95rem;">GitHub Profile</p>
+      <div style="margin-top: 1rem; color: var(--global-theme-color); font-size: 0.9rem;">
+        <i class="fas fa-external-link-alt"></i> View Profile
+      </div>
+    </div>
   </a>
 </div>
