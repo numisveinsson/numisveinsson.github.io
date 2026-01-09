@@ -1,1 +1,0 @@
-Numi is a fun person.
