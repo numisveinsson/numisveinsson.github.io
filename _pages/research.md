@@ -3,7 +3,7 @@ layout: page
 permalink: /research/
 title: research
 description: Research statement outlining past contributions, current work, and future directions in computational medicine, cardiovascular modeling, and AI-driven healthcare solutions.
-nav: true
+nav: false
 nav_order: 2
 toc:
   sidebar: left
