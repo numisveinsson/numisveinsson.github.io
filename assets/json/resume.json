@@ -36,6 +36,7 @@
       "studyType": "Ph.D.",
       "startDate": "2020",
       "endDate": "2025",
+      "location": "Berkeley, CA, USA",
       "score": "3.9",
       "courses": [
         "Biomechanics",
@@ -53,7 +54,8 @@
       "area": "Mechanical Engineering",
       "studyType": "M.S.",
       "startDate": "2020",
-      "endDate": "2023"
+      "endDate": "2023",
+      "location": "Berkeley, CA, USA"
     },
     {
       "institution": "Boston University",
@@ -61,7 +63,8 @@
       "area": "Biomedical Engineering (Ph.D. coursework)",
       "studyType": "Doctoral Transfer",
       "startDate": "2019",
-      "endDate": "2020"
+      "endDate": "2020",
+      "location": "Boston, MA, USA"
     },
     {
       "institution": "University of Iceland",
@@ -70,6 +73,7 @@
       "studyType": "B.S.",
       "startDate": "2016",
       "endDate": "2019",
+      "location": "Reykjavík, Iceland",
       "score": "9.7/10",
       "summary": "Graduated with the highest GPA in program history."
     },
@@ -79,7 +83,57 @@
       "area": "International Honors Program",
       "studyType": "Visiting Scholar",
       "startDate": "2018",
-      "endDate": "2018"
+      "endDate": "2018",
+      "location": "Stanford, CA, USA"
+    }
+  ],
+
+  "research": [
+    {
+      "name": "The University of Texas at Austin — Oden Institute for Computational Engineering and Sciences",
+      "position": "Postdoctoral Position",
+      "startDate": "2025",
+      "endDate": "Present",
+      "location": "Austin, TX, USA",
+      "summary": "Research focuses on integrating artificial intelligence, medical imaging, and computational modeling to study physiology and advance medicine. Expanding research to explore clinically driven applications of AI and simulation, with the goal of developing digital tools that bridge computational models and patient care.",
+      "highlights": [
+        "Advisor: Prof. Charles A. Taylor"
+      ]
+    },
+    {
+      "name": "University of California, Berkeley — Mechanical Engineering Department",
+      "position": "Graduate Research",
+      "startDate": "2020",
+      "endDate": "2025",
+      "location": "Berkeley, CA, USA",
+      "summary": "Earned Ph.D. in Mechanical Engineering. Work with Prof. Shawn Shadden combined biomechanics, machine learning, and image-based modeling to improve vascular segmentation and simulation. Doctoral projects introduced open-source tools for automated vascular reconstruction and simulation-ready mesh generation from medical images.",
+      "highlights": [
+        "Advisor: Prof. Shawn C. Shadden",
+        "SeqSeg: Open-source tool for automated vascular reconstruction",
+        "MeshGrow: Open-source tool for simulation-ready mesh generation from medical images"
+      ]
+    },
+    {
+      "name": "Kerecis — Research and Development",
+      "position": "Research Internship",
+      "startDate": "2020",
+      "endDate": "2020",
+      "location": "Reykjavík, Iceland",
+      "summary": "",
+      "highlights": [
+        "Advisor: Prof. Sigurður Brynjólfsson"
+      ]
+    },
+    {
+      "name": "University of Iceland — Department of Medicine",
+      "position": "Undergraduate Research",
+      "startDate": "2019",
+      "endDate": "2019",
+      "location": "Reykjavík, Iceland",
+      "summary": "",
+      "highlights": [
+        "Advisor: Prof. Thórarinn Guðjónsson"
+      ]
     }
   ],
 
@@ -90,6 +144,7 @@
       "url": "https://shaddenlab.berkeley.edu/",
       "startDate": "2020",
       "endDate": "2025",
+      "location": "Berkeley, CA, USA",
       "summary": "Developed deep learning–based methods for automatic vascular model construction and trajectory-oriented vessel tracking in medical imaging. Integrated physics-based modeling and machine learning to enable patient-specific cardiovascular simulations.",
       "highlights": [
         "Developed SeqSeg: a deep learning framework for coronary artery segmentation",
@@ -104,6 +159,7 @@
       "url": "https://www.kerecis.com/",
       "startDate": "2020",
       "endDate": "2020",
+      "location": "Reykjavík, Iceland",
       "summary": "Worked on material property analysis for medical biomaterials.",
       "highlights": [
         "Collaborated on R&D for regenerative medical materials."
@@ -114,6 +170,7 @@
       "position": "Undergraduate Researcher",
       "startDate": "2019",
       "endDate": "2019",
+      "location": "Reykjavík, Iceland",
       "summary": "Developed computational models for new lung experimental technologies."
     }
   ],
@@ -142,60 +199,119 @@
 
   "service": [
     {
-      "position": "Reviewer for MICCAI Conference (Medical Image Computing and Computer Assisted Intervention)",
+      "position": "Reviewer for MICCAI (Medical Image Computing and Computer Assisted Intervention) Conference submissions",
+      "startDate": "2022",
+      "endDate": "2025",
+      "summary": "Academic service"
+    },
+    {
+      "position": "Co-organizer and instructor for SimVascular tutorials and workshops at international conferences",
+      "organization": "CMBBE 2025 and ASME SB3C 2025",
       "startDate": "2025",
       "endDate": "2025",
-      "summary": "Reviewed scientific papers in medical image analysis and AI for healthcare."
+      "summary": "Academic service"
     },
     {
-      "position": "Board Member and Vice President, SINE - Association of Icelandic Students Abroad",
+      "position": "Volunteer contributor to the SimVascular open-source community",
+      "startDate": "2022",
+      "endDate": "Present",
+      "summary": "Academic service — software development, documentation, and user support"
+    },
+    {
+      "position": "Member of departmental panels",
+      "organization": "University of California, Berkeley",
       "startDate": "2021",
       "endDate": "2025",
-      "summary": "Organized initiatives for Icelandic students abroad and represented the community in international education forums."
+      "summary": "Academic service — advising on curriculum and research initiatives"
     },
     {
-      "position": "Member, Departmental Panels, UC Berkeley Mechanical Engineering",
+      "position": "Board Member",
+      "organization": "SINE – Association of Icelandic Students Abroad",
       "startDate": "2021",
       "endDate": "2025",
-      "summary": "Contributed to departmental curriculum and research initiative discussions."
+      "summary": "Leadership and board roles"
     },
     {
-      "position": "Board Member, School of Engineering and Natural Sciences, University of Iceland",
+      "position": "Vice President",
+      "organization": "SINE – Association of Icelandic Students Abroad",
+      "startDate": "2022",
+      "endDate": "2023",
+      "summary": "Leadership and board roles"
+    },
+    {
+      "position": "University of Iceland Student Council",
       "startDate": "2018",
-      "endDate": "2019"
+      "endDate": "2019",
+      "summary": "Leadership and board roles"
     },
     {
-      "position": "Amnesty International Youth Council, Iceland",
+      "position": "Board Member, School of Engineering and Natural Sciences",
+      "organization": "University of Iceland",
+      "startDate": "2018",
+      "endDate": "2019",
+      "summary": "Leadership and board roles"
+    },
+    {
+      "position": "NORDTEK Student Board",
+      "startDate": "2018",
+      "endDate": "2019",
+      "summary": "Leadership and board roles"
+    },
+    {
+      "position": "Amnesty International Youth Council",
       "startDate": "2016",
-      "endDate": "2019"
+      "endDate": "2019",
+      "summary": "Outreach / advocacy"
+    },
+    {
+      "position": "Promotional and outreach work",
+      "organization": "University of Iceland",
+      "startDate": "2018",
+      "endDate": "2019",
+      "summary": "Outreach / advocacy"
     }
   ],
 
   "awards": [
     {
-      "title": "UC Berkeley Engineering Ph.D. Commencement Speaker",
+      "title": "UC Berkeley Engineering Ph.D. Commencement Speech",
       "date": "2025-05-01",
       "awarder": "UC Berkeley College of Engineering"
     },
     {
-      "title": "UC Berkeley Mechanical Engineering Department Scholarship",
+      "title": "UC Berkeley Mechanical Engineering Department Spring Scholarship",
       "date": "2025-03-01",
       "awarder": "University of California, Berkeley"
     },
     {
       "title": "Landsbankinn Graduate Scholarship",
-      "date": "2024-06-22",
-      "awarder": "Landsbankinn, Iceland"
-    },
-    {
-      "title": "UC Berkeley Summer Fellowship",
       "date": "2024-06-01",
-      "awarder": "UC Berkeley Mechanical Engineering Department"
+      "awarder": "Landsbankinn, Reykjavik, Iceland"
     },
     {
-      "title": "CVID Student Presenter Award",
+      "title": "UC Berkeley Mechanical Engineering Department Summer Fellowship",
+      "date": "2024-06-01",
+      "awarder": "University of California, Berkeley"
+    },
+    {
+      "title": "CVID Award, Student Presenter",
       "date": "2023-10-01",
       "awarder": "Cardiovascular Implant Durability Conference"
+    },
+    {
+      "title": "UC Berkeley Graduate Division Block Grant",
+      "date": "2023-01-01",
+      "awarder": "University of California, Berkeley"
+    },
+    {
+      "title": "Landsbankinn Graduate Scholarship",
+      "date": "2023-06-01",
+      "awarder": "Landsbankinn, Reykjavik, Iceland"
+    },
+    {
+      "title": "Hearts To Humanity Award",
+      "date": "2022-01-01",
+      "awarder": "Hearts To Humanity"
     },
     {
       "title": "Leif Eiriksson Fellowship",
@@ -203,8 +319,33 @@
       "awarder": "Leif Eiriksson Foundation"
     },
     {
-      "title": "Baccalaureate Commencement Speaker",
+      "title": "Boston University Fellowship",
+      "date": "2019-09-01",
+      "awarder": "Boston University"
+    },
+    {
+      "title": "Baccalaureate Commencement Speech",
       "date": "2019-06-01",
+      "awarder": "University of Iceland"
+    },
+    {
+      "title": "Scholarship to Attend Stanford University",
+      "date": "2018-09-01",
+      "awarder": "Stanford University"
+    },
+    {
+      "title": "Íslandsbanki Undergraduate Scholarship",
+      "date": "2018-01-01",
+      "awarder": "Íslandsbanki"
+    },
+    {
+      "title": "Landsbanki Undergraduate Scholarship",
+      "date": "2017-01-01",
+      "awarder": "Landsbanki"
+    },
+    {
+      "title": "University of Iceland Student Achievement & Incentive Fund",
+      "date": "2016-01-01",
       "awarder": "University of Iceland"
     }
   ],
