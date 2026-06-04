@@ -16,12 +16,12 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/blog/";
           },
-        },{id: "nav-projects",
-          title: "projects",
-          description: "A collection of past and current project.",
+        },{id: "nav-research",
+          title: "research",
+          description: "Research statement outlining past contributions, current work, and future directions in computational medicine, cardiovascular modeling, and AI-driven healthcare solutions.",
           section: "Navigation",
           handler: () => {
-            window.location.href = "/projects/";
+            window.location.href = "/research/";
           },
         },{id: "nav-publications",
           title: "publications",
@@ -44,6 +44,13 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/talks/";
           },
+        },{id: "nav-projects",
+          title: "projects",
+          description: "A collection of past and current project.",
+          section: "Navigation",
+          handler: () => {
+            window.location.href = "/projects/";
+          },
         },{id: "nav-teaching",
           title: "teaching",
           description: "",
@@ -65,7 +72,29 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/contact/";
           },
-        },{id: "post-making-a-vascular-model-repository-design-decisions-metadata-and-workflows",
+        },{id: "post-",
+        
+          title: "",
+        
+        description: "",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/2026-01-20-surviving-first-year-grad-school/";
+          
+        },
+      },{id: "post-a-guide-to-applying-for-phd-programs-and-choosing-an-advisor-project-and-program",
+        
+          title: "A Guide to Applying for PhD Programs and Choosing an Advisor, Project, and...",
+        
+        description: "Practical advice on navigating the PhD application process, from selecting programs to choosing advisors and research projects",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/phd-application-guide/";
+          
+        },
+      },{id: "post-making-a-vascular-model-repository-design-decisions-metadata-and-workflows",
         
           title: "Making a Vascular Model Repository — Design Decisions, Metadata, and Workflows",
         
@@ -259,6 +288,9 @@ ninja.data = [{
           description: "",
           section: "News",},{id: "news-i-had-the-incredible-opportunity-to-attend-the-miccai-2025-conference-held-in-daejeon-south-korea-from-september-23-27-2025-the-field-of-medical-imaging-and-ai-is-rapidly-evolving-and-it-was-inspiring-to-see-the-latest-research-and-innovations-presented-by-experts-from-around-the-world",
           title: 'I had the incredible opportunity to attend the MICCAI 2025 conference held in...',
+          description: "",
+          section: "News",},{id: "news-abstract-sub-voxel-vascular-segmentation-from-coarse-resolution-medical-imaging-has-been-accepted-for-oral-presentation-at-the-10th-world-congress-of-biomechanics-wcb-2026-in-vancouver-canada-july-11-15-2026-session-oa144-image-based-cardiovascular-biomechanics-july-14-2026",
+          title: 'Abstract “Sub-Voxel Vascular Segmentation from Coarse Resolution Medical Imaging” has been accepted for...',
           description: "",
           section: "News",},{id: "projects-project-1",
           title: 'project 1',
