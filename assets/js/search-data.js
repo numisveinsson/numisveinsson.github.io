@@ -65,15 +65,15 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/contact/";
           },
-        },{id: "post-",
+        },{id: "post-surviving-your-first-year-of-graduate-school-lessons-learned",
         
-          title: "",
+          title: "Surviving Your First Year of Graduate School: Lessons Learned",
         
-        description: "",
+        description: "Practical advice for navigating your first year of graduate school, from managing coursework and research to maintaining wellbeing and building community",
         section: "Posts",
         handler: () => {
           
-            window.location.href = "/blog/2026/2026-01-20-surviving-first-year-grad-school/";
+            window.location.href = "/blog/2026/surviving-first-year-grad-school/";
           
         },
       },{id: "post-a-guide-to-applying-for-phd-programs-and-choosing-an-advisor-project-and-program",
