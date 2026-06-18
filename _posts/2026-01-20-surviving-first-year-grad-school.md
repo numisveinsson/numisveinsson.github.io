@@ -1,6 +1,6 @@
 ---
 layout: distill
-title: Surviving Your First Year of Graduate School: Lessons Learned
+title: "Surviving Your First Year of Graduate School: Lessons Learned"
 description: Practical advice for navigating your first year of graduate school, from managing coursework and research to maintaining wellbeing and building community
 categories: graduate-school
 giscus_comments: true
@@ -22,7 +22,7 @@ authors:
 #     jekyll-toc plugin (https://github.com/toshimaru/jekyll-toc).
 toc:
   - name: Introduction
-  - name: Think Slow, Act Fast: The Power of Literature Search
+  - name: "Think Slow, Act Fast: The Power of Literature Search"
   - name: Don't Get Overwhelmed by Research Progress
   - name: Focus on Coursework and Think Big Picture
   - name: Prioritize Your Health and Wellbeing
