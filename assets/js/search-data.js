@@ -76,6 +76,17 @@ ninja.data = [{
             window.location.href = "/blog/2026/blurry-ct-to-simulation-ready-artery/";
           
         },
+      },{id: "post-joining-the-predictive-modeling-in-medicine-lab-pmml-at-ut-austin",
+        
+          title: "Joining the Predictive Modeling in Medicine Lab (PMML) at UT Austin",
+        
+        description: "I joined Prof. Charley Taylor&#39;s Predictive Modeling in Medicine Lab, part of the Center for Computational Medicine at the Oden Institute and Dell Medical School, UT Austin.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/joining-pmml-taylor-lab/";
+          
+        },
       },{id: "post-surviving-your-first-year-of-graduate-school-lessons-learned",
         
           title: "Surviving Your First Year of Graduate School: Lessons Learned",
@@ -288,7 +299,12 @@ ninja.data = [{
           section: "News",},{id: "news-i-had-the-incredible-opportunity-to-attend-the-miccai-2025-conference-held-in-daejeon-south-korea-from-september-23-27-2025-the-field-of-medical-imaging-and-ai-is-rapidly-evolving-and-it-was-inspiring-to-see-the-latest-research-and-innovations-presented-by-experts-from-around-the-world",
           title: 'I had the incredible opportunity to attend the MICCAI 2025 conference held in...',
           description: "",
-          section: "News",},{id: "news-abstract-sub-voxel-vascular-segmentation-from-coarse-resolution-medical-imaging-has-been-accepted-for-oral-presentation-at-the-10th-world-congress-of-biomechanics-wcb-2026-in-vancouver-canada-july-11-15-2026-session-oa144-image-based-cardiovascular-biomechanics-july-14-2026",
+          section: "News",},{id: "news-joined-the-predictive-modeling-in-medicine-lab-pmml-at-ut-austin",
+          title: 'Joined the Predictive Modeling in Medicine Lab (PMML) at UT Austin',
+          description: "",
+          section: "News",handler: () => {
+              window.location.href = "/news/25_10_25_pmml/";
+            },},{id: "news-abstract-sub-voxel-vascular-segmentation-from-coarse-resolution-medical-imaging-has-been-accepted-for-oral-presentation-at-the-10th-world-congress-of-biomechanics-wcb-2026-in-vancouver-canada-july-11-15-2026-session-oa144-image-based-cardiovascular-biomechanics-july-14-2026",
           title: 'Abstract “Sub-Voxel Vascular Segmentation from Coarse Resolution Medical Imaging” has been accepted for...',
           description: "",
           section: "News",},{id: "news-abstract-scalable-automation-of-cardiovascular-geometric-modeling-for-patient-specific-simulation-has-been-accepted-for-oral-presentation-at-wccm-eccomas-2026-in-munich-germany-july-19-24-2026-mini-symposium-ms120-recent-advances-in-computational-methods-for-the-cardiovascular-system",
