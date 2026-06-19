@@ -1,3 +1,15 @@
+- title: "Scalable Automation of Cardiovascular Geometric Modeling for Patient-Specific Simulation"
+  venue: "WCCM-ECCOMAS 2026 (World Congress on Computational Mechanics & ECCOMAS Congress)"
+  location: "Munich, Germany"
+  date: "July 2026"
+  description: "Oral presentation in mini-symposium MS120 — Recent Advances in Computational Methods for the Cardiovascular System."
+
+- title: "Sub-Voxel Vascular Segmentation from Coarse Resolution Medical Imaging"
+  venue: "WCB 2026 (10th World Congress of Biomechanics)"
+  location: "Vancouver, Canada"
+  date: "July 2026"
+  description: "Oral presentation in session OA144 — Image Based Cardiovascular Biomechanics."
+
 - title: "SimVascular Workshop"
   venue: "CMBBE 2025 (Computer Methods in Biomechanics and Biomedical Engineering)"
   location: "Barcelona, Spain"
