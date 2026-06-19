@@ -12,7 +12,7 @@ authors:
   - name: Numi Sveinsson Cepero
     url: numisveinsson.com
     affiliations:
-      name: UC Berkeley
+      name: Oden Institute, UT Austin
 
 # Optionally, you can add a table of contents to your post.
 # NOTES:
@@ -55,6 +55,15 @@ For more than 20 years, the workflow for turning a medical scan (a CT or MR imag
 Every one of these steps depends on a trained expert clicking through the image slice by slice. It is time-consuming, costly, and introduces user bias. For large studies—or any clinical application where results are needed quickly—this manual model-building has remained the primary bottleneck.
 
 For my PhD at UC Berkeley, working with Prof. Shawn Shadden, I wanted to automate it. The result is a method we call **SeqSeg** (Sequential Segmentation).
+
+<div class="row justify-content-sm-center">
+    <div class="col-sm-12 mt-3 mt-md-0">
+        {% include figure.html path="assets/img/ct_2_model_post/manual_vs_DL_modeling_compare.png" title="Manual SimVascular workflow versus automated SeqSeg" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<div class="caption">
+    Two ways to build the same vascular model. <strong>Top:</strong> the traditional manual workflow in SimVascular—placing path points, segmenting the lumen along each path, and lofting them into a model—where each step demands expert time. <strong>Bottom:</strong> SeqSeg, which steps through local subvolumes automatically from a single seed point. Because the manual approach is so time-consuming and costly, modelers often stop at the major vessels; SeqSeg's automation lets it capture many more of the smaller branches.
+</div>
 
 ## The Core Idea: Look Locally, Build Globally
 
