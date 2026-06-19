@@ -10,3 +10,7 @@ github_repos:
     description: Sequence segmentation tools for medical imaging and vascular analysis
   - name: numisveinsson/vascular-segment-sampler
     description: Blood vessel image data processing functionality for vascular segmentation and analysis
+  - name: ArjunNarayanan/LinFlo-Net
+    description: Deep learning package for diffeomorphic whole heart mesh generation, producing simulation-ready 3D heart meshes from biomedical images
+  - name: BryannGan/MIROS
+    description: Medical image to patient-specific reduced-order hemodynamic model simulation in minutes, integrating SeqSeg segmentation with SimVascular 1D/0D solvers
