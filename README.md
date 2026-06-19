@@ -12,16 +12,16 @@ The site is built with [Jekyll](https://jekyllrb.com/) on the [al-folio](https:/
 
 ## Repository structure
 
-| Path | Purpose |
-|------|---------|
-| `_pages/` | Static pages (about, blog, CV, research, contact, etc.) |
-| `_posts/` | Blog posts |
-| `_projects/` | Projects collection |
-| `_news/` | News / announcements |
-| `_bibliography/papers.bib` | Publications (BibTeX, rendered via jekyll-scholar) |
-| `_data/` | Site data (talks, socials, repositories) |
-| `assets/` | Images, PDFs, CSS, JS, and `json/resume.json` (CV source) |
-| `_layouts/`, `_includes/`, `_sass/` | Theme templates and styles |
+| Path                                | Purpose                                                   |
+| ----------------------------------- | --------------------------------------------------------- |
+| `_pages/`                           | Static pages (about, blog, CV, research, contact, etc.)   |
+| `_posts/`                           | Blog posts                                                |
+| `_projects/`                        | Projects collection                                       |
+| `_news/`                            | News / announcements                                      |
+| `_bibliography/papers.bib`          | Publications (BibTeX, rendered via jekyll-scholar)        |
+| `_data/`                            | Site data (talks, socials, repositories)                  |
+| `assets/`                           | Images, PDFs, CSS, JS, and `json/resume.json` (CV source) |
+| `_layouts/`, `_includes/`, `_sass/` | Theme templates and styles                                |
 
 ## Local development
 
