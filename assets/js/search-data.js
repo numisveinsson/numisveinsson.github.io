@@ -91,7 +91,7 @@ ninja.data = [{
         
           title: "Surviving Your First Year of Graduate School: Lessons Learned",
         
-        description: "Practical advice for navigating your first year of graduate school, from managing coursework and research to maintaining wellbeing and building community",
+        description: "Looking back on my PhD, here is the practical advice I wish someone had given me before my first year—on research, coursework, wellbeing, and community.",
         section: "Posts",
         handler: () => {
           
