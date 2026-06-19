@@ -65,7 +65,18 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/contact/";
           },
-        },{id: "post-surviving-your-first-year-of-graduate-school-lessons-learned",
+        },{id: "post-how-do-you-turn-a-blurry-ct-scan-into-a-simulation-ready-artery",
+        
+          title: "How Do You Turn a Blurry CT Scan into a Simulation-Ready Artery?",
+        
+        description: "A plain-language explainer of SeqSeg, an automated method for building patient-specific vascular models from medical images",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/blurry-ct-to-simulation-ready-artery/";
+          
+        },
+      },{id: "post-surviving-your-first-year-of-graduate-school-lessons-learned",
         
           title: "Surviving Your First Year of Graduate School: Lessons Learned",
         
