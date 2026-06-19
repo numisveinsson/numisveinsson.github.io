@@ -288,52 +288,7 @@ ninja.data = [{
           section: "News",},{id: "news-abstract-scalable-automation-of-cardiovascular-geometric-modeling-for-patient-specific-simulation-has-been-accepted-for-oral-presentation-at-wccm-eccomas-2026-in-munich-germany-july-19-24-2026-mini-symposium-ms120-recent-advances-in-computational-methods-for-the-cardiovascular-system",
           title: 'Abstract “Scalable Automation of Cardiovascular Geometric Modeling for Patient-Specific Simulation” has been accepted...',
           description: "",
-          section: "News",},{id: "projects-project-1",
-          title: 'project 1',
-          description: "with background image",
-          section: "Projects",handler: () => {
-              window.location.href = "/projects/1_project/";
-            },},{id: "projects-project-2",
-          title: 'project 2',
-          description: "a project with a background image and giscus comments",
-          section: "Projects",handler: () => {
-              window.location.href = "/projects/2_project/";
-            },},{id: "projects-project-3-with-very-long-name",
-          title: 'project 3 with very long name',
-          description: "a project that redirects to another website",
-          section: "Projects",handler: () => {
-              window.location.href = "/projects/3_project/";
-            },},{id: "projects-project-4",
-          title: 'project 4',
-          description: "another without an image",
-          section: "Projects",handler: () => {
-              window.location.href = "/projects/4_project/";
-            },},{id: "projects-project-5",
-          title: 'project 5',
-          description: "a project with a background image",
-          section: "Projects",handler: () => {
-              window.location.href = "/projects/5_project/";
-            },},{id: "projects-project-6",
-          title: 'project 6',
-          description: "a project with no image",
-          section: "Projects",handler: () => {
-              window.location.href = "/projects/6_project/";
-            },},{id: "projects-project-7",
-          title: 'project 7',
-          description: "with background image",
-          section: "Projects",handler: () => {
-              window.location.href = "/projects/7_project/";
-            },},{id: "projects-project-8",
-          title: 'project 8',
-          description: "an other project with a background image and giscus comments",
-          section: "Projects",handler: () => {
-              window.location.href = "/projects/8_project/";
-            },},{id: "projects-project-9",
-          title: 'project 9',
-          description: "another project with an image 🎉",
-          section: "Projects",handler: () => {
-              window.location.href = "/projects/9_project/";
-            },},{id: "projects-automatic-vessel-tracking",
+          section: "News",},{id: "projects-automatic-vessel-tracking",
           title: 'Automatic Vessel Tracking',
           description: "using machine learning to algorithmically track blood vessels without manual input",
           section: "Projects",handler: () => {
@@ -348,8 +303,8 @@ ninja.data = [{
           description: "understanding blood pressure waveforms from wearable devices",
           section: "Projects",handler: () => {
               window.location.href = "/projects/proj_bpmon/";
-            },},{id: "projects-combinging-vascular-and-cardiac-models-into-one",
-          title: 'Combinging Vascular and Cardiac Models into One',
+            },},{id: "projects-combining-vascular-and-cardiac-models-into-one",
+          title: 'Combining Vascular and Cardiac Models into One',
           description: "combining the models of the heart and the blood vessels into a single model for patient-specific simulations",
           section: "Projects",handler: () => {
               window.location.href = "/projects/proj_cardiac_combo/";
@@ -395,11 +350,11 @@ ninja.data = [{
               window.location.href = "/projects/proj_rom/";
             },},{id: "projects-simvascular",
           title: 'SimVascular',
-          description: "a open-source software for patient-specific blood flow simulations",
+          description: "an open-source software for patient-specific blood flow simulations",
           section: "Projects",handler: () => {
               window.location.href = "/projects/proj_simvasc/";
-            },},{id: "projects-transfomers-for-tracking",
-          title: 'Transfomers for Tracking',
+            },},{id: "projects-transformers-for-tracking",
+          title: 'Transformers for Tracking',
           description: "Utilizing transformer neural network architecture to exploit the sequential nature of blood vessel tracking",
           section: "Projects",handler: () => {
               window.location.href = "/projects/proj_trans_tracing/";
@@ -415,7 +370,7 @@ ninja.data = [{
               window.location.href = "/projects/proj_vascsegsim/";
             },},{id: "projects-vmr",
           title: 'VMR',
-          description: "a open-access dataset of vascular models with simulation results",
+          description: "an open-access dataset of vascular models with simulation results",
           section: "Projects",handler: () => {
               window.location.href = "/projects/proj_vmr/";
             },},{
