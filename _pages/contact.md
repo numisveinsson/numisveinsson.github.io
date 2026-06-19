@@ -18,31 +18,12 @@ Please fill out the form below, and I'll get back to you as soon as possible.
 ## Contact Form
 
 <div class="contact-form-container">
-  <!-- 
-    SETUP INSTRUCTIONS:
-    1. Go to https://formspree.io/ and create a free account
-    2. Create a new form and copy your form ID (format: xxxxxxxx)
-    3. Replace "YOUR_FORM_ID" in the action URL below with your actual form ID
-    4. Configure email notifications in Formspree dashboard:
-       - Go to your form settings in Formspree dashboard
-       - Set the recipient email address (default: your Formspree account email)
-       - Enable email notifications
-       - Customize email template if desired
-    5. The form will work immediately after setup!
-    
-    EMAIL NOTIFICATION FEATURES:
-    - Reply-to is automatically set to the submitter's email (configured below)
-    - You can add CC recipients by uncommenting the _cc field below
-    - Email subject line is customized to include site name
-    - All form fields are included in the email body
-  -->
   <form 
     id="contact-form" 
     action="https://formspree.io/f/xzdznyqv" 
     method="POST"
     class="contact-form"
   >
-    <!-- Name Field -->
     <div class="form-group">
       <label for="name">Name <span class="required">*</span></label>
       <input 
@@ -50,12 +31,11 @@ Please fill out the form below, and I'll get back to you as soon as possible.
         id="name" 
         name="name" 
         class="form-control" 
-        placeholder="Your full name"
+        placeholder="Your name"
         required
       >
     </div>
 
-    <!-- Email Field -->
     <div class="form-group">
       <label for="email">Email <span class="required">*</span></label>
       <input
@@ -68,100 +48,26 @@ Please fill out the form below, and I'll get back to you as soon as possible.
       >
     </div>
 
-    <!-- Institution/Organization (Optional) -->
-    <div class="form-group">
-      <label for="institution">Institution / Organization</label>
-      <input
-        type="text"
-        id="institution"
-        name="institution"
-        class="form-control"
-        placeholder="University, Company, or Organization (optional)"
-      >
-    </div>
-
-    <!-- Inquiry Type -->
-    <div class="form-group">
-      <label for="inquiry_type">Type of Inquiry <span class="required">*</span></label>
-      <select
-        id="inquiry_type"
-        name="inquiry_type"
-        class="form-control"
-        required
-      >
-        <option value="">Please select...</option>
-        <option value="research-collaboration">Research Collaboration</option>
-        <option value="speaking-engagement">Speaking Engagement / Invited Talk</option>
-        <option value="student-inquiry">Student Inquiry (Graduate/Postdoc Opportunities)</option>
-        <option value="media-outreach">Media / Science Communication</option>
-        <option value="open-source">Open Source / Software Collaboration</option>
-        <option value="general-question">General Question</option>
-        <option value="other">Other</option>
-      </select>
-    </div>
-
-    <!-- Subject -->
-    <div class="form-group">
-      <label for="subject">Subject <span class="required">*</span></label>
-      <input
-        type="text"
-        id="subject"
-        name="subject"
-        class="form-control"
-        placeholder="Brief subject line"
-        required
-      >
-    </div>
-
-    <!-- Message -->
     <div class="form-group">
       <label for="message">Message <span class="required">*</span></label>
       <textarea
         id="message"
         name="message"
         class="form-control"
-        rows="8"
-        placeholder="Please provide details about your inquiry, including any relevant background information, project descriptions, or specific questions..."
+        rows="6"
+        placeholder="Your message..."
         required
       ></textarea>
-    </div>
-
-    <!-- Website/URL (Optional) -->
-    <div class="form-group">
-      <label for="website">Website / Relevant Link (Optional)</label>
-      <input
-        type="url"
-        id="website"
-        name="website"
-        class="form-control"
-        placeholder="https://example.com"
-      >
     </div>
 
     <!-- Honeypot for spam protection -->
     <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
 
-    <!-- Formspree configuration -->
     <input type="hidden" name="_subject" value="New Contact Form Submission from numisveinsson.com">
     <input type="hidden" name="_next" value="{{ site.url }}/contact/?submitted=true">
     <input type="hidden" name="_format" value="plain">
-
-    <!-- Email notification configuration -->
-    <!--
-      EMAIL NOTIFICATION SETTINGS:
-      - Primary recipient: Set in Formspree dashboard (Settings > Email Notifications)
-      - Reply-to: Automatically set to submitter's email (configured via JavaScript)
-      - CC: Uncomment line below to CC additional recipients
-      - Override recipient: Uncomment _to field to override dashboard default
-    -->
-    <!-- Set reply-to to the submitter's email for easy responses -->
     <input type="hidden" name="_replyto" value="" id="replyto-field">
-    <!-- CC additional email addresses (comma-separated) - uncomment and add if needed -->
-    <!-- <input type="hidden" name="_cc" value="colleague@example.com,team@example.com"> -->
-    <!-- Override recipient email (if different from Formspree dashboard default) -->
-    <!-- <input type="hidden" name="_to" value="numi@utexas.edu"> -->
 
-    <!-- Submit Button -->
     <div class="form-group">
       <button type="submit" class="btn btn-primary btn-submit" id="submit-btn">
         <span class="btn-text">Send Message</span>
