@@ -28,7 +28,6 @@ toc:
   - name: The Application Process
   - name: Making the Final Decision
   - name: Conclusion
-
 ---
 
 ## Introduction
@@ -100,6 +99,7 @@ Different advisors have different mentorship styles:
 - **Conflict resolution**: How are conflicts handled? What happens when things go wrong?
 
 **Questions to ask current/former students:**
+
 - "What's the best thing about working with [advisor name]?"
 - "What's the most challenging aspect?"
 - "How often do you meet with the advisor? What are those meetings like?"
@@ -152,22 +152,26 @@ Different advisors have different mentorship styles:
 ### Preparing Your Application
 
 **Statement of Purpose (SOP)**:
+
 - Clearly articulate your research interests and how they align with the program and specific faculty
 - Mention specific professors you'd like to work with and why
 - Discuss your relevant experience and how it prepares you for PhD research
 - Be specific and genuine—avoid generic statements
 
 **Letters of Recommendation**:
+
 - Choose recommenders who know you well and can speak to your research potential
 - Provide them with your CV, SOP, and information about the programs you're applying to
 - Give them plenty of time (at least a month)
 
 **CV/Resume**:
+
 - Highlight research experience, publications, presentations, and relevant coursework
 - Include technical skills and any relevant projects
 - Keep it concise and well-formatted
 
 **Transcripts and Test Scores**:
+
 - Most programs require GRE scores (though this is changing), and some require subject tests
 - Check each program's requirements carefully
 - Strong grades in relevant courses matter, but research experience often matters more
@@ -200,6 +204,7 @@ Once you receive offers, consider:
 ### Compare Your Options
 
 Create a comparison matrix considering:
+
 - Program reputation and resources
 - Advisor fit and mentorship style
 - Research project interest and feasibility
@@ -233,5 +238,4 @@ Finally, remember that your PhD is a journey, and your interests and goals may e
 
 ---
 
-*Have questions or want to share your own experience? Feel free to reach out or leave a comment below.*
-
+_Have questions or want to share your own experience? Feel free to reach out or leave a comment below._

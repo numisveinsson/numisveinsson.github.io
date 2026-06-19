@@ -25,7 +25,6 @@ toc:
   - name: Data Preprocessing (for Training)
   - name: Training
   - name: Inference
-
 ---
 
 ## 1. Data Preparation and Structure
@@ -33,12 +32,14 @@ toc:
 The first step in using [`SeqSeg`](https://github.com/numisveinsson/SeqSeg/) is to preprocess your data.
 
 We require the following data:
+
 - A directory containing the images named `images`
 - A directory containing the masks named `truths`
 - A directory containing the centerlines named `centerlines`
   - as `.vtp` files
 
 A few things to note:
+
 - The images and masks and centerlines should have the same name
 - If you need to extract centerlines from masks, you can use the `SeqSeg/centerlines.py` script, or use VMTK or other tools
   - Centerlines must contain radius information in the `.vtp` file
@@ -51,6 +52,7 @@ A few things to note:
 The next step is to preprocess the data for training. SeqSeg requires a model trained on local patches, so we need to extract patches from the images and masks based on centerlines.
 
 The repository for this is [`BloodVesselML3D`](https://github.com/numisveinsson/BloodVesselML3D) and the script is `gather_sampling_data_parallel.py`. This requires the following arguments:
+
 - `config` - the configuration file for the dataset, which you must change to match your data
 
 Next, we must change the naming structure to match nnU-Net. This is done with the `dataset_dirs/create_nnunet.py` script. The new data can be output anywhere, but we recommend directly into the nnU-Net Raw directory.
@@ -60,10 +62,12 @@ Next, we must change the naming structure to match nnU-Net. This is done with th
 The next step is to train the model. This is done with the specific nnU-Net commands, which are detailed in the [`nnU-Net`](https://github.com/MIC-DKFZ/nnUNet) repository.
 
 This requires two commands (see [documentation](https://github.com/MIC-DKFZ/nnUNet/blob/master/documentation/how_to_use_nnunet.md) for more details):
+
 - `prepocessing` command
 - `train` command
 
 You can train:
+
 - 2D models
 - 3D low resolution models
 - 3D full resolution models

@@ -34,6 +34,7 @@ $$
 $$
 
 where:
+
 - $$u(\mathbf{x}, t)$$ is the concentration or density of the diffusing quantity at position $$ \mathbf{x} $$ and time $$t$$,
 - $$D$$ is the diffusion coefficient, and
 - $$\nabla^2$$ is the Laplacian operator, representing the divergence of the gradient.
@@ -62,7 +63,7 @@ The time-dependent diffusion equation is commonly used in various fields such as
 
 ### Finite Element Method and FEniCS
 
-The Finite Element Method (FEM) is a numerical technique used for solving partial differential equations (PDEs) by dividing the domain into smaller, simpler subdomains called finite elements. In FEM, the solution of the PDE is approximated by piecewise polynomial functions defined over these finite elements. The method involves discretizing the domain, forming a system of algebraic equations, and then solving them to obtain the approximate solution. 
+The Finite Element Method (FEM) is a numerical technique used for solving partial differential equations (PDEs) by dividing the domain into smaller, simpler subdomains called finite elements. In FEM, the solution of the PDE is approximated by piecewise polynomial functions defined over these finite elements. The method involves discretizing the domain, forming a system of algebraic equations, and then solving them to obtain the approximate solution.
 
 One popular tool for implementing FEM is the FEniCS Project. FEniCS is an open-source software package that provides a flexible platform for solving complex PDEs using automated finite element methods. It offers a high-level Python interface for defining and solving variational problems, allowing users to express their problems in a concise and natural mathematical language. FEniCS automates many of the tasks involved in FEM implementation, such as mesh generation, assembling stiffness matrices and load vectors, and solving linear and nonlinear systems of equations. Additionally, FEniCS comes with built-in support for parallel computing, making it suitable for solving large-scale problems efficiently.
 

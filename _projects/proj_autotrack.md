@@ -16,7 +16,6 @@ toc:
 
 <img src="../../assets/img/red-blood-cells.jpg" alt="Image." width="600"/>
 
-
 ## Introduction
 
 The tracking of blood vessels in medical images is a crucial step in the construction of patient-specific geometric models for hemodynamic simulations. The current pipeline for vessel tracking is labor-intensive and time-consuming, requiring manual intervention at multiple stages. Our research aims to automate this process by leveraging machine learning techniques to algorithmically track blood vessels, thereby streamlining the model construction pipeline and reducing the burden on researchers and clinicians.

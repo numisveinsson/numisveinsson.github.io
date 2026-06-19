@@ -27,14 +27,22 @@ toc:
   - name: What Surprised Me
   - name: Why This Matters
   - name: Try It Yourself
-
 ---
 
 ## The Problem
 
-Doctors and researchers increasingly want to simulate blood flow inside a *specific* patient's arteries—to plan a treatment, test a medical device, or understand how a disease is progressing. These patient-specific simulations have become a critical part of diagnosing, treating, and understanding cardiovascular disease.
+Doctors and researchers increasingly want to simulate blood flow inside a _specific_ patient's arteries—to plan a treatment, test a medical device, or understand how a disease is progressing. These patient-specific simulations have become a critical part of diagnosing, treating, and understanding cardiovascular disease.
 
 But before you can simulate anything, you need an accurate, three-dimensional model of that person's blood vessels. And building one turns out to be one of the slowest, most manual steps in the entire process.
+
+<div class="row justify-content-sm-center">
+    <div class="col-sm-12 mt-3 mt-md-0">
+        {% include figure.html path="assets/img/ct_2_model_post/p-specific computational modeling-geometry_input.png" title="From medical image to patient-specific simulation" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<div class="caption">
+    The patient-specific modeling pipeline for a coronary artery model: a medical image scan is converted into a 3D geometric model, which then becomes the computational domain for a patient-specific blood flow simulation. The middle step—turning the scan into geometry—is the manual bottleneck SeqSeg aims to automate.
+</div>
 
 ## The Bottleneck Nobody Talks About
 
@@ -91,7 +99,7 @@ There is still plenty to improve. SeqSeg relies on accurately capturing the root
 
 ## Try It Yourself
 
-SeqSeg is published, open access, in *Annals of Biomedical Engineering*:
+SeqSeg is published, open access, in _Annals of Biomedical Engineering_:
 
 - **Paper:** [SeqSeg: Learning Local Segments for Automatic Vascular Model Construction](https://link.springer.com/article/10.1007/s10439-024-03611-z)
 - **Code:** [github.com/numisveinsson/SeqSeg](https://github.com/numisveinsson/SeqSeg)
@@ -101,4 +109,4 @@ If you want a hands-on walkthrough of setting up SeqSeg—from preparing a new d
 
 ---
 
-*Working on automation in medical imaging or cardiovascular modeling? I would love to hear where you think the biggest remaining bottlenecks are—feel free to reach out or leave a comment below.*
+_Working on automation in medical imaging or cardiovascular modeling? I would love to hear where you think the biggest remaining bottlenecks are—feel free to reach out or leave a comment below._

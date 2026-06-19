@@ -4,15 +4,14 @@
 
 title: blank # the website title (if blank, full name will be used instead)
 first_name: Numi # your first name
-middle_name: 
+middle_name:
 last_name: Sveinsson Cepero
 email: numisveinsson@gmail.com
 description: > # the ">" symbol means to ignore newlines until "footer_text:"
   A simple, whitespace theme for academics. Based on [*folio](https://github.com/bogoli/-folio) design.
 footer_text: >
   Hosted by <a href="https://pages.github.com/" target="_blank">GitHub Pages</a>.
-keywords: jekyll, jekyll-theme, academic-website, portfolio-website  # add your own keywords or leave empty
-
+keywords: jekyll, jekyll-theme, academic-website, portfolio-website # add your own keywords or leave empty
 lang: en # the language of your site (for example: en, fr, cn, ru, etc.)
 icon: icon.png # the emoji used as the favicon (alternatively, provide image name in /assets/img/)
 
@@ -255,14 +254,13 @@ jekyll-archives:
     enabled: [year, tags, categories] # enables year, tag and category archives (remove if you need to disable one of them).
 
 display_tags: #[] # these tags will be displayed on the front page of your blog
-display_categories: ['general', 'python', 'data-science'] # these categories will be displayed on the front page of your blog
+display_categories: ["general", "python", "data-science"] # these categories will be displayed on the front page of your blog
 
 # -----------------------------------------------------------------------------
 # Jekyll Scholar
 # -----------------------------------------------------------------------------
 
 scholar:
-
   last_name: [Sveinsson Cepero]
   first_name: [Numi]
 

@@ -10,14 +10,15 @@ nav_order: 5
 ## Graduate Courses
 
 ### Introduction to Finite Element Method
-- **Institution**: University of California, Berkeley  
-- **Department**: Mechanical Engineering  
-- **Year**: Fall 2024  
-- **Role**: Graduate Student Instructor (GSI)  
-- **Instructor**: [Prof. Shawn C. Shadden](https://shaddenlab.berkeley.edu)  
-- **Location**: Berkeley, CA, USA  
-- **Responsibilities**: 
-  - Delivered two full guest lectures on *Linear Solvers*
+
+- **Institution**: University of California, Berkeley
+- **Department**: Mechanical Engineering
+- **Year**: Fall 2024
+- **Role**: Graduate Student Instructor (GSI)
+- **Instructor**: [Prof. Shawn C. Shadden](https://shaddenlab.berkeley.edu)
+- **Location**: Berkeley, CA, USA
+- **Responsibilities**:
+  - Delivered two full guest lectures on _Linear Solvers_
   - Chose and organized material for weekly discussion sections
   - Led weekly discussion sections
   - Held office hours
@@ -53,13 +54,14 @@ The course received strong student evaluations, with scores above the department
 ## Undergraduate Courses
 
 ### Numerical Analysis
-- **Institution**: University of Iceland  
-- **Department**: Department of Physical Sciences  
-- **Year**: 2019  
-- **Role**: Undergraduate Teaching Assistant  
-- **Instructor**: Prof. Sigurður Freyr Hafstein  
-- **Location**: Reykjavík, Iceland  
-- **Responsibilities**: 
+
+- **Institution**: University of Iceland
+- **Department**: Department of Physical Sciences
+- **Year**: 2019
+- **Role**: Undergraduate Teaching Assistant
+- **Instructor**: Prof. Sigurður Freyr Hafstein
+- **Location**: Reykjavík, Iceland
+- **Responsibilities**:
   - Led weekly discussion sections
   - Held office hours
   - Graded assignments and exams
@@ -67,13 +69,14 @@ The course received strong student evaluations, with scores above the department
 ---
 
 ### Differential Equations and Complex Analysis
-- **Institution**: University of Iceland  
-- **Department**: Department of Physical Sciences  
-- **Year**: 2018  
-- **Role**: Undergraduate Teaching Assistant  
-- **Instructor**: Prof. Sigurður Örn Stefánsson  
-- **Location**: Reykjavík, Iceland  
-- **Responsibilities**: 
+
+- **Institution**: University of Iceland
+- **Department**: Department of Physical Sciences
+- **Year**: 2018
+- **Role**: Undergraduate Teaching Assistant
+- **Instructor**: Prof. Sigurður Örn Stefánsson
+- **Location**: Reykjavík, Iceland
+- **Responsibilities**:
   - Led weekly discussion sections
   - Held office hours
   - Graded assignments and exams
@@ -82,10 +85,8 @@ The course received strong student evaluations, with scores above the department
 
 ## Summary
 
-| Course | Institution | Year | Role | Level |
-|--------|-------------|------|------|-------|
-| Introduction to Finite Element Method | UC Berkeley | 2024 | Graduate TA | Graduate |
-| Numerical Analysis | University of Iceland | 2019 | Undergraduate TA | Undergraduate |
+| Course                                      | Institution           | Year | Role             | Level         |
+| ------------------------------------------- | --------------------- | ---- | ---------------- | ------------- |
+| Introduction to Finite Element Method       | UC Berkeley           | 2024 | Graduate TA      | Graduate      |
+| Numerical Analysis                          | University of Iceland | 2019 | Undergraduate TA | Undergraduate |
 | Differential Equations and Complex Analysis | University of Iceland | 2018 | Undergraduate TA | Undergraduate |
-
-

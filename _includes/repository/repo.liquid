@@ -4,7 +4,7 @@
   {% assign repo_description = include.repository.description %}
 {% else %}
   {% assign repo_name = include.repository %}
-  {% assign repo_description = "" %}
+  {% assign repo_description = '' %}
 {% endif %}
 
 {% assign repo_url = repo_name | split: '/' %}
@@ -16,7 +16,12 @@
 
 <div class="repo p-2">
   <a href="https://github.com/{{ repo_name }}" class="repo-card-link" style="text-decoration: none; display: block;">
-    <div class="repo-card" style="padding: 1.5rem; background: var(--global-card-bg-color); border-radius: 8px; border: 1px solid var(--global-divider-color); transition: transform 0.2s, box-shadow 0.2s; height: 100%;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 8px rgba(0,0,0,0.1)';" onmouseout="this.style.transform=''; this.style.boxShadow='';">
+    <div
+      class="repo-card"
+      style="padding: 1.5rem; background: var(--global-card-bg-color); border-radius: 8px; border: 1px solid var(--global-divider-color); transition: transform 0.2s, box-shadow 0.2s; height: 100%;"
+      onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 8px rgba(0,0,0,0.1)';"
+      onmouseout="this.style.transform=''; this.style.boxShadow='';"
+    >
       <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
         <i class="fab fa-github" style="font-size: 1.75rem; color: var(--global-theme-color);"></i>
         <div style="flex: 1;">
@@ -25,7 +30,7 @@
         </div>
       </div>
       {% if repo_description %}
-      <p style="color: var(--global-text-color-light); font-size: 0.9rem; margin: 0 0 1rem 0; line-height: 1.4;">{{ repo_description }}</p>
+        <p style="color: var(--global-text-color-light); font-size: 0.9rem; margin: 0 0 1rem 0; line-height: 1.4;">{{ repo_description }}</p>
       {% endif %}
       <div style="display: flex; align-items: center; gap: 0.5rem; color: var(--global-theme-color); font-size: 0.9rem;">
         <span>View on GitHub</span>

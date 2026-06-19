@@ -58,11 +58,11 @@ Please fill out the form below, and I'll get back to you as soon as possible.
     <!-- Email Field -->
     <div class="form-group">
       <label for="email">Email <span class="required">*</span></label>
-      <input 
-        type="email" 
-        id="email" 
-        name="email" 
-        class="form-control" 
+      <input
+        type="email"
+        id="email"
+        name="email"
+        class="form-control"
         placeholder="your.email@example.com"
         required
       >
@@ -71,11 +71,11 @@ Please fill out the form below, and I'll get back to you as soon as possible.
     <!-- Institution/Organization (Optional) -->
     <div class="form-group">
       <label for="institution">Institution / Organization</label>
-      <input 
-        type="text" 
-        id="institution" 
-        name="institution" 
-        class="form-control" 
+      <input
+        type="text"
+        id="institution"
+        name="institution"
+        class="form-control"
         placeholder="University, Company, or Organization (optional)"
       >
     </div>
@@ -83,10 +83,10 @@ Please fill out the form below, and I'll get back to you as soon as possible.
     <!-- Inquiry Type -->
     <div class="form-group">
       <label for="inquiry_type">Type of Inquiry <span class="required">*</span></label>
-      <select 
-        id="inquiry_type" 
-        name="inquiry_type" 
-        class="form-control" 
+      <select
+        id="inquiry_type"
+        name="inquiry_type"
+        class="form-control"
         required
       >
         <option value="">Please select...</option>
@@ -103,11 +103,11 @@ Please fill out the form below, and I'll get back to you as soon as possible.
     <!-- Subject -->
     <div class="form-group">
       <label for="subject">Subject <span class="required">*</span></label>
-      <input 
-        type="text" 
-        id="subject" 
-        name="subject" 
-        class="form-control" 
+      <input
+        type="text"
+        id="subject"
+        name="subject"
+        class="form-control"
         placeholder="Brief subject line"
         required
       >
@@ -116,11 +116,11 @@ Please fill out the form below, and I'll get back to you as soon as possible.
     <!-- Message -->
     <div class="form-group">
       <label for="message">Message <span class="required">*</span></label>
-      <textarea 
-        id="message" 
-        name="message" 
-        class="form-control" 
-        rows="8" 
+      <textarea
+        id="message"
+        name="message"
+        class="form-control"
+        rows="8"
         placeholder="Please provide details about your inquiry, including any relevant background information, project descriptions, or specific questions..."
         required
       ></textarea>
@@ -129,11 +129,11 @@ Please fill out the form below, and I'll get back to you as soon as possible.
     <!-- Website/URL (Optional) -->
     <div class="form-group">
       <label for="website">Website / Relevant Link (Optional)</label>
-      <input 
-        type="url" 
-        id="website" 
-        name="website" 
-        class="form-control" 
+      <input
+        type="url"
+        id="website"
+        name="website"
+        class="form-control"
         placeholder="https://example.com"
       >
     </div>
@@ -145,9 +145,9 @@ Please fill out the form below, and I'll get back to you as soon as possible.
     <input type="hidden" name="_subject" value="New Contact Form Submission from numisveinsson.com">
     <input type="hidden" name="_next" value="{{ site.url }}/contact/?submitted=true">
     <input type="hidden" name="_format" value="plain">
-    
+
     <!-- Email notification configuration -->
-    <!-- 
+    <!--
       EMAIL NOTIFICATION SETTINGS:
       - Primary recipient: Set in Formspree dashboard (Settings > Email Notifications)
       - Reply-to: Automatically set to submitter's email (configured via JavaScript)
@@ -178,6 +178,7 @@ Please fill out the form below, and I'll get back to you as soon as possible.
     <div id="form-error" class="alert alert-danger" style="display: none;">
       <strong>Error:</strong> There was a problem sending your message. Please try again or email me directly at <a href="mailto:numi@utexas.edu">numi@utexas.edu</a>.
     </div>
+
   </form>
 </div>
 
@@ -385,14 +386,14 @@ document.addEventListener('DOMContentLoaded', function() {
 ## Alternative Contact Methods
 
 ### Direct Email
+
 **Primary:** [numi@utexas.edu](mailto:numi@utexas.edu)
 
 ### Office Location
+
 **Center for Computational Medicine**  
 Oden Institute for Computational Engineering and Sciences  
 University of Texas at Austin  
 Austin, Texas, USA
 
 ---
-
-

@@ -8,8 +8,8 @@ related_posts: false
 
 Awarded Prestigious Graduate Divison Block Grant to Advance PhD Research at UC Berkeley from the Mechanical Engineering Department.
 
-***
+---
 
 Dear Numi,
- 
-Congratulations!  We are delighted to inform you that you have been awarded the Graduate Division Block Grant in recognition of your distinguished academic record and our confidence in your promise for continued noteworthy achievement.
+
+Congratulations! We are delighted to inform you that you have been awarded the Graduate Division Block Grant in recognition of your distinguished academic record and our confidence in your promise for continued noteworthy achievement.

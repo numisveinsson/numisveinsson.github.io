@@ -13,10 +13,10 @@ toc:
 
 My research program sits at the intersection of **computational modeling**, **artificial intelligence**, and **medical imaging** to advance cardiovascular and respiratory medicine. I develop automated, data-driven methods that transform how we construct patient-specific models, perform simulations, and translate computational tools into clinical practice. My work bridges fundamental engineering principles with real-world medical challenges, with the ultimate goal of making high-fidelity cardiovascular simulations more accessible, scalable, and clinically relevant.
 
-<!-- 
+<!--
 TODO: Add research overview/conceptual diagram here showing the intersection of:
 - Computational Modeling
-- Artificial Intelligence  
+- Artificial Intelligence
 - Medical Imaging
 - Clinical Translation (outer layer)
 
@@ -52,7 +52,7 @@ During my Ph.D. at UC Berkeley with Prof. Shawn Shadden, I developed **SeqSeg** 
     SeqSeg automatically traces and segments vascular structures from medical images, starting from a single seed point. The method processes local segments sequentially, enabling complete vascular tree reconstruction.
 </div>
 
-This work resulted in a first-author publication in *Annals of Biomedical Engineering* (2025) and established the foundation for my subsequent research directions.
+This work resulted in a first-author publication in _Annals of Biomedical Engineering_ (2025) and established the foundation for my subsequent research directions.
 
 ### Integrated Cardiovascular Modeling
 
@@ -111,10 +111,10 @@ A key focus of my postdoctoral work is ensuring that computational tools are des
 
 My future research program will build on these foundations while addressing critical challenges in computational medicine. I envision three interconnected research themes:
 
-<!-- 
+<!--
 TODO: Add three research themes diagram here showing:
 - Theme 1: AI-Enhanced Multi-Scale Modeling
-- Theme 2: Real-Time Clinical Decision Support  
+- Theme 2: Real-Time Clinical Decision Support
 - Theme 3: Data-Driven Discovery
 With connections/overlaps between them
 
@@ -134,9 +134,10 @@ Example figure code:
 **Goal**: Develop AI-driven methods that seamlessly integrate across spatial and temporal scales—from cellular-level processes to organ-level function—to enable comprehensive patient-specific modeling.
 
 **Specific Projects**:
+
 1. **Multi-scale vascular modeling**: Develop deep learning methods that can predict microvascular behavior from macrovascular geometry and flow patterns, enabling more complete cardiovascular models without requiring high-resolution imaging of all vessels.
 
-<!-- 
+<!--
 TODO: Add multi-scale modeling schematic showing:
 - Cellular level → Tissue level → Organ level → System level
 - How AI bridges across scales
@@ -163,13 +164,14 @@ Example figure code:
 **Goal**: Transform cardiovascular simulations from research tools into real-time clinical decision support systems that can guide diagnosis and treatment planning.
 
 **Specific Projects**:
+
 1. **Rapid simulation frameworks**: Develop ultra-fast simulation methods (combining reduced-order modeling, machine learning surrogates, and GPU acceleration) that can provide results within minutes for clinical workflows.
 
 2. **Automated treatment planning**: Create AI systems that can automatically suggest optimal treatment strategies (e.g., stent placement, surgical planning) based on patient-specific simulations and clinical guidelines.
 
 3. **Integration with clinical imaging**: Develop seamless workflows that automatically extract models from routine clinical imaging (CT, MRI) and provide actionable insights to clinicians.
 
-<!-- 
+<!--
 TODO: Add clinical translation pipeline diagram showing:
 Medical Imaging → Automated Modeling → Simulation → Clinical Decision Support → Patient Care
 
@@ -191,6 +193,7 @@ Example figure code:
 **Goal**: Leverage large-scale patient data and AI to discover new insights into cardiovascular disease mechanisms, risk factors, and treatment responses.
 
 **Specific Projects**:
+
 1. **Population-level modeling**: Develop methods to analyze large cohorts of patient-specific models to identify patterns, risk factors, and optimal treatment strategies.
 
 2. **Biomarker discovery**: Use AI to identify new imaging-based biomarkers that predict cardiovascular outcomes, potentially enabling earlier intervention.
@@ -230,26 +233,31 @@ My research program supports service to the field:
 My research program is designed to be fundable through multiple agencies and mechanisms:
 
 ### National Institutes of Health (NIH)
+
 - **R01 grants**: For fundamental research on AI-enhanced modeling and clinical translation
 - **R21/R33 grants**: For high-risk, high-reward projects on real-time clinical decision support
 - **SBIR/STTR grants**: For translational projects with industry partners
 - **Training grants**: To support graduate students and postdocs
 
 ### National Science Foundation (NSF)
+
 - **CAREER Award**: For early-career faculty development and integration of research and education
 - **CBET (Chemical, Bioengineering, Environmental and Transport Systems)**: For fundamental engineering research
 - **CISE (Computer and Information Science and Engineering)**: For AI and computational methods
 
 ### American Heart Association (AHA)
+
 - **Career Development Awards**: For cardiovascular-focused research
 - **Transformational Project Awards**: For high-impact translational projects
 
 ### Industry Partnerships
+
 - **Medical device companies**: For developing simulation tools for device design and testing
 - **Pharmaceutical companies**: For drug delivery modeling and optimization
 - **Healthcare systems**: For clinical validation and implementation studies
 
 ### Foundation Support
+
 - **Whitaker Foundation** (if still active) or similar: For biomedical engineering research
 - **Private foundations**: Focused on cardiovascular health and computational medicine
 
@@ -260,21 +268,25 @@ My research program is designed to be fundable through multiple agencies and mec
 To support this research program, I will need:
 
 ### Computational Resources
+
 - **High-performance computing**: Access to HPC clusters for large-scale simulations
 - **GPU clusters**: For training deep learning models and running GPU-accelerated simulations
 - **Cloud computing**: For scalable, on-demand computational resources
 
 ### Data Resources
+
 - **Clinical imaging data**: Partnerships with hospitals and medical centers for access to de-identified patient data
 - **Public datasets**: Leveraging existing repositories (e.g., Vascular Model Repository, public imaging datasets)
 - **Synthetic data generation**: Developing methods to generate synthetic training data when real data is limited
 
 ### Collaborations
+
 - **Clinical partners**: Cardiologists, radiologists, and surgeons for clinical validation and translation
 - **Engineering collaborators**: Experts in AI, computational mechanics, and medical imaging
 - **Industry partners**: For translational research and technology transfer
 
 ### Laboratory Infrastructure
+
 - **Software development**: Version control, continuous integration, and software distribution infrastructure
 - **Data management**: Secure storage and management systems for sensitive medical data
 - **Visualization tools**: For analyzing and presenting complex simulation results
@@ -285,7 +297,7 @@ To support this research program, I will need:
 
 My research program will advance computational medicine through:
 
-1. **Scientific Impact**: 
+1. **Scientific Impact**:
    - Novel AI methods for medical image analysis and patient-specific modeling
    - Improved understanding of cardiovascular and respiratory physiology
    - New computational frameworks that integrate across scales and modalities
@@ -315,4 +327,4 @@ The interdisciplinary nature of this work—spanning engineering, computer scien
 
 ---
 
-*This research statement is a living document that evolves with my research program. For the most current information about my research activities, please see my [publications](/publications/) and [projects](/projects/) pages.*
+_This research statement is a living document that evolves with my research program. For the most current information about my research activities, please see my [publications](/publications/) and [projects](/projects/) pages._

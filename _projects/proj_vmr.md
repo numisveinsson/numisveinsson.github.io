@@ -8,4 +8,3 @@ category: collaboration
 redirect: https://vascularmodel.com
 related_publications:
 ---
-

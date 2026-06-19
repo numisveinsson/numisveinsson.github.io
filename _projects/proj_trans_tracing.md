@@ -28,13 +28,16 @@ Transformers are a type of neural network architecture. Transformers emerged wit
 ## Objective
 
 The objective of this project is twofold:
+
 1. Define the blood vessel tracking task as a sequential problem
 2. Apply a transformer neural network to represent, learn and predict the sequential nature of the blood vessel tracking task.
 
 ## Method
 
 ### Dataset
+
 We use a dataset from vascularmodel.com consisting of pairs of medical images and blood vessel centerlines constructed by experts.
 
 ### Neural Network
+
 Utilize a pytorch implementation of a transformer <d-footnote>https://pytorch.org/docs/stable/generated/torch.nn.Transformer.html</d-footnote> to learn to predict the next point in the blood vessel centerline. The neural network is written in python. The network is trained on the dataset and evaluated on a separate test set.

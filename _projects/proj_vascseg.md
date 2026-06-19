@@ -1,7 +1,7 @@
 ---
 layout: distill
 title: SeqSeg - Patient-Specific Vascular Geometric Modeling
-description: a machine learning approach to segment CT and MR images 
+description: a machine learning approach to segment CT and MR images
 img: assets/img/CardioVascularModeling.png
 importance: 2
 category: solo
@@ -16,13 +16,13 @@ toc:
 
 ### Introduction
 
-Patient-specific hemodynamic simulations have become an important part of cardiovascular research. These simulations depend on construction of anatomically accurate 3D geometric models of cardiovascular structures, in most cases using medical image scans (CT/MR) of the appropriate region. In the case of blood vessels, the model construction pipeline is time-consuming and costly, dependent on multiple manual inputs from trained experts. The typical pipeline consists of 
+Patient-specific hemodynamic simulations have become an important part of cardiovascular research. These simulations depend on construction of anatomically accurate 3D geometric models of cardiovascular structures, in most cases using medical image scans (CT/MR) of the appropriate region. In the case of blood vessels, the model construction pipeline is time-consuming and costly, dependent on multiple manual inputs from trained experts. The typical pipeline consists of
 
-1) construction of pathlines through vessels of interest, 
+1. construction of pathlines through vessels of interest,
 
-2) 2D lumen segmentations along the pathlines, and 
+2. 2D lumen segmentations along the pathlines, and
 
-3) lofting segmentations together and joining branches into a single unified 3D model (see Figure below). 
+3. lofting segmentations together and joining branches into a single unified 3D model (see Figure below).
 
 The objective of this project is to automatically trace (construct pathlines) and construct a 3D model piece by piece, and thereby saving researchers and clinicians precious time and work.
 

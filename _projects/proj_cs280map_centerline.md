@@ -5,7 +5,7 @@ description: Final Project for CS280 - Computer Vision
 img: assets/img/cs280.png
 importance: 2
 category: coursework
-redirect: 
+redirect:
 related_publications:
 ---
 
@@ -17,7 +17,3 @@ related_publications:
 <div class="caption">
     The final project report.
 </div>
-
-
-
-

@@ -30,7 +30,6 @@ toc:
   - name: Explore Your New Home
   - name: Dealing with Impostor Syndrome
   - name: Conclusion
-
 ---
 
 ## Introduction
@@ -41,7 +40,7 @@ Having navigated this journey myself, I want to share some lessons learned that 
 
 ## Think Slow, Act Fast: The Power of Literature Search
 
-One of the most valuable pieces of advice I've received comes from the book *How Big Things Get Done* by Bent Flyvbjerg and Dan Gardner: **"think slow, act fast."** This philosophy is particularly relevant to your first year of graduate school.
+One of the most valuable pieces of advice I've received comes from the book _How Big Things Get Done_ by Bent Flyvbjerg and Dan Gardner: **"think slow, act fast."** This philosophy is particularly relevant to your first year of graduate school.
 
 ### The Importance of Literature Search
 
@@ -239,5 +238,4 @@ Good luck, and enjoy the journey!
 
 ---
 
-*Have questions or want to share your own experiences? Feel free to reach out or leave a comment below.*
-
+_Have questions or want to share your own experiences? Feel free to reach out or leave a comment below._

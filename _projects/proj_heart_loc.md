@@ -27,11 +27,12 @@ In medical imaging, accurately identifying the heart within volumetric data is c
 ## Methods
 
 ### Heart Localization Using Deep Learning
+
 To locate the heart within 3D medical image volumes, we employ deep learning techniques, specifically convolutional neural networks (CNNs), trained on annotated datasets. We investigate two primary approaches:
+
 1. **Pixel-wise Segmentation**: In this approach, we employ binary classification to label pixels belonging to the heart. Subsequently, post-processing techniques are applied to calculate the center of mass and estimate the size of the heart. This method provides a detailed segmentation of cardiac structures but may be computationally intensive.
 2. **Gaussian Distribution Regression**: Alternatively, we directly estimate the center of the heart using regression techniques. Instead of pixel classification, we regress the spatial coordinates of the heart's center based on Gaussian distributions. The ground truth annotations include the z-value of each pixel relative to the center of the heart, typically chosen as the aortic valve. This approach offers a more direct and computationally efficient method for heart localization, particularly suitable for real-time applications.
 
 By comparing and evaluating these methodologies, we aim to develop a robust and accurate system for automatic heart localization within 3D medical image volumes, laying the groundwork for comprehensive geometric modeling of the heart and its connected blood vessels.
-
 
 image borrowed [here](https://radiologykey.com/12-general-anatomy-of-the-heart/)

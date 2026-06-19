@@ -96,9 +96,7 @@
       "endDate": "Present",
       "location": "Austin, TX, USA",
       "summary": "Research focuses on integrating artificial intelligence, medical imaging, and computational modeling to study physiology and advance medicine. Expanding research to explore clinically driven applications of AI and simulation, with the goal of developing digital tools that bridge computational models and patient care.",
-      "highlights": [
-        "Advisor: Prof. Charles A. Taylor"
-      ]
+      "highlights": ["Advisor: Prof. Charles A. Taylor"]
     },
     {
       "name": "University of California, Berkeley — Mechanical Engineering Department",
@@ -120,9 +118,7 @@
       "endDate": "2020",
       "location": "Reykjavík, Iceland",
       "summary": "",
-      "highlights": [
-        "Advisor: Prof. Sigurður Brynjólfsson"
-      ]
+      "highlights": ["Advisor: Prof. Sigurður Brynjólfsson"]
     },
     {
       "name": "University of Iceland — Department of Medicine",
@@ -131,9 +127,7 @@
       "endDate": "2019",
       "location": "Reykjavík, Iceland",
       "summary": "",
-      "highlights": [
-        "Advisor: Prof. Thórarinn Guðjónsson"
-      ]
+      "highlights": ["Advisor: Prof. Thórarinn Guðjónsson"]
     }
   ],
 
@@ -161,9 +155,7 @@
       "endDate": "2020",
       "location": "Reykjavík, Iceland",
       "summary": "Worked on material property analysis for medical biomaterials.",
-      "highlights": [
-        "Collaborated on R&D for regenerative medical materials."
-      ]
+      "highlights": ["Collaborated on R&D for regenerative medical materials."]
     },
     {
       "name": "University of Iceland — Department of Medicine",
