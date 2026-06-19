@@ -12,7 +12,7 @@ toc:
   - name: Results
 ---
 
-<img src="../../assets/img/aaas_simulation.png" alt="Image." width="600"/>
+<img src="../../assets/img/aaas_simulation.png" alt="Hemodynamic simulation of an abdominal aortic aneurysm" width="600"/>
 
 This work is done in collaboration with Gala Sanchez Van Moer, PhD student, and the Shadden lab at UC Berkeley.
 

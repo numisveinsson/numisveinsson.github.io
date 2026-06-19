@@ -14,7 +14,7 @@ toc:
   - name: Methods
 ---
 
-<img src="../../assets/img/heart_loc.jpg" alt="Image." width="600"/>
+<img src="../../assets/img/heart_loc.jpg" alt="Deep learning localization of the heart within a medical image volume" width="600"/>
 
 ## Motivation and Goals
 

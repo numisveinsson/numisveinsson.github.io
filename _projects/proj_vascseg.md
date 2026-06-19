@@ -12,7 +12,7 @@ toc:
   - name: Results
 ---
 
-<img src="../../assets/img/CardioVascularModeling.png" alt="Image." width="600"/>
+<img src="../../assets/img/CardioVascularModeling.png" alt="SeqSeg patient-specific vascular geometric model from medical images" width="600"/>
 
 ### Introduction
 

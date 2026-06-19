@@ -6,7 +6,7 @@ title: blank # the website title (if blank, full name will be used instead)
 first_name: Numi # your first name
 middle_name:
 last_name: Sveinsson Cepero
-email: numisveinsson@gmail.com
+email: numi@utexas.edu
 description: > # the ">" symbol means to ignore newlines until "footer_text:"
   Personal website of Numi Sveinsson Cepero, a Postdoctoral Fellow at the Oden Institute, UT Austin,
   working on computational modeling, deep learning, and medical imaging for patient-specific cardiovascular and respiratory simulation.

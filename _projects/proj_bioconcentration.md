@@ -15,7 +15,7 @@ toc:
   - name: Geometric Construction
 ---
 
-<img src="../../assets/img/bioprinting.jpg" alt="Image." width="600"/>
+<img src="../../assets/img/bioprinting.jpg" alt="Bioprinting process for modeling cell survival" width="600"/>
 
 ## Big Picture
 

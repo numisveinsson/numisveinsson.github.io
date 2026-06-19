@@ -8,6 +8,6 @@ category: collaboration
 related_publications:
 ---
 
-<img src="../../assets/img/bp_monitor.jpg" alt="Image." width="600"/>
+<img src="../../assets/img/bp_monitor.jpg" alt="Wearable device for continuous blood pressure monitoring" width="600"/>
 
 Website in progress.

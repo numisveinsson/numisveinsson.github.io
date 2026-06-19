@@ -3,16 +3,16 @@
     "name": "Númi Sveinsson Cepero",
     "label": "Ph.D. in Mechanical Engineering | Computational Modeling & Medical Imaging",
     "image": "",
-    "email": "numi@berkeley.edu",
+    "email": "numi@utexas.edu",
     "phone": "",
     "url": "https://numisveinsson.com",
-    "summary": "Computational modeling and medical imaging researcher specializing in biofluid dynamics and deep learning for cardiovascular applications. Experienced in developing machine learning frameworks for vessel segmentation and automatic vascular model construction. Ph.D. in Mechanical Engineering from the University of California, Berkeley (2025).",
+    "summary": "Computational modeling and medical imaging researcher specializing in biofluid dynamics and deep learning for cardiovascular applications. Experienced in developing machine learning frameworks for vessel segmentation and automatic vascular model construction. Ph.D. in Mechanical Engineering from the University of California, Berkeley (2025). Currently a Postdoctoral Fellow at the Oden Institute, The University of Texas at Austin.",
     "location": {
       "address": "",
-      "postalCode": "CA",
-      "city": "Berkeley",
+      "postalCode": "TX",
+      "city": "Austin",
       "countryCode": "US",
-      "region": "California"
+      "region": "Texas"
     },
     "profiles": [
       {

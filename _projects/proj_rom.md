@@ -14,7 +14,7 @@ toc:
   - name: ROM Setup
 ---
 
-<img src="../../assets/img/roms_0.png" alt="Image." width="600"/>
+<img src="../../assets/img/roms_0.png" alt="Reduced-order blood flow model of a vascular geometry" width="600"/>
 
 ## Introduction
 

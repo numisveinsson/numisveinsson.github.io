@@ -14,7 +14,7 @@ toc:
   - name: Approach
 ---
 
-<img src="../../assets/img/red-blood-cells.jpg" alt="Image." width="600"/>
+<img src="../../assets/img/red-blood-cells.jpg" alt="Red blood cells flowing through a blood vessel" width="600"/>
 
 ## Introduction
 

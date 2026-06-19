@@ -37,7 +37,7 @@ But before you can simulate anything, you need an accurate, three-dimensional mo
 
 <div class="row justify-content-sm-center">
     <div class="col-sm-12 mt-3 mt-md-0">
-        {% include figure.html path="assets/img/ct_2_model_post/p-specific computational modeling-geometry_input.png" title="From medical image to patient-specific simulation" class="img-fluid rounded z-depth-1" %}
+        {% include figure.html path="assets/img/ct_2_model_post/p-specific computational modeling-geometry_input.png" title="From medical image to patient-specific simulation" alt="Patient-specific modeling pipeline: a medical image scan is converted into a 3D geometric model and then a blood flow simulation" class="img-fluid rounded z-depth-1" %}
     </div>
 </div>
 <div class="caption">
@@ -58,7 +58,7 @@ For my PhD at UC Berkeley, working with Prof. Shawn Shadden, I wanted to automat
 
 <div class="row justify-content-sm-center">
     <div class="col-sm-12 mt-3 mt-md-0">
-        {% include figure.html path="assets/img/ct_2_model_post/manual_vs_DL_modeling_compare.png" title="Manual SimVascular workflow versus automated SeqSeg" class="img-fluid rounded z-depth-1" %}
+        {% include figure.html path="assets/img/ct_2_model_post/manual_vs_DL_modeling_compare.png" title="Manual SimVascular workflow versus automated SeqSeg" alt="Comparison of the manual SimVascular modeling workflow (top) against the automated SeqSeg workflow (bottom)" class="img-fluid rounded z-depth-1" %}
     </div>
 </div>
 <div class="caption">
@@ -83,7 +83,7 @@ Piece by piece, SeqSeg traces and assembles the entire connected vascular tree f
 
 <div class="row justify-content-sm-center">
     <div class="col-sm-10 mt-3 mt-md-0">
-        {% include figure.html path="assets/img/publication_preview/mr_model_tracing_fast_shorter.gif" title="SeqSeg automatic tracing" class="img-fluid rounded z-depth-1" %}
+        {% include figure.html path="assets/img/publication_preview/mr_model_tracing_fast_shorter.gif" title="SeqSeg automatic tracing" alt="Animation of SeqSeg sequentially tracing and segmenting a vascular tree from a single seed point" class="img-fluid rounded z-depth-1" %}
     </div>
 </div>
 <div class="caption">

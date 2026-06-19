@@ -14,7 +14,7 @@ toc:
   - name: Key Components
 ---
 
-<img src="../../assets/img/obj_det.png" alt="Image." width="600"/>
+<img src="../../assets/img/obj_det.png" alt="Object detection applied to blood vessels in a medical image" width="600"/>
 
 ## Motivation and Goals
 
@@ -26,7 +26,7 @@ Employing state-of-the-art deep learning techniques, we are developing a novel a
 
 <div class="row justify-content-sm-center">
     <div class="col-sm mt-1 mt-md-0">
-        {% include figure.html path="assets/img/local_out.png" title="example image" class="img-fluid rounded z-depth-1" %}
+        {% include figure.html path="assets/img/local_out.png" alt="Mask R-CNN blood vessel outlet detection in a 2D medical image slice: input image, prediction, and ground truth" class="img-fluid rounded z-depth-1" %}
     </div>
 </div>
 <div class="caption">

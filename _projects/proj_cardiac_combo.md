@@ -13,7 +13,7 @@ toc:
   - name: Methods
 ---
 
-<img src="../../assets/img/cardiac_combo.png" alt="Image." width="600"/>
+<img src="../../assets/img/cardiac_combo.png" alt="Combined patient-specific cardiac and vascular model" width="600"/>
 
 ## Motivation
 

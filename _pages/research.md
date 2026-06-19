@@ -23,7 +23,7 @@ TODO: Add research overview/conceptual diagram here showing the intersection of:
 Example figure code:
 <div class="row justify-content-sm-center">
     <div class="col-sm-8 mt-3 mt-md-0">
-        {% include figure.html path="assets/img/research_overview.png" title="Research Overview" class="img-fluid rounded z-depth-1" %}
+        {% include figure.html path="assets/img/research_overview.png" title="Research Overview" alt="Overview of research integrating computational modeling, deep learning, and medical imaging" class="img-fluid rounded z-depth-1" %}
     </div>
 </div>
 <div class="caption">
@@ -45,7 +45,7 @@ During my Ph.D. at UC Berkeley with Prof. Shawn Shadden, I developed **SeqSeg** 
 
 <div class="row justify-content-sm-center">
     <div class="col-sm-10 mt-3 mt-md-0">
-        {% include figure.html path="assets/img/publication_preview/mr_model_tracing_fast_shorter.gif" title="SeqSeg Automatic Tracing" class="img-fluid rounded z-depth-1" %}
+        {% include figure.html path="assets/img/publication_preview/mr_model_tracing_fast_shorter.gif" title="SeqSeg Automatic Tracing" alt="Animation of SeqSeg automatically tracing and segmenting a vascular model from a medical image" class="img-fluid rounded z-depth-1" %}
     </div>
 </div>
 <div class="caption">
@@ -64,7 +64,7 @@ Building on SeqSeg, I developed **MeshGrow**, an integrated framework that autom
 
 <div class="row justify-content-sm-center">
     <div class="col-sm-8 mt-3 mt-md-0">
-        {% include figure.html path="assets/img/publication_preview/fimh_2025_cropped.png" title="MeshGrow Results" class="img-fluid rounded z-depth-1" %}
+        {% include figure.html path="assets/img/publication_preview/fimh_2025_cropped.png" title="MeshGrow Results" alt="MeshGrow combined cardiac and vascular mesh reconstructed from a medical image" class="img-fluid rounded z-depth-1" %}
     </div>
 </div>
 <div class="caption">
@@ -121,7 +121,7 @@ With connections/overlaps between them
 Example figure code:
 <div class="row justify-content-sm-center">
     <div class="col-sm-10 mt-3 mt-md-0">
-        {% include figure.html path="assets/img/research_themes.png" title="Research Themes" class="img-fluid rounded z-depth-1" %}
+        {% include figure.html path="assets/img/research_themes.png" title="Research Themes" alt="Diagram of core research themes spanning cardiovascular modeling, AI, and simulation" class="img-fluid rounded z-depth-1" %}
     </div>
 </div>
 <div class="caption">
@@ -145,7 +145,7 @@ TODO: Add multi-scale modeling schematic showing:
 Example figure code:
 <div class="row justify-content-sm-center">
     <div class="col-sm-8 mt-3 mt-md-0">
-        {% include figure.html path="assets/img/multiscale_modeling.png" title="Multi-Scale Modeling" class="img-fluid rounded z-depth-1" %}
+        {% include figure.html path="assets/img/multiscale_modeling.png" title="Multi-Scale Modeling" alt="Multi-scale modeling of the cardiovascular system from cells to whole-body circulation" class="img-fluid rounded z-depth-1" %}
     </div>
 </div>
 <div class="caption">
@@ -178,7 +178,7 @@ Medical Imaging → Automated Modeling → Simulation → Clinical Decision Supp
 Example figure code:
 <div class="row justify-content-sm-center">
     <div class="col-sm-10 mt-3 mt-md-0">
-        {% include figure.html path="assets/img/clinical_pipeline.png" title="Clinical Translation Pipeline" class="img-fluid rounded z-depth-1" %}
+        {% include figure.html path="assets/img/clinical_pipeline.png" title="Clinical Translation Pipeline" alt="Pipeline translating medical images into patient-specific simulations for clinical use" class="img-fluid rounded z-depth-1" %}
     </div>
 </div>
 <div class="caption">

@@ -15,7 +15,7 @@ toc:
   - name: Neural Network
 ---
 
-<img src="../../assets/img/trans_tracing.png" alt="Image." width="600"/>
+<img src="../../assets/img/trans_tracing.png" alt="Transformer neural network architecture for blood vessel tracking" width="600"/>
 
 ## Background
 
