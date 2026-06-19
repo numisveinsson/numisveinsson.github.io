@@ -1,6 +1,6 @@
 ---
 layout: distill
-title: Combinging Vascular and Cardiac Models into One
+title: Combining Vascular and Cardiac Models into One
 description: combining the models of the heart and the blood vessels into a single model for patient-specific simulations
 img: assets/img/cardiac_combo.png
 importance: 5

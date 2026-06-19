@@ -1,6 +1,6 @@
 ---
 layout: distill
-title: Transfomers for Tracking 
+title: Transformers for Tracking
 description: Utilizing transformer neural network architecture to exploit the sequential nature of blood vessel tracking
 img: assets/img/trans_tracing.png
 importance: 3
@@ -23,7 +23,7 @@ Blood vessel tracking refers to the method of moving along within a medical imag
 The purpose of blood vessel tracking can vary but most commonly is related to geometric modeling of blood vessels.
 This remains an unsolved problem to such a degree that the most common blood vessel tracking is the manual approach.
 
-Transformers are a type of neural network architecture. Transformers emmerged within natural language processing field of machine learning because of their impressive ability to solve sequential ML tasks (such as those related to language translation, text summarization etc).
+Transformers are a type of neural network architecture. Transformers emerged within the natural language processing field of machine learning because of their impressive ability to solve sequential ML tasks (such as those related to language translation, text summarization etc).
 
 ## Objective
 
