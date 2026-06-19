@@ -197,12 +197,7 @@ ninja.data = [{
             window.location.href = "/blog/2023/conda/";
           
         },
-      },{id: "books-the-godfather",
-          title: 'The Godfather',
-          description: "",
-          section: "Books",handler: () => {
-              window.location.href = "/books/the_godfather/";
-            },},{id: "news-passed-qualifying-exam-advanced-to-candidacy-sparkles",
+      },{id: "news-passed-qualifying-exam-advanced-to-candidacy-sparkles",
           title: 'Passed Qualifying Exam, Advanced to Candidacy! :sparkles:',
           description: "",
           section: "News",},{id: "news-graduation-msc-mechanical-engineering",
