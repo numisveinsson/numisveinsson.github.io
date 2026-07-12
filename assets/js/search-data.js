@@ -65,7 +65,18 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/contact/";
           },
-        },{id: "post-how-do-you-turn-a-blurry-ct-scan-into-a-simulation-ready-artery",
+        },{id: "post-one-model-heart-and-vessels-how-meshgrow-builds-simulation-ready-cardiovascular-anatomy",
+        
+          title: "One Model, Heart and Vessels: How MeshGrow Builds Simulation-Ready Cardiovascular Anatomy",
+        
+        description: "A plain-language explainer of MeshGrow, an automated framework for constructing combined cardiac and vascular models from medical images",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/meshgrow-heart-and-vessels-one-model/";
+          
+        },
+      },{id: "post-how-do-you-turn-a-blurry-ct-scan-into-a-simulation-ready-artery",
         
           title: "How Do You Turn a Blurry CT Scan into a Simulation-Ready Artery?",
         
@@ -310,7 +321,12 @@ ninja.data = [{
           section: "News",},{id: "news-abstract-scalable-automation-of-cardiovascular-geometric-modeling-for-patient-specific-simulation-has-been-accepted-for-oral-presentation-at-wccm-eccomas-2026-in-munich-germany-july-19-24-2026-mini-symposium-ms120-recent-advances-in-computational-methods-for-the-cardiovascular-system",
           title: 'Abstract “Scalable Automation of Cardiovascular Geometric Modeling for Patient-Specific Simulation” has been accepted...',
           description: "",
-          section: "News",},{id: "projects-automatic-vessel-tracking",
+          section: "News",},{id: "news-meshgrow-published-in-jrsm-cardiovascular-disease",
+          title: 'MeshGrow Published in JRSM Cardiovascular Disease',
+          description: "",
+          section: "News",handler: () => {
+              window.location.href = "/news/26_07_11_meshgrow_journal/";
+            },},{id: "projects-automatic-vessel-tracking",
           title: 'Automatic Vessel Tracking',
           description: "using machine learning to algorithmically track blood vessels without manual input",
           section: "Projects",handler: () => {
@@ -325,9 +341,9 @@ ninja.data = [{
           description: "understanding blood pressure waveforms from wearable devices",
           section: "Projects",handler: () => {
               window.location.href = "/projects/proj_bpmon/";
-            },},{id: "projects-combining-vascular-and-cardiac-models-into-one",
-          title: 'Combining Vascular and Cardiac Models into One',
-          description: "combining the models of the heart and the blood vessels into a single model for patient-specific simulations",
+            },},{id: "projects-meshgrow-combining-vascular-and-cardiac-models-into-one",
+          title: 'MeshGrow - Combining Vascular and Cardiac Models into One',
+          description: "combining the models of the heart and the blood vessels into a single simulation-ready model for patient-specific simulations",
           section: "Projects",handler: () => {
               window.location.href = "/projects/proj_cardiac_combo/";
             },},{id: "projects-computational-parallelism-to-boost-blood-vessel-tracking",
