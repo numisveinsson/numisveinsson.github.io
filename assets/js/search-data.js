@@ -321,8 +321,8 @@ ninja.data = [{
           section: "News",},{id: "news-abstract-scalable-automation-of-cardiovascular-geometric-modeling-for-patient-specific-simulation-has-been-accepted-for-oral-presentation-at-wccm-eccomas-2026-in-munich-germany-july-19-24-2026-mini-symposium-ms120-recent-advances-in-computational-methods-for-the-cardiovascular-system",
           title: 'Abstract “Scalable Automation of Cardiovascular Geometric Modeling for Patient-Specific Simulation” has been accepted...',
           description: "",
-          section: "News",},{id: "news-meshgrow-published-in-jrsm-cardiovascular-disease",
-          title: 'MeshGrow Published in JRSM Cardiovascular Disease',
+          section: "News",},{id: "news-new-paper-published-meshgrow-in-jrsm-cardiovascular-disease",
+          title: 'New Paper Published: MeshGrow in JRSM Cardiovascular Disease',
           description: "",
           section: "News",handler: () => {
               window.location.href = "/news/26_07_11_meshgrow_journal/";
