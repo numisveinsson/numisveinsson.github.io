@@ -326,6 +326,11 @@ ninja.data = [{
           description: "",
           section: "News",handler: () => {
               window.location.href = "/news/26_07_11_meshgrow_journal/";
+            },},{id: "news-oral-presentation-at-wcb-2026-in-vancouver",
+          title: 'Oral presentation at WCB 2026 in Vancouver',
+          description: "",
+          section: "News",handler: () => {
+              window.location.href = "/news/26_07_14_wcb_vancouver/";
             },},{id: "projects-automatic-vessel-tracking",
           title: 'Automatic Vessel Tracking',
           description: "using machine learning to algorithmically track blood vessels without manual input",
