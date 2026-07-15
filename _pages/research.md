@@ -298,16 +298,19 @@ To support this research program, I will need:
 My research program will advance computational medicine through:
 
 1. **Scientific Impact**:
+
    - Novel AI methods for medical image analysis and patient-specific modeling
    - Improved understanding of cardiovascular and respiratory physiology
    - New computational frameworks that integrate across scales and modalities
 
 2. **Clinical Impact**:
+
    - Tools that improve diagnosis and treatment planning
    - Reduced time and cost for patient-specific modeling
    - Better patient outcomes through personalized medicine
 
 3. **Educational Impact**:
+
    - Training next generation of computational medicine researchers
    - Open-source tools that enable broader research community
    - Integration of cutting-edge research into curriculum
