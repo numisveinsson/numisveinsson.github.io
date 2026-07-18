@@ -21,19 +21,19 @@ authors:
 #   - we may want to automate TOC generation in the future using
 #     jekyll-toc plugin (https://github.com/toshimaru/jekyll-toc).
 toc:
-  - name: The Problem
-  - name: The Bottleneck Nobody Talks About
-  - name: "The Core Idea: Look Locally, Build Globally"
-  - name: What Surprised Me
-  - name: Why This Matters
+  - name: Why This Is Hard
+  - name: The Manual Workflow
+  - name: Looking Locally Instead
+  - name: What Actually Worked
+  - name: What's Still Rough
   - name: Try It Yourself
 ---
 
-## The Problem
+## Why This Is Hard
 
-Doctors and researchers increasingly want to simulate blood flow inside a _specific_ patient's arteries—to plan a treatment, test a medical device, or understand how a disease is progressing. These patient-specific simulations have become a critical part of diagnosing, treating, and understanding cardiovascular disease.
+If you want to simulate blood flow in a _specific_ patient's arteries—to plan a treatment, test a device, or see how a disease is progressing—you need a 3D model of that person's vessels first. The simulation itself is hard enough. Getting a usable geometry out of a CT or MR scan is often worse.
 
-But before you can simulate anything, you need an accurate, three-dimensional model of that person's blood vessels. And building one turns out to be one of the slowest, most manual steps in the entire process.
+That middle step, image to model, is still mostly done by hand. It's slow, expensive, and it doesn't scale.
 
 <div class="row justify-content-sm-center">
     <div class="col-sm-12 mt-3 mt-md-0">
@@ -41,20 +41,20 @@ But before you can simulate anything, you need an accurate, three-dimensional mo
     </div>
 </div>
 <div class="caption">
-    The patient-specific modeling pipeline for a coronary artery model: a medical image scan is converted into a 3D geometric model, which then becomes the computational domain for a patient-specific blood flow simulation. The middle step—turning the scan into geometry—is the manual bottleneck SeqSeg aims to automate.
+    The patient-specific modeling pipeline for a coronary artery model: scan → 3D geometry → blood-flow simulation. SeqSeg is aimed at that middle step.
 </div>
 
-## The Bottleneck Nobody Talks About
+## The Manual Workflow
 
-For more than 20 years, the workflow for turning a medical scan (a CT or MR image) into a simulation-ready vascular model has looked roughly like this:
+For more than 20 years, the usual path from a CT or MR scan to a simulation-ready vascular model has looked like this:
 
-1. **Trace centerlines** through every vessel of interest—usually by hand.
-2. **Segment the vessel lumen** (the open channel blood flows through) at many cross-sections along those centerlines.
-3. **Loft and join** all those cross-sections and branches into a single, connected 3D model.
+1. **Trace centerlines** through every vessel you care about—usually by hand.
+2. **Segment the lumen** (the open channel blood flows through) at many cross-sections along those centerlines.
+3. **Loft and join** the cross-sections and branches into one connected 3D model.
 
-Every one of these steps depends on a trained expert clicking through the image slice by slice. It is time-consuming, costly, and introduces user bias. For large studies—or any clinical application where results are needed quickly—this manual model-building has remained the primary bottleneck.
+Each of those steps means a trained person clicking through slices. For a big study, or anything clinical where you need answers soon, that is the bottleneck.
 
-For my PhD at UC Berkeley, working with Prof. Shawn Shadden, I wanted to automate it. The result is a method we call **SeqSeg** (Sequential Segmentation).
+During my PhD at UC Berkeley with Prof. Shawn Shadden, I set out to automate as much of this as I could. The method we ended up with is called **SeqSeg** (Sequential Segmentation).
 
 <div class="row justify-content-sm-center">
     <div class="col-sm-12 mt-3 mt-md-0">
@@ -62,24 +62,24 @@ For my PhD at UC Berkeley, working with Prof. Shawn Shadden, I wanted to automat
     </div>
 </div>
 <div class="caption">
-    Two ways to build the same vascular model. <strong>Top:</strong> the traditional manual workflow in SimVascular—placing path points, segmenting the lumen along each path, and lofting them into a model—where each step demands expert time. <strong>Bottom:</strong> SeqSeg, which steps through local subvolumes automatically from a single seed point. Because the manual approach is so time-consuming and costly, modelers often stop at the major vessels; SeqSeg's automation lets it capture many more of the smaller branches.
+    Same model, two workflows. <strong>Top:</strong> the usual SimVascular path—path points, lumen segments, lofting—where each step costs expert time. <strong>Bottom:</strong> SeqSeg, which walks through local subvolumes from a single seed. Because the manual route takes so long, people often stop at the major vessels; automation makes it practical to keep going into smaller branches.
 </div>
 
-## The Core Idea: Look Locally, Build Globally
+## Looking Locally Instead
 
-Most machine learning approaches try to understand an entire scan at once. That is hard: blood vessels make up only a tiny fraction of the pixels in a 3D scan, their geometry varies enormously between patients, and keeping a highly-branched structure connected is tricky.
+A lot of ML approaches try to segment the whole scan in one shot. That is a tough problem: vessels are a tiny fraction of the voxels, their shape varies a lot between patients, and you still need a connected tree at the end—not a pile of disconnected blobs.
 
-SeqSeg takes a different approach. Instead of swallowing the whole image, it explores the vasculature **one small piece at a time**—a bit like following a road one block at a time rather than memorizing the entire map.
+SeqSeg does something simpler. It only looks at a small neighborhood at a time and walks along the vessel, roughly the way you'd follow a road without needing the whole map in your head.
 
-Here is the intuition, without the jargon:
+In practice:
 
-- **Start from a single seed point** inside a vessel, with a rough estimate of its size and direction.
-- **Look at just the small box around it**, and use a neural network (a 3D U-Net) to segment the vessel in that local subvolume.
-- **Use that local shape** to extract a short centerline and figure out which way the vessel is heading.
-- **Step forward** along that direction and repeat.
-- **When the vessel forks**, store the branch in a queue and come back to it after finishing the current one—prioritizing the largest vessels first, much like a human would.
+- Start from a seed point inside a vessel, plus a rough guess of its size and direction.
+- Crop a small box around that point and run a 3D U-Net on just that subvolume.
+- From the local segmentation, pull a short centerline and estimate where the vessel is headed next.
+- Step forward and repeat.
+- If the vessel forks, put the branch on a queue and come back to it later—usually finishing the larger vessels first.
 
-Piece by piece, SeqSeg traces and assembles the entire connected vascular tree from that one starting click. There is no need to draw centerlines in advance—it generates them automatically as it goes, which is often the most labor-intensive step of the traditional workflow.
+That is the whole loop. From one click, SeqSeg grows a connected vascular tree. You don't have to draw centerlines up front; it builds them as it goes, which is often the part that ate the most time in the old workflow.
 
 <div class="row justify-content-sm-center">
     <div class="col-sm-10 mt-3 mt-md-0">
@@ -87,35 +87,33 @@ Piece by piece, SeqSeg traces and assembles the entire connected vascular tree f
     </div>
 </div>
 <div class="caption">
-    SeqSeg automatically traces and segments vascular structures from medical images, starting from a single seed point. It processes local segments sequentially, assembling them into a complete vascular tree.
+    SeqSeg tracing from a single seed: local segments, one after another, assembled into a full tree.
 </div>
 
-## What Surprised Me
+## What Actually Worked
 
-A few results stood out when we tested SeqSeg on CT and MR images of aortic and aortofemoral anatomy, comparing against state-of-the-art benchmark models (2D and 3D nnU-Net):
+We tested SeqSeg on CT and MR images of aortic and aortofemoral anatomy and compared it to strong baselines (2D and 3D nnU-Net). A few things stuck with me:
 
-- **It generalizes.** Because SeqSeg only ever looks locally—and vessels look remarkably similar up close, whether it is a coronary artery, the aorta, or a cerebral artery—it could segment vessels it had never seen during training. It even performed strongly on a completely independent hospital dataset it was never trained on, capturing branches that were missing from the "ground truth."
+- **It generalizes better than I expected.** Up close, a vessel looks like a vessel—coronary, aorta, cerebral. Because SeqSeg only ever sees those local neighborhoods, it could segment anatomies it never saw in training. On an independent hospital dataset it hadn't been trained on, it even picked up branches that were missing from the "ground truth."
 
-- **It stays connected.** Most segmentation methods classify each pixel independently, which often leaves gaps and disconnected fragments that break a simulation. By building the model step-by-step and tracking how branches connect, SeqSeg keeps the anatomy unified—exactly what you need to actually run physics on it. It also remembers branch connectivity, which helps place the inlet and outlet conditions a simulation requires.
+- **It stays connected.** Pixel-wise methods often leave gaps, and a broken lumen is useless for simulation. Building the model step by step keeps the tree together, and the branch history is handy when you need to place inlets and outlets.
 
-- **It is faster, and reaches farther.** On the same hardware, SeqSeg ran in roughly 20–80 minutes (depending on how many branches it traced) versus 2–3 hours for the benchmark—while consistently capturing more of the smaller, distal branches and producing more robust results.
+- **It's faster, and it reaches farther.** On the same hardware we saw roughly 20–80 minutes depending on how many branches it chased, versus about 2–3 hours for the benchmark—and SeqSeg usually kept more of the smaller distal branches.
 
-## Why This Matters
+## What's Still Rough
 
-The goal here is not to replace the expert. It is to give clinicians and researchers their time back, and to make patient-specific cardiovascular simulation accessible enough to use at scale—in large-cohort studies and, eventually, in time-sensitive clinical settings.
+I'm not trying to put experts out of a job. I want them to spend less time clicking and more time on the parts that actually need judgment—and I want patient-specific simulation to be something you can do for more than a handful of cases.
 
-There is still plenty to improve. SeqSeg relies on accurately capturing the root of each bifurcation, so a branch can be missed if its junction is obscured by image artifacts. The voxel-based segmentation can leave small staircase artifacts on the final surface, and running a neural network at every step can scale poorly for very extensive vascular networks. These are the kinds of problems I have continued to work on since.
+SeqSeg still has sharp edges. If a bifurcation root is hidden by artifacts, a branch can get dropped. The voxel segmentation can leave staircase noise on the surface. And calling a network at every step gets expensive when the vascular tree is huge. Those are the problems I've kept working on since.
 
 ## Try It Yourself
 
-SeqSeg is published, open access, in _Annals of Biomedical Engineering_:
+SeqSeg is open access in _Annals of Biomedical Engineering_:
 
 - **Paper:** [SeqSeg: Learning Local Segments for Automatic Vascular Model Construction](https://link.springer.com/article/10.1007/s10439-024-03611-z)
 - **Code:** [github.com/numisveinsson/SeqSeg](https://github.com/numisveinsson/SeqSeg)
-- **Data:** the training and test models come from the open [Vascular Model Repository](https://vascularmodel.com)
+- **Data:** training and test models from the open [Vascular Model Repository](https://vascularmodel.com)
 
-If you want a hands-on walkthrough of setting up SeqSeg—from preparing a new dataset through training and inference—see my companion tutorial post on this blog.
+If you want a walkthrough of setup, training, and inference, there's a [companion tutorial](/blog/2025/seqseg_setup/) on this blog.
 
----
-
-_Working on automation in medical imaging or cardiovascular modeling? I would love to hear where you think the biggest remaining bottlenecks are—feel free to reach out or leave a comment below._
+Questions or stuck somewhere in the pipeline? Leave a comment below.
