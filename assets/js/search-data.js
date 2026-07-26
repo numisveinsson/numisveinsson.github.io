@@ -331,7 +331,10 @@ ninja.data = [{
           description: "",
           section: "News",handler: () => {
               window.location.href = "/news/26_07_14_wcb_vancouver/";
-            },},{id: "projects-automatic-vessel-tracking",
+            },},{id: "news-gave-a-keynote-talk-on-scalable-automation-of-cardiovascular-geometric-modeling-for-patient-specific-simulation-at-wccm-eccomas-2026-in-munich-germany-presented-in-mini-symposium-ms120-recent-advances-in-computational-methods-for-the-cardiovascular-system-the-talk-covered-meshgrow-linflo-net-and-seqseg-citing-meshgrow-jrsm-cardiovascular-disease-2026-the-earlier-meshgrow-conference-paper-fimh-2025-linflo-net-journal-of-biomechanical-engineering-2024-and-seqseg-annals-of-biomedical-engineering-2025",
+          title: 'Gave a keynote talk on “Scalable Automation of Cardiovascular Geometric Modeling for Patient-Specific...',
+          description: "",
+          section: "News",},{id: "projects-automatic-vessel-tracking",
           title: 'Automatic Vessel Tracking',
           description: "using machine learning to algorithmically track blood vessels without manual input",
           section: "Projects",handler: () => {
