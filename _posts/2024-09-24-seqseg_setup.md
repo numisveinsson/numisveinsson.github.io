@@ -51,26 +51,85 @@ A few things to note:
 
 The next step is to preprocess the data for training. SeqSeg requires a model trained on local patches, so we need to extract patches from the images and masks based on centerlines.
 
-The repository for this is [`BloodVesselML3D`](https://github.com/numisveinsson/BloodVesselML3D) and the script is `gather_sampling_data_parallel.py`. This requires the following arguments:
+The repository for this is [`vascular-segment-sampler`](https://github.com/numisveinsson/vascular-segment-sampler). Use `main_with_nnunet.py` to extract patches and convert them to nnU-Net format in one step. First, edit the configuration YAML in `config/` (e.g. `config/global.yaml`) so it matches your dataset, then run:
 
-- `config` - the configuration file for the dataset, which you must change to match your data
+```bash
+python3 main_with_nnunet.py \
+    --config_name global \
+    --data_dir /path/to/data \
+    --outdir ./extracted_data/ \
+    --num_cores 4 \
+    --modality CT \
+    --nnunet_name AORTAS \
+    --nnunet_dataset_number 1
+```
 
-Next, we must change the naming structure to match nnU-Net. This is done with the `dataset_dirs/create_nnunet.py` script. The new data can be output anywhere, but we recommend directly into the nnU-Net Raw directory.
+Key arguments:
+
+- `--config_name` — name of the configuration file in `config/` (without `.yaml`)
+- `--data_dir` — directory containing `images/`, `truths/`, and `centerlines/`
+- `--outdir` — where extracted patches and the nnU-Net dataset are written (default: `./extracted_data/`)
+- `--modality` — imaging modality (`CT`, `MR`, or comma-separated, e.g. `CT,MR`)
+- `--nnunet_name` — dataset name for nnU-Net (default: `AORTAS`)
+- `--nnunet_dataset_number` — nnU-Net dataset number (default: `1`)
+
+For a quick test on a subset of cases:
+
+```bash
+python3 main_with_nnunet.py \
+    --config_name global \
+    --data_dir /path/to/data \
+    --outdir ./extracted_data/ \
+    --modality CT \
+    --nnunet_name AORTAS \
+    --nnunet_dataset_number 1 \
+    --max_samples 100 \
+    --testing
+```
+
+The new data can be output anywhere, but we recommend writing directly into the nnU-Net Raw directory (or copying the resulting `DatasetXXX_*` folder there).
 
 ## 3. Training
 
-The next step is to train the model. This is done with the specific nnU-Net commands, which are detailed in the [`nnU-Net`](https://github.com/MIC-DKFZ/nnUNet) repository.
+The next step is to train the model with [`nnU-Net`](https://github.com/MIC-DKFZ/nnUNet) (see the [documentation](https://github.com/MIC-DKFZ/nnUNet/blob/master/documentation/how_to_use_nnunet.md) for more details). Make sure `nnUNet_raw`, `nnUNet_preprocessed`, and `nnUNet_results` are set, and that the dataset from step 2 is in `nnUNet_raw`.
 
-This requires two commands (see [documentation](https://github.com/MIC-DKFZ/nnUNet/blob/master/documentation/how_to_use_nnunet.md) for more details):
+### Preprocessing
 
-- `prepocessing` command
-- `train` command
+Run fingerprint extraction, experiment planning, and preprocessing:
 
-You can train:
+```bash
+nnUNetv2_plan_and_preprocess -d 1 --verify_dataset_integrity
+```
 
-- 2D models
-- 3D low resolution models
-- 3D full resolution models
+Replace `1` with the `--nnunet_dataset_number` you used above. Use `--verify_dataset_integrity` the first time you run this. To preprocess only a specific configuration:
+
+```bash
+nnUNetv2_plan_and_preprocess -d 1 -c 3d_fullres
+```
+
+### Training
+
+Train a fold with:
+
+```bash
+nnUNetv2_train DATASET_NAME_OR_ID CONFIGURATION FOLD
+```
+
+For example, with dataset `1` (`Dataset001_AORTAS`), train fold 0 of a 3D full-resolution model:
+
+```bash
+nnUNetv2_train 1 3d_fullres 0
+```
+
+Repeat for folds `0`–`4` (or train fold `all` for a single model on all training cases). Other common configurations:
+
+```bash
+nnUNetv2_train 1 2d 0
+nnUNetv2_train 1 3d_lowres 0
+nnUNetv2_train 1 3d_fullres 0
+```
+
+Add `--npz` if you plan to use `nnUNetv2_find_best_configuration` later. Resume an interrupted run with `--c`.
 
 ## 4. Inference
 
