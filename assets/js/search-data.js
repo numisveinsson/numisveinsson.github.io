@@ -4,66 +4,59 @@ const ninja = document.querySelector('ninja-keys');
 // add the home and posts menu items
 ninja.data = [{
     id: "nav-about",
-    title: "about",
+    title: "About",
     section: "Navigation",
     handler: () => {
       window.location.href = "/";
     },
-  },{id: "nav-blog",
-          title: "blog",
-          description: "",
+  },{id: "nav-research",
+          title: "Research",
+          description: "Computational modeling, artificial intelligence and medical imaging for cardiovascular and respiratory medicine.",
           section: "Navigation",
           handler: () => {
-            window.location.href = "/blog/";
+            window.location.href = "/research/";
           },
         },{id: "nav-publications",
-          title: "publications",
+          title: "Publications",
           description: "Peer-reviewed papers and doctoral work, newest first.",
           section: "Navigation",
           handler: () => {
             window.location.href = "/publications/";
           },
-        },{id: "nav-repositories",
-          title: "repositories",
-          description: "",
+        },{id: "nav-software",
+          title: "Software",
+          description: "Open tools, data and research projects from my work in computational medicine.",
           section: "Navigation",
           handler: () => {
-            window.location.href = "/repositories/";
+            window.location.href = "/software/";
           },
         },{id: "nav-talks",
-          title: "talks",
-          description: "Conference presentations, invited talks, and other speaking engagements.",
+          title: "Talks",
+          description: "Keynotes, conference presentations, workshops and other speaking.",
           section: "Navigation",
           handler: () => {
             window.location.href = "/talks/";
           },
-        },{id: "nav-projects",
-          title: "projects",
-          description: "Research, collaborations and earlier coursework, past and current.",
-          section: "Navigation",
-          handler: () => {
-            window.location.href = "/projects/";
-          },
         },{id: "nav-teaching",
-          title: "teaching",
-          description: "",
+          title: "Teaching",
+          description: "Teaching philosophy, courses, student feedback and mentoring.",
           section: "Navigation",
           handler: () => {
             window.location.href = "/teaching/";
           },
+        },{id: "nav-writing",
+          title: "Writing",
+          description: "",
+          section: "Navigation",
+          handler: () => {
+            window.location.href = "/blog/";
+          },
         },{id: "nav-cv",
-          title: "cv",
+          title: "CV",
           description: "The PDF version is linked on the right.",
           section: "Navigation",
           handler: () => {
             window.location.href = "/cv/";
-          },
-        },{id: "nav-contact",
-          title: "contact",
-          description: "Get in touch for collaborations, questions, or opportunities.",
-          section: "Navigation",
-          handler: () => {
-            window.location.href = "/contact/";
           },
         },{id: "post-one-model-heart-and-vessels-how-meshgrow-builds-simulation-ready-cardiovascular-anatomy",
         
