@@ -1,4 +1,5 @@
 ---
+math: true
 layout: distill
 title: Bioprinting; Modeling Cell Survival
 description: Modeling chemical concentration via diffusion equation to inform bioprinting template design

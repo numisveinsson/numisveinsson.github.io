@@ -83,7 +83,7 @@ That is the whole loop. From one click, SeqSeg grows a connected vascular tree. 
 
 <div class="row justify-content-sm-center">
     <div class="col-sm-10 mt-3 mt-md-0">
-        {% include figure.html path="assets/img/publication_preview/mr_model_tracing_fast_shorter.gif" title="SeqSeg automatic tracing" alt="Animation of SeqSeg sequentially tracing and segmenting a vascular tree from a single seed point" class="img-fluid rounded z-depth-1" %}
+        <video class="img-fluid rounded z-depth-1" autoplay loop muted playsinline poster="{{ '/assets/img/seqseg_tracing_frame.jpg' | relative_url }}" aria-label="Animation of SeqSeg automatically tracing and segmenting a vascular model from a medical image"><source src="{{ '/assets/video/seqseg_tracing.mp4' | relative_url }}" type="video/mp4"></video>
     </div>
 </div>
 <div class="caption">

@@ -1,6 +1,6 @@
 role: Postdoctoral Fellow · Oden Institute, UT Austin
 mission: I build AI and simulation tools that turn medical images into patient-specific models of the heart and blood vessels.
-portrait: assets/img/prof_pic_headshot_final.jpeg
+portrait: assets/img/home/portrait.jpg
 interests: Computational medicine, cardiovascular and respiratory modeling, medical image analysis, deep learning, digital twins
 education:
   - { degree: Ph.D. Mechanical Engineering, place: "UC Berkeley, 2025" }
