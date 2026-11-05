@@ -8,7 +8,7 @@ const puppeteer = require("puppeteer-core");
 
 const [siteDir, output] = process.argv.slice(2);
 if (!siteDir || !output || !process.env.CHROME_PATH) {
-  console.error("Usage: CHROME_PATH=/path/to/chrome node bin/build-cv-pdf.js <site-dir> <output.pdf>");
+  console.error("::error::Usage: CHROME_PATH=/path/to/chrome node bin/build-cv-pdf.js <site-dir> <output.pdf>");
   process.exit(1);
 }
 
@@ -60,6 +60,8 @@ const server = http.createServer((req, res) => {
     server.close();
   }
 })().catch((error) => {
+  // The ::error:: prefix makes GitHub Actions show the message as a public annotation.
+  console.error(`::error::CV PDF failed: ${String(error.message).split("\n").join(" ")}`);
   console.error(error);
   process.exit(1);
 });
