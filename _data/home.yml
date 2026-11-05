@@ -26,6 +26,18 @@ themes:
     link_text: Read about the lab
     link: /blog/2026/joining-pmml-taylor-lab/
 
+model:
+  src: assets/models/meshgrow_heart.glb
+  alt: Interactive 3D model of the heart chambers connected to the aorta and pulmonary artery, built by MeshGrow
+  text: MeshGrow connects the vasculature to the rest of the cardiovascular system, here the cardiac chambers, to create one complete anatomical model. This example was built automatically from a medical image and simplified for the web.
+  legend:
+    - { name: Aorta, color: "#c9644b" }
+    - { name: Pulmonary artery, color: "#a11d33" }
+    - { name: Left ventricle, color: "#d3a98c" }
+    - { name: Right ventricle, color: "#3a4fa8" }
+    - { name: Left atrium, color: "#cfcbc2" }
+    - { name: Right atrium, color: "#8fb0e0" }
+
 work:
   - meta: JRSM Cardiovascular Disease · 2026
     title: "MeshGrow: simulation-ready heart and vessel models from medical images"

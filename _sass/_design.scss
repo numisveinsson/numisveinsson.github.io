@@ -795,3 +795,73 @@ h6,
     }
   }
 }
+
+// Interactive 3D model
+
+.model-grid {
+  align-items: center;
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+}
+
+.model-frame {
+  background: #ffffff;
+  border: 1px solid var(--global-divider-color);
+  border-radius: $radius;
+  height: 32rem;
+  overflow: hidden;
+
+  model-viewer {
+    --poster-color: transparent;
+    display: block;
+    height: 100%;
+    width: 100%;
+  }
+
+  img {
+    height: 100%;
+    object-fit: contain;
+    width: 100%;
+  }
+}
+
+.model-legend {
+  display: grid;
+  font-size: 0.92rem;
+  gap: 0.35rem 1rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  list-style: none;
+  margin: 0 0 1rem;
+  padding: 0;
+
+  li {
+    align-items: center;
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  span {
+    border-radius: 50%;
+    display: inline-block;
+    flex: none;
+    height: 0.75rem;
+    width: 0.75rem;
+  }
+}
+
+.model-hint {
+  color: var(--global-text-color-light);
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+@media (max-width: 767px) {
+  .model-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .model-frame {
+    height: 24rem;
+  }
+}
