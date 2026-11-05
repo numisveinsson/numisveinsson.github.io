@@ -4,7 +4,7 @@ title: Deep Learning to Locate Heart in Medical Image Volume
 description: Utilizing deep object detection techniques for heart location prediction in medical image volume
 img: assets/img/heart_loc.jpg
 importance: 5
-category: solo
+category: lead
 related_publications:
 
 toc:

@@ -9,7 +9,7 @@ featured: false
 related_posts: true
 
 authors:
-  - name: Numi Sveinsson Cepero
+  - name: Númi Sveinsson Cepero
     url: numisveinsson.com
     affiliations:
       name: UC Berkeley

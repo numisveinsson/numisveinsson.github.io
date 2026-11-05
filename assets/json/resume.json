@@ -1,7 +1,7 @@
 {
   "basics": {
     "name": "Númi Sveinsson Cepero",
-    "label": "Ph.D. in Mechanical Engineering | Computational Modeling & Medical Imaging",
+    "label": "Postdoctoral Fellow, Oden Institute, UT Austin | Computational Modeling & Medical Imaging",
     "image": "",
     "email": "numi@utexas.edu",
     "phone": "",
@@ -27,7 +27,6 @@
       }
     ]
   },
-
   "education": [
     {
       "institution": "University of California, Berkeley",
@@ -87,16 +86,17 @@
       "location": "Stanford, CA, USA"
     }
   ],
-
   "research": [
     {
       "name": "The University of Texas at Austin — Oden Institute for Computational Engineering and Sciences",
-      "position": "Postdoctoral Position",
+      "position": "Postdoctoral Fellow",
       "startDate": "2025",
       "endDate": "Present",
       "location": "Austin, TX, USA",
       "summary": "Research focuses on integrating artificial intelligence, medical imaging, and computational modeling to study physiology and advance medicine. Expanding research to explore clinically driven applications of AI and simulation, with the goal of developing digital tools that bridge computational models and patient care.",
-      "highlights": ["Advisor: Prof. Charles A. Taylor"]
+      "highlights": [
+        "Advisor: Prof. Charles A. Taylor"
+      ]
     },
     {
       "name": "University of California, Berkeley — Mechanical Engineering Department",
@@ -118,7 +118,9 @@
       "endDate": "2020",
       "location": "Reykjavík, Iceland",
       "summary": "",
-      "highlights": ["Advisor: Prof. Sigurður Brynjólfsson"]
+      "highlights": [
+        "Advisor: Prof. Sigurður Brynjólfsson"
+      ]
     },
     {
       "name": "University of Iceland — Department of Medicine",
@@ -127,11 +129,24 @@
       "endDate": "2019",
       "location": "Reykjavík, Iceland",
       "summary": "",
-      "highlights": ["Advisor: Prof. Thórarinn Guðjónsson"]
+      "highlights": [
+        "Advisor: Prof. Thórarinn Guðjónsson"
+      ]
     }
   ],
-
   "work": [
+    {
+      "name": "The University of Texas at Austin — Oden Institute for Computational Engineering and Sciences",
+      "position": "Postdoctoral Fellow",
+      "url": "https://oden.utexas.edu/research/centers-and-groups/center-for-computational-medicine/",
+      "startDate": "2025",
+      "endDate": "Present",
+      "location": "Austin, TX, USA",
+      "summary": "Research focuses on integrating artificial intelligence, medical imaging, and computational modeling to study physiology and advance medicine. Expanding research to explore clinically driven applications of AI and simulation, with the goal of developing digital tools that bridge computational models and patient care.",
+      "highlights": [
+        "Center for Computational Medicine, working with Prof. Charles A. Taylor"
+      ]
+    },
     {
       "name": "University of California, Berkeley — Mechanical Engineering Department",
       "position": "Graduate Researcher",
@@ -141,7 +156,7 @@
       "location": "Berkeley, CA, USA",
       "summary": "Developed deep learning–based methods for automatic vascular model construction and trajectory-oriented vessel tracking in medical imaging. Integrated physics-based modeling and machine learning to enable patient-specific cardiovascular simulations.",
       "highlights": [
-        "Developed SeqSeg: a deep learning framework for coronary artery segmentation",
+        "Developed SeqSeg: a deep learning framework for automatic vascular segmentation and model construction",
         "Created MeshGrow: an automated pipeline for unified cardiac and vascular mesh generation",
         "Contributed to SimVascular open-source cardiovascular modeling software",
         "Mentored undergraduate and MEng teams in medical image analysis projects"
@@ -155,7 +170,9 @@
       "endDate": "2020",
       "location": "Reykjavík, Iceland",
       "summary": "Worked on material property analysis for medical biomaterials.",
-      "highlights": ["Collaborated on R&D for regenerative medical materials."]
+      "highlights": [
+        "Collaborated on R&D for regenerative medical materials."
+      ]
     },
     {
       "name": "University of Iceland — Department of Medicine",
@@ -166,8 +183,14 @@
       "summary": "Developed computational models for new lung experimental technologies."
     }
   ],
-
   "publications": [
+    {
+      "name": "MeshGrow: Integrated framework for simulation-ready cardiac and vascular mesh construction from medical imaging",
+      "publisher": "JRSM Cardiovascular Disease",
+      "releaseDate": "2026",
+      "url": "https://doi.org/10.1177/20480040261455944",
+      "summary": "N. Sveinsson Cepero, A. Narayanan, F. Kong, and S. C. Shadden. Automates combined cardiac and vascular model construction for patient-specific simulation."
+    },
     {
       "name": "SeqSeg: Learning Local Segments for Automatic Vascular Model Construction",
       "publisher": "Annals of Biomedical Engineering",
@@ -188,7 +211,6 @@
       "summary": "Ph.D. Dissertation. Explores deep learning for automated vascular model construction."
     }
   ],
-
   "service": [
     {
       "position": "Reviewer for MICCAI (Medical Image Computing and Computer Assisted Intervention) Conference submissions",
@@ -263,7 +285,6 @@
       "summary": "Outreach / advocacy"
     }
   ],
-
   "awards": [
     {
       "title": "UC Berkeley Engineering Ph.D. Commencement Speech",
@@ -341,50 +362,103 @@
       "awarder": "University of Iceland"
     }
   ],
-
   "skills": [
     {
       "name": "Programming and Scripting",
-      "keywords": ["Python", "C++", "MATLAB", "Bash"]
+      "keywords": [
+        "Python",
+        "C++",
+        "MATLAB",
+        "Bash"
+      ]
     },
     {
       "name": "Medical Image Processing",
-      "keywords": ["Segmentation", "Registration", "CT/MRI", "ITK", "VTK", "MONAI"]
+      "keywords": [
+        "Segmentation",
+        "Registration",
+        "CT/MRI",
+        "ITK",
+        "VTK",
+        "MONAI"
+      ]
     },
     {
       "name": "Deep Learning and Computer Vision",
-      "keywords": ["CNN", "Transformers", "U-Net", "Gaussian heatmaps", "Trajectory prediction", "Transfer learning"]
+      "keywords": [
+        "CNN",
+        "Transformers",
+        "U-Net",
+        "Gaussian heatmaps",
+        "Trajectory prediction",
+        "Transfer learning"
+      ]
     },
     {
       "name": "Computational Modeling and Simulation",
-      "keywords": ["Mesh generation", "CFD", "FSI", "SimVascular", "ANSYS", "ParaView"]
+      "keywords": [
+        "Mesh generation",
+        "CFD",
+        "FSI",
+        "SimVascular",
+        "ANSYS",
+        "ParaView"
+      ]
     },
     {
       "name": "Software Development and Collaboration",
-      "keywords": ["Git", "GitHub", "Docker", "Linux", "Continuous Integration"]
+      "keywords": [
+        "Git",
+        "GitHub",
+        "Docker",
+        "Linux",
+        "Continuous Integration"
+      ]
     },
     {
       "name": "Visualization and Data Analysis",
-      "keywords": ["Matplotlib", "ParaView", "VTK"]
+      "keywords": [
+        "Matplotlib",
+        "ParaView",
+        "VTK"
+      ]
     },
     {
       "name": "General Tools and Workflow",
-      "keywords": ["LaTeX", "Overleaf", "HPC", "Slurm"]
+      "keywords": [
+        "LaTeX",
+        "Overleaf",
+        "HPC",
+        "Slurm"
+      ]
     }
   ],
-
   "languages": [
-    { "language": "English", "fluency": "Fluent" },
-    { "language": "Icelandic", "fluency": "Native" },
-    { "language": "Danish", "fluency": "Intermediate" },
-    { "language": "Spanish", "fluency": "Intermediate" },
-    { "language": "French", "fluency": "Beginner" }
+    {
+      "language": "English",
+      "fluency": "Fluent"
+    },
+    {
+      "language": "Icelandic",
+      "fluency": "Native"
+    },
+    {
+      "language": "Danish",
+      "fluency": "Intermediate"
+    },
+    {
+      "language": "Spanish",
+      "fluency": "Intermediate"
+    },
+    {
+      "language": "French",
+      "fluency": "Beginner"
+    }
   ],
-
   "projects": [
     {
       "name": "SeqSeg",
-      "summary": "Deep learning–based framework for automated segmentation of coronary arteries from CT images.",
+      "summary": "Deep learning framework for automated vascular segmentation and model construction from CT and MR images.",
       "url": "https://github.com/numisveinsson/SeqSeg"
     },
     {

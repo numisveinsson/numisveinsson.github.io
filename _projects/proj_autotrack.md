@@ -2,9 +2,9 @@
 layout: distill
 title: Automatic Vessel Tracking
 description: using machine learning to algorithmically track blood vessels without manual input
-img: assets/img/red-blood-cells.jpg
+img: assets/img/seqseg_tracing_frame.jpg
 importance: 1
-category: solo
+category: lead
 related_publications:
 
 toc:
@@ -14,7 +14,7 @@ toc:
   - name: Approach
 ---
 
-<img src="../../assets/img/red-blood-cells.jpg" alt="Red blood cells flowing through a blood vessel" width="600"/>
+<img src="../../assets/img/seqseg_tracing_frame.jpg" alt="Aorta and iliac arteries traced automatically through an abdominal CT volume" width="600"/>
 
 ## Introduction
 

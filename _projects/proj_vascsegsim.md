@@ -28,7 +28,7 @@ However, the accuracy of the machine learning models must be validated to ensure
 
 [SimVascular](https://simvascular.github.io/) is an open-source software platform for cardiovascular modeling that provides tools for image segmentation, mesh generation, and hemodynamic simulations. It is widely used in the field of cardiovascular research and has been validated against experimental data.
 
-[SvSolver](https://simvascular.github.io/documentation/flowsolver.html) is a module within SimVascular that provides tools for performing hemodynamic simulations. It uses finite element methods to solve the Navier-Stokes equations governing blood flow and can simulate blood flow in complex geometries.
+[SvSolver](https://github.com/SimVascular/svSolver) is a module within SimVascular that provides tools for performing hemodynamic simulations. It uses finite element methods to solve the Navier-Stokes equations governing blood flow and can simulate blood flow in complex geometries.
 
 ### Results
 

@@ -2,10 +2,10 @@
 layout: page
 title: projects
 permalink: /projects/
-description: A collection of past and current project.
+description: Research, collaborations and earlier coursework, past and current.
 nav: true
 nav_order: 4
-display_categories: [solo, collaboration, coursework]
+display_categories: [lead, collaboration, coursework]
 horizontal: false
 ---
 

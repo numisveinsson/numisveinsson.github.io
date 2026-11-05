@@ -4,7 +4,7 @@ title: SeqSeg - Patient-Specific Vascular Geometric Modeling
 description: a machine learning approach to segment CT and MR images
 img: assets/img/CardioVascularModeling.png
 importance: 2
-category: solo
+category: lead
 related_publications:
 toc:
   - name: Introduction

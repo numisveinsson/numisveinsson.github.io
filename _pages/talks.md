@@ -65,7 +65,9 @@ nav_order: 3
             {%- endif %}
           {%- endif %}
           
-          {%- if talk.url and (talk.url contains 'youtube.com' == false and talk.url contains 'youtu.be' == false) %}
+          {%- assign is_video = false %}
+          {%- if talk.url contains 'youtube.com' or talk.url contains 'youtu.be' %}{%- assign is_video = true %}{%- endif %}
+          {%- if talk.url and is_video == false %}
             <p><a href="{{ talk.url }}" target="_blank">View slides/recording</a></p>
           {%- endif %}
         </div>
@@ -126,7 +128,9 @@ nav_order: 3
           {%- endif %}
         {%- endif %}
         
-        {%- if talk.url and (talk.url contains 'youtube.com' == false and talk.url contains 'youtu.be' == false) %}
+        {%- assign is_video = false %}
+        {%- if talk.url contains 'youtube.com' or talk.url contains 'youtu.be' %}{%- assign is_video = true %}{%- endif %}
+        {%- if talk.url and is_video == false %}
           <p><a href="{{ talk.url }}" target="_blank">View slides/recording</a></p>
         {%- endif %}
       </div>

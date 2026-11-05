@@ -4,7 +4,7 @@ title: reduced-order blood flow modeling
 description: improving ROM parameters and automatizing medical image -> model pipeline
 img: assets/img/roms_0.png
 importance: 3
-category: solo
+category: lead
 related_publications:
 
 toc:

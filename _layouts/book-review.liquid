@@ -153,7 +153,7 @@ layout: default
     {% endif %}
   </article>
 
-  {% if site.giscus and page.giscus_comments %}
+  {% if site.giscus.repo_id and page.giscus_comments %}
     {% include giscus.liquid %}
   {% endif %}
 </div>

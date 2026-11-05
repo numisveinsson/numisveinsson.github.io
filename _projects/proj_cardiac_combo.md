@@ -4,7 +4,7 @@ title: MeshGrow - Combining Vascular and Cardiac Models into One
 description: combining the models of the heart and the blood vessels into a single simulation-ready model for patient-specific simulations
 img: assets/img/cardiac_combo.png
 importance: 5
-category: solo
+category: lead
 related_publications:
 
 toc:

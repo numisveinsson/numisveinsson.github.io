@@ -1,12 +1,12 @@
 ---
 layout: post
-title: Awarded Prestigious Graduate Divison Block Grant
+title: Awarded Prestigious Graduate Division Block Grant
 date: 2023-08-14 07:59:00-0400
 inline: false
 related_posts: false
 ---
 
-Awarded Prestigious Graduate Divison Block Grant to Advance PhD Research at UC Berkeley from the Mechanical Engineering Department.
+Awarded Prestigious Graduate Division Block Grant to Advance PhD Research at UC Berkeley from the Mechanical Engineering Department.
 
 ---
 

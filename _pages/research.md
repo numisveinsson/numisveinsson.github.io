@@ -1,5 +1,6 @@
 ---
 layout: page
+published: false # draft: held back until the public research page is ready
 permalink: /research/
 title: research
 description: Research statement outlining past contributions, current work, and future directions in computational medicine, cardiovascular modeling, and AI-driven healthcare solutions.

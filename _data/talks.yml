@@ -2,6 +2,7 @@
   venue: "WCCM-ECCOMAS 2026 (World Congress on Computational Mechanics & ECCOMAS Congress)"
   location: "Munich, Germany"
   date: "July 2026"
+  selected: true
   description: "Keynote talk in mini-symposium MS120 — Recent Advances in Computational Methods for the Cardiovascular System."
 
 - title: "Sub-Voxel Vascular Segmentation from Coarse Resolution Medical Imaging"
@@ -56,6 +57,6 @@
 
 - title: "Automatic Image-Based Vascular Model Construction"
   venue: "Cardiovascular Implant Durability Conference 2023"
-  location: "Monterrey, California, USA"
+  location: "Monterey, California, USA"
   date: "October 2023"
   description: "Presented SeqSeg, a method for automatic construction of patient-specific vascular models from medical images."

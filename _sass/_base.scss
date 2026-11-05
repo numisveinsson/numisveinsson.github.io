@@ -1230,6 +1230,13 @@ nav[data-toggle="toc"] {
   z-index: 1;
 }
 
+/* the mobile rule for nav[data-toggle="toc"] does not reach this element */
+@media (max-width: 576px) {
+  #toc-sidebar {
+    display: none;
+  }
+}
+
 .echarts {
   height: 400px;
   width: 100%;

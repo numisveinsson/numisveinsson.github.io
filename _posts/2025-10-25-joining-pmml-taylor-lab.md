@@ -4,12 +4,13 @@ title: "Joining the Predictive Modeling in Medicine Lab (PMML) at UT Austin"
 description: I joined Prof. Charley Taylor's Predictive Modeling in Medicine Lab, part of the Center for Computational Medicine at the Oden Institute and Dell Medical School, UT Austin.
 categories: news
 giscus_comments: true
-date: 2026-06-10
+date: 2025-10-25
+permalink: /blog/2026/joining-pmml-taylor-lab/
 featured: true
 related_posts: true
 
 authors:
-  - name: Numi Sveinsson Cepero
+  - name: Númi Sveinsson Cepero
     url: numisveinsson.com
     affiliations:
       name: Oden Institute, UT Austin

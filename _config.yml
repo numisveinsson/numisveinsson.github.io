@@ -3,16 +3,16 @@
 # -----------------------------------------------------------------------------
 
 title: blank # the website title (if blank, full name will be used instead)
-first_name: Numi # your first name
+first_name: Númi # your first name
 middle_name:
 last_name: Sveinsson Cepero
 email: numi@utexas.edu
 description: > # the ">" symbol means to ignore newlines until "footer_text:"
-  Personal website of Numi Sveinsson Cepero, a Postdoctoral Fellow at the Oden Institute, UT Austin,
+  Personal website of Númi Sveinsson Cepero, a Postdoctoral Fellow at the Oden Institute, UT Austin,
   working on computational modeling, deep learning, and medical imaging for patient-specific cardiovascular and respiratory simulation.
 footer_text: >
   Hosted by <a href="https://pages.github.com/" target="_blank">GitHub Pages</a>.
-keywords: Numi Sveinsson Cepero, computational medicine, cardiovascular modeling, deep learning, medical imaging, vascular segmentation, hemodynamics, digital twins, SimVascular # add your own keywords or leave empty
+keywords: Númi Sveinsson Cepero, Numi Sveinsson Cepero, computational medicine, cardiovascular modeling, deep learning, medical imaging, vascular segmentation, hemodynamics, digital twins, SimVascular # add your own keywords or leave empty
 lang: en # the language of your site (for example: en, fr, cn, ru, etc.)
 icon: icon.png # the emoji used as the favicon (alternatively, provide image name in /assets/img/)
 
@@ -84,7 +84,7 @@ bing_site_verification: # out your bing-site-verification ID (Bing Webmaster)
 # Blog
 # -----------------------------------------------------------------------------
 
-blog_name: Numi Notes # blog_name will be displayed in your blog page
+blog_name: Númi Notes # blog_name will be displayed in your blog page
 blog_description: Thoughts on computational modeling, deep learning for medical imaging, patient-specific simulation, and life in academia
 permalink: /blog/:year/:title/
 lsi: false # produce an index for related posts
@@ -170,6 +170,7 @@ kramdown:
 # Includes & excludes
 include: ["_pages", "_scripts"]
 exclude:
+  - assets/jupyter/
   - bin/
   - CONTRIBUTING.md
   - CUSTOMIZE.md
@@ -182,6 +183,7 @@ exclude:
   - INSTALL.md
   - LICENSE
   - lighthouse_results/
+  - old_blog_posts/
   - package.json
   - package-lock.json
   - purgecss.config.js
@@ -318,7 +320,7 @@ filtered_bibtex_keywords:
   ]
 
 # Maximum number of authors to be shown for each publication (more authors are visible on click)
-max_author_limit: 3 # leave blank to always show all authors
+max_author_limit: # leave blank to always show all authors
 more_authors_animation_delay: 10 # more authors are revealed on click using animation; smaller delay means faster animation
 
 # Enables publication thumbnails. If disabled, none of the publications will display thumbnails, even if specified in the bib entry.

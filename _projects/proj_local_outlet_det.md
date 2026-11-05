@@ -2,9 +2,9 @@
 layout: distill
 title: Object Detection for Blood Vessels
 description: Utilizing deep object detection techniques for blood vessel detection in medical image data
-img: assets/img/obj_det.png
+img: assets/img/local_out.png
 importance: 3
-category: solo
+category: lead
 related_publications:
 
 toc:
@@ -14,7 +14,7 @@ toc:
   - name: Key Components
 ---
 
-<img src="../../assets/img/obj_det.png" alt="Object detection applied to blood vessels in a medical image" width="600"/>
+<img src="../../assets/img/local_out.png" alt="Mask R-CNN detecting blood vessel outlets in a medical image, shown beside the input and ground truth" width="600"/>
 
 ## Motivation and Goals
 
