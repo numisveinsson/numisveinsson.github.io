@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="{{ site.lang }}">
+  <head>
+    <meta charset="utf-8">
+    <meta name="robots" content="noindex">
+    <title>CV | {{ site.data.resume.basics.name }}</title>
+    <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}">
+    <style>
+      /* Static fonts: Chrome does not keep selectable text with variable fonts in PDFs. */
+      @font-face {
+        font-family: "CV Serif";
+        font-weight: 400;
+        src: url("https://cdn.jsdelivr.net/npm/@fontsource/source-serif-4@5.3.1/files/source-serif-4-latin-400-normal.woff2") format("woff2");
+      }
+
+      @font-face {
+        font-family: "CV Serif";
+        font-style: italic;
+        font-weight: 400;
+        src: url("https://cdn.jsdelivr.net/npm/@fontsource/source-serif-4@5.3.1/files/source-serif-4-latin-400-italic.woff2") format("woff2");
+      }
+
+      @font-face {
+        font-family: "CV Serif";
+        font-weight: 600;
+        src: url("https://cdn.jsdelivr.net/npm/@fontsource/source-serif-4@5.3.1/files/source-serif-4-latin-600-normal.woff2") format("woff2");
+      }
+
+      html,
+      body {
+        background: #fff;
+      }
+
+      body,
+      h1,
+      h2,
+      h3 {
+        font-family: "CV Serif", Georgia, serif;
+      }
+
+      .cv-document .cv-row {
+        gap: 0.9rem;
+        grid-template-columns: 6.6rem minmax(0, 1fr);
+      }
+
+      strong {
+        font-weight: 600;
+      }
+
+      body {
+        font-size: 10.5pt;
+        line-height: 1.45;
+        margin: 0;
+        padding: 0;
+      }
+
+      .cv-print-header {
+        margin-bottom: 1.25rem;
+        text-align: center;
+      }
+
+      .cv-print-header h1 {
+        font-size: 24pt;
+        margin: 0 0 0.25rem;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="cv-document">
+      <header class="cv-print-header">
+        <h1>{{ site.data.resume.basics.name }}</h1>
+        <a href="mailto:{{ site.data.resume.basics.email }}">{{ site.data.resume.basics.email }}</a>
+        · <a href="{{ site.data.resume.basics.url }}">numisveinsson.com</a> ·
+        <a href="{{ site.data.resume.basics.linkedin }}">LinkedIn</a>
+      </header>
+      {% include cv/sections.liquid %}
+    </main>
+  </body>
+</html>

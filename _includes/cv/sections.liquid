@@ -1,0 +1,128 @@
+{% assign cv = site.data.resume %}
+<section id="education">
+  <h2>Education</h2>
+  {% for item in cv.education %}
+    <div class="cv-row">
+      <div class="cv-row__when">{{ item.year }}</div>
+      <div>
+        <strong>{{ item.degree }}</strong><br>
+        {{ item.institution }}
+        {% if item.details %}<br><span class="cv-muted">{{ item.details | join: ' · ' }}</span>{% endif %}
+      </div>
+    </div>
+  {% endfor %}
+</section>
+
+<section id="research-experience">
+  <h2>Research Experience</h2>
+  <p>{{ cv.research_intro }}</p>
+  {% for item in cv.positions %}
+    <div class="cv-row">
+      <div class="cv-row__when">{{ item.when }}</div>
+      <div>
+        <strong>{{ item.position }}</strong>, {{ item.institution }}<br>
+        <span class="cv-muted">{{ item.unit }} · {{ item.location }} · Advisor: {{ item.advisor }}</span>
+        {% if item.summary %}<p>{{ item.summary }}</p>{% endif %}
+        {% if item.highlights %}
+          <ul>
+            {% for line in item.highlights %}<li>{{ line }}</li>{% endfor %}
+          </ul>
+        {% endif %}
+      </div>
+    </div>
+  {% endfor %}
+</section>
+
+<section id="publications">
+  <h2>Publications</h2>
+  <div class="cv-publications">
+    {% bibliography --template cv_bib %}
+  </div>
+  {% if cv.manuscripts %}
+    <h3>Submitted Manuscripts</h3>
+    <ul>
+      {% for line in cv.manuscripts %}<li>{{ line }}</li>{% endfor %}
+    </ul>
+  {% endif %}
+</section>
+
+<section id="presentations">
+  <h2>Presentations and Workshops</h2>
+  <ul>
+    {% for talk in site.data.talks %}
+      <li>
+        <em>{{ talk.title }}</em>{% if talk.type %}{% unless talk.title contains talk.type %} ({{ talk.type }}){% endunless %}{% endif %}, {{ talk.venue }}, {{ talk.location }}, {{ talk.date }}.
+      </li>
+    {% endfor %}
+  </ul>
+</section>
+
+<section id="teaching">
+  <h2>Teaching Experience</h2>
+  {% for item in cv.teaching %}
+    <div class="cv-row">
+      <div class="cv-row__when">{{ item.when }}</div>
+      <div>
+        <strong>{{ item.role }}</strong>, {{ item.course }}<br>
+        <span class="cv-muted">{{ item.institution }} · Instructor: {{ item.instructor }}</span>
+        {% if item.note %}<br>{{ item.note }}{% endif %}
+      </div>
+    </div>
+  {% endfor %}
+</section>
+
+<section id="mentorship">
+  <h2>Mentorship</h2>
+  <ul>
+    {% for line in cv.mentorship %}<li>{{ line }}</li>{% endfor %}
+  </ul>
+</section>
+
+<section id="software">
+  <h2>Datasets and Tools</h2>
+  <ul>
+    {% for line in cv.software %}<li>{{ line }}</li>{% endfor %}
+  </ul>
+</section>
+
+<section id="collaborations">
+  <h2>Research Collaborations</h2>
+  <ul>
+    {% for line in cv.collaborations %}<li>{{ line }}</li>{% endfor %}
+  </ul>
+</section>
+
+<section id="service">
+  <h2>Professional Service</h2>
+  <ul>
+    {% for line in cv.service %}<li>{{ line }}</li>{% endfor %}
+  </ul>
+</section>
+
+<section id="awards">
+  <h2>Awards and Fellowships</h2>
+  <ul>
+    {% for item in cv.awards %}<li>{{ item.title }}, {{ item.year }}.</li>{% endfor %}
+  </ul>
+</section>
+
+<section id="skills">
+  <h2>Skills</h2>
+  {% for group in cv.skills %}
+    <p class="cv-skill"><strong>{{ group.name }}:</strong> {{ group.keywords | join: ', ' }}</p>
+  {% endfor %}
+</section>
+
+<section id="languages">
+  <h2>Languages</h2>
+  <p>
+    {% for item in cv.languages %}{{ item.language }} ({{ item.fluency }}){% unless forloop.last %} · {% endunless %}{% endfor %}
+  </p>
+</section>
+
+<section id="media">
+  <h2>Media Coverage</h2>
+  <ul>
+    {% for line in cv.media %}<li>{{ line }}</li>{% endfor %}
+  </ul>
+</section>

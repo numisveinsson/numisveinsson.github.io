@@ -1,0 +1,325 @@
+{
+  "basics": {
+    "name": "Númi Sveinsson Cepero",
+    "email": "numi@utexas.edu",
+    "url": "https://numisveinsson.com",
+    "linkedin": "https://www.linkedin.com/in/numi-sveinsson-cepero-3a0069173"
+  },
+  "education": [
+    {
+      "year": "2025",
+      "degree": "Ph.D., Mechanical Engineering",
+      "institution": "University of California, Berkeley",
+      "details": [
+        "GPA: 3.9",
+        "Major: Biomechanics",
+        "Minors: Machine Learning, Scientific Computing"
+      ]
+    },
+    {
+      "year": "2023",
+      "degree": "M.S., Mechanical Engineering",
+      "institution": "University of California, Berkeley"
+    },
+    {
+      "year": "2020",
+      "degree": "Ph.D. coursework, Biomedical Engineering",
+      "institution": "Boston University",
+      "details": [
+        "Transferred to UC Berkeley"
+      ]
+    },
+    {
+      "year": "2019",
+      "degree": "B.S., Mechanical Engineering",
+      "institution": "University of Iceland",
+      "details": [
+        "GPA: 9.7/10",
+        "Highest GPA in program history"
+      ]
+    },
+    {
+      "year": "2018",
+      "degree": "International Honors Program",
+      "institution": "Stanford University"
+    }
+  ],
+  "research_intro": "Focus on computational modeling, artificial intelligence, and digital twin development for cardiovascular and respiratory health. I develop data-driven frameworks that integrate deep learning with physics-based modeling to automate anatomical reconstruction, simulation, and translational clinical tools. My work bridges biomedical engineering, scientific computing, and AI to advance precision medicine.",
+  "positions": [
+    {
+      "when": "10/2025 – Present",
+      "position": "Postdoctoral Fellow",
+      "institution": "University of Texas at Austin",
+      "unit": "Predictive Modeling in Medicine Lab, Center for Computational Medicine, Oden Institute for Computational Engineering and Sciences",
+      "location": "Austin, TX, USA",
+      "advisor": "Prof. Charles A. Taylor",
+      "summary": "Research focuses on integrating artificial intelligence, medical imaging, and computational modeling to study physiology and advance medicine. Expanding research to explore clinically driven applications of AI and simulation, with the goal of developing digital tools that bridge computational models and patient care."
+    },
+    {
+      "when": "08/2020 – 08/2025",
+      "position": "Graduate Researcher",
+      "institution": "University of California, Berkeley",
+      "unit": "Mechanical Engineering Department",
+      "location": "Berkeley, CA, USA",
+      "advisor": "Prof. Shawn C. Shadden",
+      "summary": "Developed deep learning–based methods for automatic vascular model construction and trajectory-oriented vessel tracking in medical imaging. Integrated physics-based modeling and machine learning to enable patient-specific cardiovascular simulations.",
+      "highlights": [
+        "Developed SeqSeg: a deep learning framework for automatic vascular segmentation and model construction",
+        "Created MeshGrow: an automated pipeline for unified cardiac and vascular mesh generation",
+        "Contributed to SimVascular open-source cardiovascular modeling software",
+        "Mentored undergraduate and MEng teams in medical image analysis projects"
+      ]
+    },
+    {
+      "when": "05/2020 – 08/2020",
+      "position": "Research Intern",
+      "institution": "Kerecis",
+      "unit": "Research and Development",
+      "location": "Reykjavík, Iceland",
+      "advisor": "Prof. Sigurður Brynjólfsson",
+      "summary": "Worked on material property analysis for medical biomaterials.",
+      "highlights": [
+        "Collaborated on R&D for regenerative medical materials."
+      ]
+    },
+    {
+      "when": "05/2019 – 08/2019",
+      "position": "Undergraduate Researcher",
+      "institution": "University of Iceland",
+      "unit": "Department of Medicine",
+      "location": "Reykjavík, Iceland",
+      "advisor": "Prof. Thórarinn Guðjónsson",
+      "summary": "Developed computational models for new lung experimental technologies."
+    }
+  ],
+  "manuscripts": [
+    "Assessing Hemodynamic Variability of Deep-Learning-Derived Vascular Models. G. Sanchez Van Moer, N. Sveinsson Cepero, and S. C. Shadden. Submitted to <em>Annals of Biomedical Engineering</em>.",
+    "MIROS: An Automated Workflow for Image-based Reduced-Order Hemodynamic Simulation from Medical Images. N. Sveinsson Cepero, B. Gan, and S. C. Shadden. Under review at <em>Cardiovascular Engineering and Technology</em>."
+  ],
+  "teaching": [
+    {
+      "when": "2024",
+      "role": "Graduate Teaching Assistant",
+      "course": "Introduction to Finite Element Method",
+      "institution": "University of California, Berkeley, Mechanical Engineering Department",
+      "instructor": "Prof. Shawn C. Shadden",
+      "note": "Delivered two full guest lectures on Linear Solvers."
+    },
+    {
+      "when": "2019",
+      "role": "Undergraduate Teaching Assistant",
+      "course": "Numerical Analysis",
+      "institution": "University of Iceland, Department of Physical Sciences",
+      "instructor": "Prof. Sigurður Freyr Hafstein"
+    },
+    {
+      "when": "2018",
+      "role": "Undergraduate Teaching Assistant",
+      "course": "Differential Equations and Complex Analysis",
+      "institution": "University of Iceland, Department of Physical Sciences",
+      "instructor": "Prof. Sigurður Örn Stefánsson"
+    }
+  ],
+  "mentorship": [
+    "Mentored undergraduate researchers in the Departments of Mechanical Engineering and Bioengineering, University of California, Berkeley, guiding projects on medical image segmentation and vascular modeling (2022–2025). Students mentored include: Boyang Gan (now PhD student, Columbia University), Stanley Wong (undergraduate, UC Berkeley), and Sung Joo Lim (undergraduate, UC Berkeley).",
+    "Supervised Master of Engineering capstone team, 2024–2025: Jordan Snyder, Aryan Somashekhar Pammar, and Phung Hoang Thanh Le — project on automated and fast annotation of medical image data using deep learning.",
+    "Supervised Master of Engineering capstone team, 2023–2024: Markus Bauer, Riddhi Sera, Shivam Gupta, Sofia Haile, and Yihong (Ian) Liu — project on automated segmentation of coronary arteries.",
+    "Contributed as a mentor in the <em>Education Initiative for Development (EID)</em> program, supporting students from developing regions pursuing STEM pathways (2020–2021)."
+  ],
+  "software": [
+    "<strong>SeqSeg</strong> — Deep learning–based framework for automated vascular segmentation and model construction from CT and MR images. Includes preprocessing pipeline, vessel segment extraction method, and publicly released pretrained model weights. <a href=\"https://github.com/numisveinsson/SeqSeg\">github.com/numisveinsson/SeqSeg</a>",
+    "<strong>MeshGrow</strong> — Integrated framework for unified cardiac and vascular mesh construction from medical images, enabling automatic generation of anatomically consistent, simulation-ready 3D cardiovascular models. <a href=\"https://github.com/numisveinsson/MeshGrow\">github.com/numisveinsson/MeshGrow</a>",
+    "<strong>LinFlo-Net</strong> — Deep learning framework for cardiac segmentation and modeling. <a href=\"https://github.com/ArjunNarayanan/LinFlo-Net\">github.com/ArjunNarayanan/LinFlo-Net</a>",
+    "<strong>SimVascular</strong> — Open-source cardiovascular modeling and simulation software. Contributed to feature development and testing in collaboration with the Marsden Lab at Stanford University. <a href=\"https://simvascular.github.io/\">simvascular.github.io</a>",
+    "<strong>MIROS (Medical Image to Reduced Order Simulation)</strong> — Toolkit for linking patient-specific medical imaging data to reduced-order hemodynamic simulations, facilitating efficient cardiovascular modeling and parameter estimation. <a href=\"https://github.com/BryannGan/MIROS\">github.com/BryannGan/MIROS</a>",
+    "<strong>Vascular Model Repository</strong> — Collaborative online platform for sharing, visualizing, and comparing vascular geometries and simulation data; developed in partnership with the Marsden Lab to promote open science in cardiovascular modeling. <a href=\"https://vascularmodel.com\">vascularmodel.com</a>",
+    "<strong>SlicerSeqSeg</strong> — 3D Slicer extension for automated vascular segmentation using SeqSeg. <a href=\"https://github.com/numisveinsson/SlicerSeqSeg\">github.com/numisveinsson/SlicerSeqSeg</a>",
+    "<strong>SlicerLinFloNet</strong> — 3D Slicer extension for vascular segmentation and modeling with LinFlo-Net. <a href=\"https://github.com/numisveinsson/SlicerLinFloNet\">github.com/numisveinsson/SlicerLinFloNet</a>"
+  ],
+  "collaborations": [
+    "Collaboration with the <em>Shadden Lab</em>, University of California, Berkeley — ongoing work on computational and AI-driven cardiovascular modeling and simulation (2025–present).",
+    "Collaboration with the <em>Cardiovascular Biomechanics Computation Lab</em>, led by Prof. Alison Marsden, Stanford University — contributions to the <em>Vascular Model Repository (VMR)</em> project and development of core functionalities in the <em>SimVascular</em> software for cardiovascular modeling and simulation (2020–present).",
+    "Collaboration with the <em>SimVascular Open-Source Community</em> — contributions to software development, documentation, and workshops on cardiovascular modeling and simulation (2022–present).",
+    "Collaboration with the <em>Rubinsky Group</em>, University of California, Berkeley — evaluation and validation of cryobioprinting technology using computational models (2023-present).",
+    "Collaboration with the <em>AI - Computer Vision Group</em>, University of California, Berkeley — application of deep learning-based trajectory-oriented vessel tracking for clinical coronary CT datasets (2024–present)."
+  ],
+  "service": [
+    "Reviewer for MICCAI (Medical Image Computing and Computer Assisted Intervention) Conference submissions, including MICCAI 2025 (2022–present).",
+    "Co-organizer and instructor for SimVascular tutorials and workshops at international conferences including CMBBE 2025 and ASME SB3C 2025.",
+    "Volunteer contributor to the SimVascular open-source community — software development, documentation, and user support (2022–present).",
+    "Member of departmental panels at University of California, Berkeley, advising on curriculum and research initiatives (2021–2025).",
+    "Volunteer for visit days for Bioengineering Ph.D. program at Boston University and Mechanical Engineering Ph.D. program at UC Berkeley.",
+    "Board Member, SINE – Association of Icelandic Students Abroad, 2021–2025.",
+    "Vice President, SINE – Association of Icelandic Students Abroad, 2022–2023.",
+    "University of Iceland Student Council, 2018–2019.",
+    "Board Member, School of Engineering and Natural Sciences, University of Iceland, 2018–2019.",
+    "NORDTEK Student Board, 2018–2019.",
+    "Amnesty International Youth Council, 2016–2019.",
+    "Promotional and outreach work for University of Iceland, 2018–2019."
+  ],
+  "awards": [
+    {
+      "title": "UC Berkeley Engineering Ph.D. Commencement Speech",
+      "year": "2025"
+    },
+    {
+      "title": "UC Berkeley Mechanical Engineering Department Spring Scholarship",
+      "year": "2025"
+    },
+    {
+      "title": "Landsbankinn Graduate Scholarship",
+      "year": "2024"
+    },
+    {
+      "title": "UC Berkeley Mechanical Engineering Department Summer Fellowship",
+      "year": "2024"
+    },
+    {
+      "title": "CVID Award, Student Presenter",
+      "year": "2023"
+    },
+    {
+      "title": "UC Berkeley Graduate Division Block Grant",
+      "year": "2023"
+    },
+    {
+      "title": "Landsbankinn Graduate Scholarship",
+      "year": "2023"
+    },
+    {
+      "title": "Hearts To Humanity Award",
+      "year": "2022"
+    },
+    {
+      "title": "Leif Eiriksson Fellowship",
+      "year": "2021"
+    },
+    {
+      "title": "Boston University Fellowship",
+      "year": "2019"
+    },
+    {
+      "title": "Baccalaureate Commencement Speech",
+      "year": "2019"
+    },
+    {
+      "title": "Scholarship to Attend Stanford University",
+      "year": "2018"
+    },
+    {
+      "title": "Íslandsbanki Undergraduate Scholarship",
+      "year": "2018"
+    },
+    {
+      "title": "Landsbanki Undergraduate Scholarship",
+      "year": "2017"
+    },
+    {
+      "title": "University of Iceland Student Achievement & Incentive Fund",
+      "year": "2016"
+    }
+  ],
+  "skills": [
+    {
+      "name": "Programming and Scripting",
+      "keywords": [
+        "Python",
+        "C++",
+        "MATLAB",
+        "Bash"
+      ]
+    },
+    {
+      "name": "Medical Image Processing",
+      "keywords": [
+        "Segmentation",
+        "Registration",
+        "CT/MRI",
+        "ITK",
+        "VTK",
+        "MONAI"
+      ]
+    },
+    {
+      "name": "Deep Learning and Computer Vision",
+      "keywords": [
+        "CNN",
+        "Transformers",
+        "U-Net",
+        "Gaussian heatmaps",
+        "Trajectory prediction",
+        "Transfer learning"
+      ]
+    },
+    {
+      "name": "Computational Modeling and Simulation",
+      "keywords": [
+        "Mesh generation",
+        "CFD",
+        "FSI",
+        "SimVascular",
+        "ANSYS",
+        "ParaView"
+      ]
+    },
+    {
+      "name": "Software Development and Collaboration",
+      "keywords": [
+        "Git",
+        "GitHub",
+        "Docker",
+        "Linux",
+        "Continuous Integration"
+      ]
+    },
+    {
+      "name": "Visualization and Data Analysis",
+      "keywords": [
+        "Matplotlib",
+        "ParaView",
+        "VTK"
+      ]
+    },
+    {
+      "name": "General Tools and Workflow",
+      "keywords": [
+        "LaTeX",
+        "Overleaf",
+        "HPC",
+        "Slurm"
+      ]
+    }
+  ],
+  "languages": [
+    {
+      "language": "English",
+      "fluency": "Fluent"
+    },
+    {
+      "language": "Icelandic",
+      "fluency": "Native"
+    },
+    {
+      "language": "Danish",
+      "fluency": "Intermediate"
+    },
+    {
+      "language": "Spanish",
+      "fluency": "Intermediate"
+    },
+    {
+      "language": "French",
+      "fluency": "Beginner"
+    }
+  ],
+  "media": [
+    "<em>“Berkeley Engineering celebrates class of 2025”</em>, Berkeley Engineering News, May 27, 2025 — featured as the doctoral student speaker at the 2025 Commencement. <a href=\"https://engineering.berkeley.edu/news/2025/05/berkeley-engineering-celebrates-class-of-2025/\">engineering.berkeley.edu</a>",
+    "<em>“2025 Commencement Speakers”</em>, Berkeley Engineering Events, May 2025 — listed as a featured speaker at the 2025 Doctoral Commencement. <a href=\"https://engineering.berkeley.edu/events/engineering-commencement/spring-2025/2025-speakers/\">engineering.berkeley.edu</a>",
+    "<em>“Órói og óvissa í bandarískum háskólum”</em>, RÚV, April 16, 2025 — discussed international student experiences amid U.S. university uncertainties. <a href=\"https://www.ruv.is/frettir/erlent/2025-04-16-oroi-og-ovissa-i-bandariskum-haskolum-441705\">ruv.is</a>",
+    "<em>“Það er verið að gera rannsóknir pólitískar”</em>, Morgunblaðið, May 28, 2025 — addressed political influences on academic research. <a href=\"https://www.mbl.is/frettir/innlent/2025/05/28/thad_er_verid_ad_gera_rannsoknir_politiskar/\">mbl.is</a>",
+    "<em>“Nota líf nemenda til að ná sínu fram”</em>, Morgunblaðið, July 9, 2020 — highlighted experiences as an international PhD student. <a href=\"https://www.mbl.is/frettir/innlent/2020/07/09/nota_lif_nemenda_til_ad_na_sinu_fram/\">mbl.is</a>",
+    "<em>“Tekur við sem formaður SINE”</em>, Vísir, May 2021 — announced appointment as board member of SINE, the Association of Icelandic Students Abroad. <a href=\"https://www.visir.is/g/20212143698d/tekur-vid-sem-for-madur-sine\">visir.is</a>",
+    "<em>“Rúmlega 2600 kandídatar útskrifast í dag”</em>, RÚV, June 2025 — reported on being the bachelor commencement speaker. <a href=\"https://www.ruv.is/frettir/innlent/rumlega-2600-kandidatar-utskrifast-i-dag\">ruv.is</a>",
+    "<em>“Sextán framúrskarandi námsmenn hljóta styrk”</em>, Landsbankinn News, June 22, 2023 — scholarship award naming Númi Sveinsson Cepero as a recipient. <a href=\"https://www.landsbankinn.is/frettir/2023/06/22/sextan-framurskarandi-namsmenn-hljota-styrk\">landsbankinn.is</a>"
+  ]
+}

@@ -1,0 +1,20 @@
+---
+---
+{%- capture authors -%}
+  {%- for author in entry.author_array -%}
+    {%- assign initials = '' -%}
+    {%- assign names = author.first | split: ' ' -%}
+    {%- for name in names -%}
+      {%- assign letter = name | slice: 0 -%}
+      {%- assign initials = initials | append: letter | append: '. ' -%}
+    {%- endfor -%}
+    {{- initials }}{{ author.last -}}
+    {%- unless forloop.last -%}
+      {%- if forloop.rindex == 2 -%}
+        {%- if entry.author_array.size > 2 -%},{%- endif %} and {% else %}, {% endif -%}
+    {%- endunless -%}
+  {%- endfor -%}
+{%- endcapture -%}
+{%- assign venue = entry.journal | default: entry.booktitle | default: entry.school -%}
+{{ entry.title }}. {{ authors }}.{% if venue %} <em>{{ venue }}</em>,{% endif %} {{ entry.year }}.
+{%- if entry.doi %} <a href="https://doi.org/{{ entry.doi }}">DOI</a>{% endif -%}

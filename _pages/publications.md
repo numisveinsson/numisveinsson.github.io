@@ -18,3 +18,9 @@ nav_order: 2
 {% bibliography %}
 
 </div>
+
+## Submitted Manuscripts
+
+<ul>
+  {% for line in site.data.resume.manuscripts %}<li>{{ line }}</li>{% endfor %}
+</ul>

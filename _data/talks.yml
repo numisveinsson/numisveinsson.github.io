@@ -2,6 +2,7 @@
   venue: "WCCM-ECCOMAS 2026 (World Congress on Computational Mechanics & ECCOMAS Congress)"
   location: "Munich, Germany"
   date: "July 2026"
+  type: Keynote
   selected: true
   description: "Keynote talk in mini-symposium MS120 — Recent Advances in Computational Methods for the Cardiovascular System."
 
@@ -9,30 +10,35 @@
   venue: "WCB 2026 (10th World Congress of Biomechanics)"
   location: "Vancouver, Canada"
   date: "July 2026"
+  type: Oral
   description: "Oral presentation in session OA144 — Image Based Cardiovascular Biomechanics."
 
 - title: "SimVascular Workshop"
   venue: "CMBBE 2025 (Computer Methods in Biomechanics and Biomedical Engineering)"
   location: "Barcelona, Spain"
   date: "September 2025"
+  type: Workshop
   description: "Led a SimVascular tutorial at an international workshop on cardiovascular simulation techniques."
 
 - title: "MeshGrow: Unified Cardiac and Vascular Mesh Construction from Medical Images"
   venue: "FIMH 2025 (Functional Imaging and Modeling of the Heart)"
   location: "Dallas, Texas, USA"
   date: "June 2025"
+  type: Poster
   description: "Presented MeshGrow, a unified framework for generating simulation-ready cardiac and vascular meshes from medical imaging data."
 
 - title: "SimVascular Workshop"
   venue: " ASME SB3C Summer Bioengineering Conference 2025"
   location: "Santa Ana Pueblo, New Mexico, USA"
   date: "June 2025"
+  type: Workshop
   description: "Conducted a hands-on workshop on SimVascular for cardiovascular modeling and simulation."
 
 - title: "Automatic Construction Of Patient-Specific Vascular Models Of Diverse Anatomy"
   venue: "ASME SB3C Summer Bioengineering Conference 2025"
   location: "Santa Ana Pueblo, New Mexico, USA"
   date: "June 2025"
+  type: Poster
   description: "Presented a poster on integrated modeling and simulation workflows for vascular systems."
 
 - title: "Commencement Speech"

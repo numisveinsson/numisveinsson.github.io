@@ -701,3 +701,97 @@ h6,
     overflow-x: auto;
   }
 }
+
+// CV, shared by the web page and the print version
+
+.cv-document {
+  h2 {
+    border-bottom: 1px solid var(--global-divider-color);
+    font-size: 1.35rem;
+    margin: 2rem 0 0.9rem;
+    padding-bottom: 0.35rem;
+  }
+
+  h3 {
+    font-size: 1.05rem;
+    margin: 1.1rem 0 0.5rem;
+  }
+
+  ul,
+  ol {
+    margin: 0;
+    padding-left: 1.2rem;
+  }
+
+  li {
+    margin-bottom: 0.45rem;
+  }
+
+  p {
+    margin-bottom: 0.5rem;
+  }
+}
+
+.cv-row {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 9.5rem minmax(0, 1fr);
+  margin-bottom: 0.9rem;
+
+  &__when,
+  .cv-muted {
+    color: var(--global-text-color-light);
+  }
+
+  p {
+    margin: 0.2rem 0 0;
+  }
+
+  ul {
+    margin-top: 0.3rem;
+  }
+}
+
+.cv-publications {
+  .bibliography:not(ol),
+  h2 {
+    display: none;
+  }
+
+  ol {
+    list-style: disc;
+  }
+
+  li {
+    margin-bottom: 0.45rem;
+  }
+}
+
+.cv-skill {
+  margin-bottom: 0.25rem;
+}
+
+@media (max-width: 767px) {
+  .cv-row {
+    gap: 0;
+    grid-template-columns: 1fr;
+  }
+}
+
+@media print {
+  .cv-document {
+    section {
+      break-inside: auto;
+    }
+
+    h2,
+    h3 {
+      break-after: avoid;
+    }
+
+    .cv-row,
+    li {
+      break-inside: avoid;
+    }
+  }
+}
