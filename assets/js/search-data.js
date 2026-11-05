@@ -53,7 +53,7 @@ ninja.data = [{
           },
         },{id: "nav-cv",
           title: "CV",
-          description: "The PDF version is linked on the right.",
+          description: "Education, research, publications, teaching and service.",
           section: "Navigation",
           handler: () => {
             window.location.href = "/cv/";
