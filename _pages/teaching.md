@@ -1,10 +1,20 @@
 ---
 layout: page
 permalink: /teaching/
-title: teaching
-description:
+title: Teaching
+description: Teaching philosophy, courses, student feedback and mentoring.
 nav: true
 nav_order: 5
+---
+
+## Teaching Philosophy
+
+My teaching philosophy is centered on building intuition, fostering curiosity, and connecting theoretical concepts to practical applications. I believe students learn best when they understand not only how methods work, but why they matter.
+
+I aim to make complex topics in computational science and engineering accessible through visual explanations, real-world examples, and hands-on problem-solving. I emphasize critical thinking and encourage students to question assumptions, understand the limitations of computational methods, and develop the confidence to explore unfamiliar problems independently.
+
+Ultimately, my goal is to create an engaging, inclusive, and collaborative learning environment that equips students with both a strong theoretical foundation and the practical skills to apply their knowledge to meaningful challenges.
+
 ---
 
 ## Graduate Courses
@@ -80,6 +90,15 @@ The course received strong student evaluations, with scores above the department
   - Led weekly discussion sections
   - Held office hours
   - Graded assignments and exams
+
+---
+
+## Mentoring and Workshops
+
+- **Undergraduate researchers:** mentored students in Mechanical Engineering and Bioengineering at UC Berkeley on medical image segmentation and vascular modeling (2022–2025). One mentee is now a Ph.D. student at Columbia University.
+- **Master of Engineering capstone teams:** supervised two UC Berkeley teams, on segmenting coronary arteries (2023–2024) and on fast annotation of medical image data with deep learning (2024–2025).
+- **SimVascular workshops:** co-organized and taught hands-on tutorials on cardiovascular modeling and simulation at CMBBE 2025 and ASME SB3C 2025.
+- **Education Initiative for Development:** mentored students from developing regions pursuing STEM pathways (2020–2021).
 
 ---
 

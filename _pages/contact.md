@@ -1,21 +1,26 @@
 ---
 layout: page
-title: contact
+title: Get in touch
 permalink: /contact/
-description: Get in touch for collaborations, questions, or opportunities.
-nav: true
-nav_order: 7
+description: I'm glad to hear from researchers, clinicians, students and people working in the field.
 ---
 
-## Get in Touch
+<div class="connect-grid">
+<section>
+<h2>Collaborators</h2>
+<p>If you work on cardiovascular or respiratory modeling, medical image analysis or clinical translation, I'd like to hear what you're working on.</p>
+</section>
+<section>
+<h2>Students</h2>
+<p>I'm happy to answer questions about the tools or about graduate school. As a postdoc I don't admit students myself, so the <a href="{{ '/blog/2026/phd-application-guide/' | relative_url }}">PhD application guide</a> is a good place to start.</p>
+</section>
+<section>
+<h2>Speaking and tools</h2>
+<p>Reach out about talks and workshops, or about using <a href="{{ '/software/' | relative_url }}">SeqSeg, MeshGrow and related software</a> in your own work.</p>
+</section>
+</div>
 
-I welcome inquiries about research collaborations, speaking opportunities, and discussions about computational medicine, cardiovascular modeling, and AI-driven healthcare solutions. Whether you're a fellow researcher, clinician, student, or industry professional, I'm always interested in connecting and exploring how we can work together to advance translational research.
-
-Please fill out the form below, and I'll get back to you as soon as possible.
-
----
-
-## Contact Form
+## Send a message
 
 <div class="contact-form-container">
   <form 
@@ -158,7 +163,7 @@ textarea.form-control {
 .btn-submit {
   padding: 0.875rem 2rem;
   background-color: var(--global-theme-color);
-  color: white;
+  color: var(--global-hover-text-color);
   border: none;
   border-radius: 4px;
   font-size: 1rem;
@@ -289,17 +294,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
 ---
 
-## Alternative Contact Methods
+## Other ways to reach me
 
-### Direct Email
+**Email:** [numi@utexas.edu](mailto:numi@utexas.edu)
 
-**Primary:** [numi@utexas.edu](mailto:numi@utexas.edu)
-
-### Office Location
-
-**Center for Computational Medicine**  
-Oden Institute for Computational Engineering and Sciences  
-University of Texas at Austin  
-Austin, Texas, USA
-
----
+**Office:** Center for Computational Medicine, Oden Institute for Computational Engineering and Sciences, The University of Texas at Austin

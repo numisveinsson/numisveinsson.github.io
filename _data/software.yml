@@ -1,0 +1,51 @@
+tools:
+  - name: SeqSeg
+    text: Deep learning framework for automated vascular segmentation and model construction from CT and MR images.
+    image: assets/img/home/theme-anatomy.jpg
+    alt: Aorta and iliac arteries traced automatically through an abdominal CT volume
+    links:
+      - { label: Code, url: "https://github.com/numisveinsson/SeqSeg" }
+      - { label: Paper, url: "https://doi.org/10.1007/s10439-024-03611-z" }
+      - { label: Guide, url: "/blog/2025/seqseg_setup/" }
+  - name: MeshGrow
+    text: Unified pipeline for building simulation-ready cardiac and vascular meshes from CT and MR images.
+    image: assets/img/home/work-meshgrow.jpg
+    alt: MeshGrow model of the heart chambers joined to the aorta and its branches
+    links:
+      - { label: Code, url: "https://github.com/numisveinsson/MeshGrow" }
+      - { label: Paper, url: "https://doi.org/10.1177/20480040261455944" }
+      - { label: Explainer, url: "/blog/2026/meshgrow-heart-and-vessels-one-model/" }
+  - name: MIROS
+    text: Medical image to patient-specific reduced-order hemodynamic simulation in minutes, integrating SeqSeg with SimVascular's 1D and 0D solvers.
+    image: assets/img/home/theme-simulation.jpg
+    alt: A vascular model simplified step by step into a reduced-order network of vessels and junctions
+    links:
+      - { label: Code, url: "https://github.com/BryannGan/MIROS" }
+  - name: SimVascular
+    text: Open-source platform for patient-specific blood flow simulation. I contribute software, documentation and user support.
+    image: assets/img/simvasc.png
+    alt: SimVascular software
+    links:
+      - { label: Website, url: "https://simvascular.github.io" }
+      - { label: Code, url: "https://github.com/SimVascular/SimVascular" }
+  - name: Vascular Model Repository
+    text: A public resource for sharing high-quality vascular data and models, with standardized metadata and quality control.
+    image: assets/img/vmrrr.png
+    alt: Vascular Model Repository
+    links:
+      - { label: Website, url: "https://www.vascularmodel.com" }
+      - { label: Design notes, url: "/blog/2025/vmr/" }
+
+extensions:
+  - name: SlicerSeqSeg
+    text: 3D Slicer extension for seed-based vascular segmentation using SeqSeg and nnU-Net
+    url: "https://github.com/numisveinsson/SlicerSeqSeg"
+  - name: SlicerLinFloNet
+    text: 3D Slicer extension for simulation-ready whole-heart meshes and segmentations using LinFlo-Net
+    url: "https://github.com/numisveinsson/SlicerLinFloNet"
+  - name: LinFlo-Net
+    text: Deep learning package for diffeomorphic whole-heart mesh generation
+    url: "https://github.com/ArjunNarayanan/LinFlo-Net"
+  - name: vascular-segment-sampler
+    text: Blood vessel image data processing for vascular segmentation and analysis
+    url: "https://github.com/numisveinsson/vascular-segment-sampler"

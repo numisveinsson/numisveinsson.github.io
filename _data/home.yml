@@ -1,0 +1,62 @@
+role: Postdoctoral Fellow · Oden Institute, UT Austin
+mission: I build AI and simulation tools that turn medical images into patient-specific models of the heart and blood vessels.
+portrait: assets/img/prof_pic_headshot_final.jpeg
+interests: Computational medicine, cardiovascular and respiratory modeling, medical image analysis, deep learning, digital twins
+education:
+  - { degree: Ph.D. Mechanical Engineering, place: "UC Berkeley, 2025" }
+  - { degree: B.S. Mechanical Engineering, place: "University of Iceland, 2019" }
+
+themes:
+  - title: From images to anatomy
+    text: Deep learning methods that construct simulation-ready vascular and cardiac models from CT and MR images, replacing time-consuming manual modeling.
+    image: assets/img/home/theme-anatomy.jpg
+    alt: Aorta and iliac arteries traced automatically through an abdominal CT volume
+    link_text: Read how SeqSeg works
+    link: /blog/2026/blurry-ct-to-simulation-ready-artery/
+  - title: Simulation in minutes
+    text: Automated reduced-order pipelines that go from a medical image to a patient-specific blood flow simulation within minutes, making larger studies practical.
+    image: assets/img/home/theme-simulation.jpg
+    alt: A vascular model simplified step by step into a reduced-order network of vessels and junctions
+    link_text: See MIROS on GitHub
+    link: https://github.com/BryannGan/MIROS
+  - title: Digital twins
+    text: Current work at UT Austin extends these methods across the cardiovascular and respiratory systems, with a focus on clinical translation.
+    image: assets/img/home/theme-twins.jpg
+    alt: Simulated blood flow streamlines through a patient-specific heart and aorta
+    link_text: Read about the lab
+    link: /blog/2026/joining-pmml-taylor-lab/
+
+work:
+  - meta: JRSM Cardiovascular Disease · 2026
+    title: "MeshGrow: simulation-ready heart and vessel models from medical images"
+    text: A framework that builds combined cardiac and vascular meshes, ready for patient-specific simulation.
+    image: assets/img/home/work-meshgrow.jpg
+    alt: MeshGrow model of the heart chambers joined to the aorta and its branches
+    links:
+      - { label: Paper, url: "https://doi.org/10.1177/20480040261455944" }
+      - { label: Code, url: "https://github.com/numisveinsson/MeshGrow" }
+      - { label: Explainer, url: "/blog/2026/meshgrow-heart-and-vessels-one-model/" }
+  - meta: Annals of Biomedical Engineering · 2025
+    title: "SeqSeg: learning local segments for automatic vascular model construction"
+    text: A deep learning method that traces vessels step by step, and generalizes to vessels not annotated in its training data.
+    image: assets/img/home/work-seqseg.jpg
+    alt: Vascular models produced by SeqSeg
+    links:
+      - { label: Paper, url: "https://doi.org/10.1007/s10439-024-03611-z" }
+      - { label: Code, url: "https://github.com/numisveinsson/SeqSeg" }
+      - { label: Explainer, url: "/blog/2026/blurry-ct-to-simulation-ready-artery/" }
+
+tools:
+  - { name: SeqSeg, url: "https://github.com/numisveinsson/SeqSeg" }
+  - { name: MeshGrow, url: "https://github.com/numisveinsson/MeshGrow" }
+  - { name: MIROS, url: "https://github.com/BryannGan/MIROS" }
+  - { name: SimVascular, url: "https://simvascular.github.io" }
+  - { name: Vascular Model Repository, url: "https://www.vascularmodel.com" }
+
+speaking:
+  - meta: Keynote · WCCM-ECCOMAS 2026, Munich
+    title: Scalable Automation of Cardiovascular Geometric Modeling for Patient-Specific Simulation
+    url: /talks/
+  - meta: PhD commencement address · UC Berkeley, 2025
+    title: Academic freedom, resilience, and the social responsibility of engineers
+    url: "https://www.youtube.com/live/APxpg_MKBq4?si=tE0C2RvOHWU3s5mc&t=1381"

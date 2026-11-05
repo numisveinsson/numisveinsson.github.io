@@ -1,0 +1,39 @@
+{% assign talk = include.talk %}
+{% assign video_id = '' %}
+{% assign start_time = '' %}
+{% if talk.url contains 'youtube.com/live/' %}
+  {% assign video_id = talk.url | split: '/live/' | last | split: '?' | first %}
+{% elsif talk.url contains 'youtube.com/watch?v=' %}
+  {% assign video_id = talk.url | split: 'v=' | last | split: '&' | first %}
+{% elsif talk.url contains 'youtu.be/' %}
+  {% assign video_id = talk.url | split: 'youtu.be/' | last | split: '?' | first %}
+{% endif %}
+{% if talk.url contains '&t=' %}
+  {% assign start_time = talk.url | split: '&t=' | last | split: '&' | first %}
+{% endif %}
+<article class="talk-entry">
+  <p class="work-item__meta">{{ talk.date }} · {{ talk.location }}</p>
+  <h3>{{ talk.title }}</h3>
+  <p class="talk-entry__venue">{{ talk.venue }}</p>
+  {% if talk.description %}
+    <p>{{ talk.description }}</p>
+  {% endif %}
+  {% if include.embed and video_id != '' %}
+    <div class="video-frame">
+      <iframe
+        src="https://www.youtube-nocookie.com/embed/{{ video_id }}{% if start_time != '' %}?start={{ start_time }}{% endif %}"
+        title="{{ talk.title }}"
+        loading="lazy"
+        allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        allowfullscreen
+      ></iframe>
+    </div>
+  {% endif %}
+  {% if talk.url or talk.slides %}
+    <div class="work-item__links">
+      {% if talk.url and video_id == '' %}<a href="{{ talk.url }}">Recording</a>{% endif %}
+      {% if talk.url and video_id != '' and include.embed != true %}<a href="{{ talk.url }}">Watch video</a>{% endif %}
+      {% if talk.slides %}<a href="{{ talk.slides | relative_url }}">Slides</a>{% endif %}
+    </div>
+  {% endif %}
+</article>

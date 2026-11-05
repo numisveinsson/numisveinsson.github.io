@@ -1,30 +1,35 @@
-{% capture footer_contents %}
-  &copy; Copyright {{ site.time | date: '%Y' }}
-  {{ site.first_name }}
-  {{ site.middle_name }}
-  {{ site.last_name }}. {{ site.footer_text }}
-  {% if site.impressum_path %}
-    <a href="{{ site.url }}{{ site.baseurl }}{{ site.impressum_path }}">Impressum</a>.
-  {% endif %}
-  {% if site.last_updated %}
-    Last updated: {{ 'now' | date: '%B %d, %Y' }}.
-  {% endif %}
-{% endcapture %}
-
-{% if site.footer_fixed %}
-  <footer class="fixed-bottom" role="contentinfo">
-    <div class="container mt-0">
-      {{ footer_contents }}
+<footer class="site-footer" role="contentinfo">
+  <div class="container">
+    <div class="site-footer__grid">
+      <div class="site-footer__about">
+        <p class="site-footer__name">{{ site.first_name }} {{ site.last_name }}</p>
+        <p>
+          Center for Computational Medicine<br>
+          Oden Institute, UT Austin
+        </p>
+      </div>
+      <nav aria-label="Footer">
+        <p class="site-footer__heading">Explore</p>
+        <ul>
+          <li><a href="{{ '/research/' | relative_url }}">Research</a></li>
+          <li><a href="{{ '/publications/' | relative_url }}">Publications</a></li>
+          <li><a href="{{ '/software/' | relative_url }}">Software</a></li>
+          <li><a href="{{ '/blog/' | relative_url }}">Writing</a></li>
+          <li><a href="{{ '/cv/' | relative_url }}">CV</a></li>
+          <li><a href="{{ '/news/' | relative_url }}">News</a></li>
+        </ul>
+      </nav>
+      <div>
+        <p class="site-footer__heading">Connect</p>
+        <ul>
+          <li><a href="{{ '/contact/' | relative_url }}">Get in touch</a></li>
+          <li><a href="https://www.linkedin.com/in/{{ site.data.socials.linkedin_username }}">LinkedIn</a></li>
+          <li><a href="https://github.com/{{ site.data.socials.github_username }}">GitHub</a></li>
+          <li><a href="https://scholar.google.com/citations?user={{ site.data.socials.scholar_userid }}">Google Scholar</a></li>
+          <li><a href="{{ '/feed.xml' | relative_url }}">RSS feed</a></li>
+        </ul>
+      </div>
     </div>
-  </footer>
-{% else %}
-  <footer class="sticky-bottom mt-5" role="contentinfo">
-    {% if site.newsletter.enabled %}
-      {% include newsletter.liquid %}
-    {% endif %}
-
-    <div class="container">
-      {{ footer_contents }}
-    </div>
-  </footer>
-{% endif %}
+    <p class="site-footer__legal">&copy; {{ site.time | date: '%Y' }} {{ site.first_name }} {{ site.last_name }}</p>
+  </div>
+</footer>

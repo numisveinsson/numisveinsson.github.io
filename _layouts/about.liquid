@@ -1,88 +1,167 @@
 ---
 layout: default
 ---
-<div class="post">
-  <header class="post-header">
-    <h1 class="post-title">
-      {% if site.title == 'blank' %}
-        <span class="font-weight-bold">{{ site.first_name }}</span> {{ site.middle_name }}
-        {{ site.last_name }}
-      {% else %}
-        {{ site.title }}
-      {% endif %}
-    </h1>
-    <p class="desc">{{ page.subtitle }}</p>
-  </header>
-
-  <article>
-    {% if page.profile %}
-      <div class="profile float-{% if page.profile.align == 'left' %}left{% else %}right{% endif %}">
-        {% if page.profile.image %}
-          {% assign profile_image_path = page.profile.image | prepend: 'assets/img/' %}
-          {% if page.profile.image_circular %}
-            {% assign profile_image_class = 'img-fluid z-depth-1 rounded-circle' %}
-          {% else %}
-            {% assign profile_image_class = 'img-fluid z-depth-1
-      rounded' %}
-          {% endif %}
-          {% capture sizes %}(min-width: {{ site.max_width }}) {{ site.max_width | minus: 30 | times: 0.3}}px, (min-width: 576px)
-      30vw, 95vw"{% endcapture %}
-          {%
-            include figure.liquid loading="eager" path=profile_image_path class=profile_image_class sizes=sizes alt=page.profile.image
-            cache_bust=true
-          %}
-        {% endif %}
-        {% if page.profile.more_info %}
-          <div class="more-info">{{ page.profile.more_info }}</div>
-        {% endif %}
+{% assign home = site.data.home %}
+<div class="home">
+  <section class="hero">
+    <div class="hero__intro">
+      <p class="hero__role">{{ home.role }}</p>
+      <h1>{{ site.first_name }} {{ site.last_name }}</h1>
+      <p class="hero__mission">{{ home.mission }}</p>
+      <div class="cta-row">
+        <a class="cta cta--primary" href="{{ '/research/' | relative_url }}">Explore my research</a>
+        <a class="cta" href="{{ '/cv/' | relative_url }}">View CV</a>
+        <a class="cta" href="{{ '/contact/' | relative_url }}">Get in touch</a>
       </div>
-    {% endif %}
-
-    <div class="clearfix">{{ content }}</div>
-
-    <!-- News -->
-    {% if page.announcements and page.announcements.enabled %}
-      <h2>
-        <a href="{{ '/news/' | relative_url }}" style="color: inherit">news</a>
-      </h2>
-      {% include news.liquid limit=true %}
-    {% endif %}
-
-    <!-- Latest posts -->
-    {% if page.latest_posts and page.latest_posts.enabled %}
-      <h2>
-        <a href="{{ '/blog/' | relative_url }}" style="color: inherit">latest posts</a>
-      </h2>
-      {% include latest_posts.liquid %}
-    {% endif %}
-
-    <!-- Selected papers -->
-    {% if page.selected_papers %}
-      <h2>
-        <a href="{{ '/publications/' | relative_url }}" style="color: inherit">selected publications</a>
-      </h2>
-      {% include selected_papers.liquid %}
-    {% endif %}
-
-    <!-- Selected talks -->
-    {% if page.selected_talks %}
-      <h2>
-        <a href="{{ '/talks/' | relative_url }}" style="color: inherit">selected talks</a>
-      </h2>
-      {% include selected_talks.html %}
-    {% endif %}
-
-    <!-- Social -->
-    {% if page.social %}
-      <div class="social">
-        <div class="contact-icons">{% include social.liquid %}</div>
-
-        <div class="contact-note">{{ site.contact_note }}</div>
+    </div>
+    <aside class="hero__aside">
+      <div class="hero__photo">
+        <img
+          src="{{ home.portrait | relative_url }}"
+          alt="Portrait of {{ site.first_name }} {{ site.last_name }}"
+          fetchpriority="high"
+        >
       </div>
-    {% endif %}
+      <ul class="profile-links">
+        <li><a href="mailto:{{ site.data.socials.email | encode_email }}">Email</a></li>
+        <li><a href="https://scholar.google.com/citations?user={{ site.data.socials.scholar_userid }}">Google Scholar</a></li>
+        <li><a href="https://orcid.org/{{ site.data.socials.orcid_id }}">ORCID</a></li>
+        <li><a href="https://github.com/{{ site.data.socials.github_username }}">GitHub</a></li>
+        <li><a href="https://www.linkedin.com/in/{{ site.data.socials.linkedin_username }}">LinkedIn</a></li>
+      </ul>
+      <div class="profile-facts">
+        <h2>Research interests</h2>
+        <p>{{ home.interests }}</p>
+        <h2>Education</h2>
+        {% for item in home.education %}
+          <p>
+            {{ item.degree }}<br>
+            <span>{{ item.place }}</span>
+          </p>
+        {% endfor %}
+      </div>
+    </aside>
+    <div class="hero__bio">
+      {{ content }}
+    </div>
+  </section>
 
-    {% if site.newsletter and site.newsletter.enabled and site.footer_fixed %}
-      {% include newsletter.liquid center=true %}
-    {% endif %}
-  </article>
+  <section class="home-section" id="research">
+    <div class="section-title">
+      <h2>Research</h2>
+      <a href="{{ '/research/' | relative_url }}">Full research overview &rarr;</a>
+    </div>
+    <div class="theme-grid">
+      {% for theme in home.themes %}
+        <article class="theme-card">
+          <div class="plate">
+            <img src="{{ theme.image | relative_url }}" alt="{{ theme.alt }}" loading="lazy">
+          </div>
+          <h3>{{ theme.title }}</h3>
+          <p>{{ theme.text }}</p>
+          <a href="{{ theme.link | relative_url }}">{{ theme.link_text }} &rarr;</a>
+        </article>
+      {% endfor %}
+    </div>
+  </section>
+
+  <section class="home-section">
+    <div class="section-title">
+      <h2>Selected work</h2>
+      <a href="{{ '/publications/' | relative_url }}">All publications &rarr;</a>
+    </div>
+    <div class="work-list">
+      {% for item in home.work %}
+        <article class="work-item">
+          <div class="plate">
+            <img src="{{ item.image | relative_url }}" alt="{{ item.alt }}" loading="lazy">
+          </div>
+          <div>
+            <p class="work-item__meta">{{ item.meta }}</p>
+            <h3>{{ item.title }}</h3>
+            <p>{{ item.text }}</p>
+            <div class="work-item__links">
+              {% for link in item.links %}
+                <a href="{{ link.url | relative_url }}">{{ link.label }}</a>
+              {% endfor %}
+            </div>
+          </div>
+        </article>
+      {% endfor %}
+    </div>
+  </section>
+
+  <section class="home-section">
+    <div class="section-title">
+      <h2>Open tools</h2>
+      <a href="{{ '/software/' | relative_url }}">All software &rarr;</a>
+    </div>
+    <ul class="tool-list">
+      {% for tool in home.tools %}
+        <li><a href="{{ tool.url }}">{{ tool.name }}</a></li>
+      {% endfor %}
+    </ul>
+  </section>
+
+  <section class="home-section">
+    <div class="section-title">
+      <h2>Speaking</h2>
+      <a href="{{ '/talks/' | relative_url }}">All talks &rarr;</a>
+    </div>
+    <div class="work-list">
+      {% for talk in home.speaking %}
+        <article class="work-item work-item--text">
+          <div>
+            <p class="work-item__meta">{{ talk.meta }}</p>
+            <h3><a href="{{ talk.url | relative_url }}">{{ talk.title }}</a></h3>
+          </div>
+        </article>
+      {% endfor %}
+    </div>
+  </section>
+
+  <section class="home-section update-grid">
+    <div>
+      <div class="section-title">
+        <h2>News</h2>
+        <a href="{{ '/news/' | relative_url }}">All news &rarr;</a>
+      </div>
+      <ul class="update-list">
+        {% assign news = site.news | reverse %}
+        {% for item in news limit: 4 %}
+          <li>
+            <time datetime="{{ item.date | date: '%Y-%m-%d' }}">{{ item.date | date: '%b %-d, %Y' }}</time>
+            {% if item.inline %}
+              {{ item.content | strip_html | truncatewords: 22 }}
+            {% else %}
+              <a href="{{ item.url | relative_url }}">{{ item.title }}</a>
+            {% endif %}
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+    <div>
+      <div class="section-title">
+        <h2>Latest writing</h2>
+        <a href="{{ '/blog/' | relative_url }}">All writing &rarr;</a>
+      </div>
+      <ul class="update-list">
+        {% for post in site.posts limit: 4 %}
+          <li>
+            <time datetime="{{ post.date | date: '%Y-%m-%d' }}">{{ post.date | date: '%b %-d, %Y' }}</time>
+            <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </section>
+
+  <section class="home-section connect-band">
+    <h2>Let's connect</h2>
+    <p>
+      I'm glad to hear from researchers, clinicians and students working on computational medicine, whether about a collaboration, a talk, or a
+      question about the tools.
+    </p>
+    <a class="cta cta--primary" href="{{ '/contact/' | relative_url }}">Get in touch</a>
+  </section>
 </div>
