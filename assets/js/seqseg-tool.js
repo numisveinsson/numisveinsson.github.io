@@ -5,6 +5,8 @@ const MM_PER_UNIT = { mm: 1, cm: 10 };
 const MARKER_RADIUS_MM = 1.2;
 const LABEL_START = 2;
 const LABEL_DIRECTION = 3;
+// Proximal LAD of Vascular Model Repository case 0066_H_CORO_H, in RAS and the image's unit (cm).
+const EXAMPLE = { start: [22.1179, 4.4681, -13.3285], direction: [21.8028, 4.8759, -13.3774], radius: 0.18 };
 
 const root = document.getElementById("seqseg");
 const modelUrl = root.dataset.model;
@@ -178,8 +180,7 @@ function crosshairWorld() {
   return [mm[0], mm[1], mm[2]];
 }
 
-function setPoint(kind) {
-  const point = crosshairWorld();
+function setPoint(kind, point = crosshairWorld()) {
   const unit = el("unit").value;
   if (kind === "start") {
     start = point;
@@ -326,6 +327,27 @@ async function loadScan(file) {
   }
 }
 
+async function loadExample() {
+  el("example").disabled = true;
+  setLoadStatus("Downloading the example scan (19 MB)...");
+  try {
+    const response = await fetch(root.dataset.example);
+    if (!response.ok) throw new Error("Download failed.");
+    await loadScan(new File([await response.blob()], "seqseg_example.nii.gz"));
+    if (!scan) return;
+    el("radius").value = String(EXAMPLE.radius);
+    setPoint("start", EXAMPLE.start);
+    setPoint("direction", EXAMPLE.direction);
+    nv.scene.crosshairPos = nv.mm2frac(EXAMPLE.start);
+    nv.drawScene();
+    setStatus("Example ready. The seed is on the left anterior descending artery. Press Trace vessel.");
+  } catch {
+    setLoadStatus("The example scan could not be loaded. Please try again.", true);
+  } finally {
+    el("example").disabled = false;
+  }
+}
+
 el("file").addEventListener("change", (event) => {
   if (event.target.files[0]) loadScan(event.target.files[0]);
 });
@@ -347,6 +369,7 @@ drop.addEventListener("drop", (event) => {
 });
 el("set-start").addEventListener("click", () => setPoint("start"));
 el("set-direction").addEventListener("click", () => setPoint("direction"));
+el("example").addEventListener("click", loadExample);
 el("run").addEventListener("click", run);
 el("unit").addEventListener("change", syncRadiusUnit);
 el("toggle-view").addEventListener("click", () => setView(!showing3d));
