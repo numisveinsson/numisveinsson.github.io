@@ -65,7 +65,7 @@ _styles: |
     </div>
     <div class="seqseg-group">
       <h2>2. Settings</h2>
-      <label>Vessel radius (mm)
+      <label>Vessel radius (<span id="seqseg-radius-unit">mm</span>)
         <input type="number" id="seqseg-radius" min="0.5" max="10" step="0.1" value="2">
       </label>
       <label>Steps

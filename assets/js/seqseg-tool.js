@@ -20,6 +20,7 @@ let ort;
 let session;
 let backend = "";
 let maskUrl = null;
+let radiusUnit = "mm";
 let overlay = null;
 let showing3d = false;
 let ctHidden = false;
@@ -32,6 +33,19 @@ function setStatus(message, isError = false) {
 function setLoadStatus(message, isError = false) {
   el("load-status").textContent = message;
   el("load-status").classList.toggle("is-error", isError);
+}
+
+// The radius box uses the image's unit, and keeps the same physical size when the unit changes.
+function syncRadiusUnit() {
+  const unit = el("unit").value;
+  const input = el("radius");
+  const value = (Number(input.value) * MM_PER_UNIT[radiusUnit]) / MM_PER_UNIT[unit];
+  input.min = String(0.5 / MM_PER_UNIT[unit]);
+  input.max = String(10 / MM_PER_UNIT[unit]);
+  input.step = String(0.1 / MM_PER_UNIT[unit]);
+  input.value = String(Number(value.toFixed(3)));
+  el("radius-unit").textContent = unit;
+  radiusUnit = unit;
 }
 
 function refreshRunButton() {
@@ -229,7 +243,7 @@ async function run() {
     const unit = el("unit").value;
     const scale = MM_PER_UNIT[unit];
     const lps = (point) => [-point[0] * scale, -point[1] * scale, point[2] * scale];
-    const seed = { start: lps(start), direction: lps(direction), radius: Number(el("radius").value) };
+    const seed = { start: lps(start), direction: lps(direction), radius: Number(el("radius").value) * scale };
     const steps = Number(el("steps").value);
     const volume = toTracerVolume(scan, unit);
     const began = performance.now();
@@ -298,6 +312,7 @@ async function loadScan(file) {
     el("direction-text").textContent = "Direction: not set";
     const spacing = Math.min(columnLength(scan.hdr.affine, 0), columnLength(scan.hdr.affine, 1));
     el("unit").value = spacing < 0.15 ? "cm" : "mm";
+    syncRadiusUnit();
     el("panel").hidden = false;
     setStatus("");
     setLoadStatus("");
@@ -333,5 +348,6 @@ drop.addEventListener("drop", (event) => {
 el("set-start").addEventListener("click", () => setPoint("start"));
 el("set-direction").addEventListener("click", () => setPoint("direction"));
 el("run").addEventListener("click", run);
+el("unit").addEventListener("change", syncRadiusUnit);
 el("toggle-view").addEventListener("click", () => setView(!showing3d));
 el("toggle-ct").addEventListener("click", () => setCtHidden(!ctHidden));
