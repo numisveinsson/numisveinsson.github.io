@@ -55,6 +55,7 @@ work:
     image: assets/img/home/work-seqseg.jpg
     alt: Vascular models produced by SeqSeg
     links:
+      - { label: Try it, url: "/tools/seqseg/" }
       - { label: Paper, url: "https://doi.org/10.1007/s10439-024-03611-z" }
       - { label: Code, url: "https://github.com/numisveinsson/SeqSeg" }
       - { label: Explainer, url: "/blog/2026/blurry-ct-to-simulation-ready-artery/" }

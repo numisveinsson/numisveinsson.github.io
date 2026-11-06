@@ -2,9 +2,9 @@
 layout: page
 title: Try SeqSeg
 permalink: /tools/seqseg/
-description: Trace a coronary artery in your browser from a single seed.
-nav: false
-sitemap: false
+description: Trace a coronary artery from a single seed, right in your browser.
+nav: true
+nav_order: 3.5
 _styles: |
   .seqseg { display: grid; gap: 1.25rem; }
   .seqseg-notice { border-left: 3px solid var(--global-theme-color); padding: 0.5rem 0 0.5rem 1rem; color: var(--global-text-color-light); font-size: 0.95rem; }
@@ -33,12 +33,14 @@ _styles: |
   .seqseg-status:empty { display: none; }
   .seqseg-status.is-error { color: var(--global-danger-block-title); }
   .seqseg [hidden] { display: none !important; }
+  .seqseg-credit { margin-top: 1.5rem; font-size: 0.85rem; color: var(--global-text-color-light); }
 ---
 
-<div class="seqseg" id="seqseg" data-api="{{ site.seqseg_api_url }}">
+<div class="seqseg" id="seqseg" data-model="{{ '/assets/models/seqseg_coronary.onnx' | relative_url }}">
   <div class="seqseg-notice">
     <p>This research demo is not for clinical use and has not been validated for diagnosis or treatment.</p>
-    <p>Your scan stays in your browser. Only a box of up to 80 mm around the seed is uploaded, without the original file header. It is processed by a server and deleted within 15 minutes. Please upload only images you have the right to share, and no scans with identifying information burned in.</p>
+    <p>The trace runs on your computer, and this tool does not upload your scan. The page does load code from outside services, and the site uses Google Analytics, so please do not use it with identifiable patient data.</p>
+    <p>This is a browser version of <a href="https://github.com/numisveinsson/SeqSeg">SeqSeg</a> and is still being validated. Its results can differ from the Python version, and it can occasionally follow the wrong vessel.</p>
   </div>
 
   <label class="seqseg-drop" id="seqseg-drop">
@@ -68,7 +70,7 @@ _styles: |
         <input type="number" id="seqseg-radius" min="0.5" max="10" step="0.1" value="2">
       </label>
       <label>Steps
-        <input type="number" id="seqseg-steps" min="1" max="20" step="1" value="5">
+        <input type="number" id="seqseg-steps" min="1" max="150" step="1" value="40">
       </label>
       <label>Image units
         <select id="seqseg-unit">
@@ -91,10 +93,12 @@ _styles: |
       </div>
       <div class="seqseg-row">
         <a class="seqseg-link" id="seqseg-download-mask">Mask (.nii.gz)</a>
-        <a class="seqseg-link" id="seqseg-download-mesh">Mesh (.vtp)</a>
       </div>
     </div>
   </div>
 </div>
 
+<p class="seqseg-credit">Model weights: <a href="https://doi.org/10.5281/zenodo.23813298">SeqSeg nnU-Net weights, CT coronary segmentation</a> (CC BY 4.0). Method: <a href="https://doi.org/10.1007/s10439-024-03611-z">Sveinsson Cepero and Shadden, Annals of Biomedical Engineering, 2024</a>. Built on <a href="https://github.com/MIC-DKFZ/nnUNet">nnU-Net</a>, <a href="https://github.com/niivue/niivue">NiiVue</a> and <a href="https://onnxruntime.ai">ONNX Runtime</a>.</p>
+
+<div id="seqseg-tracer" data-src="{{ '/assets/js/seqseg-tracer.js' | relative_url }}" hidden></div>
 <script type="module" src="{{ '/assets/js/seqseg-tool.js' | relative_url }}"></script>

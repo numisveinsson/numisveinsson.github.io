@@ -4,6 +4,7 @@ tools:
     image: assets/img/home/theme-anatomy.jpg
     alt: Aorta and iliac arteries traced automatically through an abdominal CT volume
     links:
+      - { label: Try it, url: "/tools/seqseg/" }
       - { label: Code, url: "https://github.com/numisveinsson/SeqSeg" }
       - { label: Paper, url: "https://doi.org/10.1007/s10439-024-03611-z" }
       - { label: Guide, url: "/blog/2025/seqseg_setup/" }

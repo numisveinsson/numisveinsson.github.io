@@ -1,7 +1,7 @@
 # SeqSeg demo backend
 
-FastAPI service behind the `/tools/seqseg/` page. GitHub Pages cannot run it, so
-it is hosted separately. It traces from one seed on a CPU, one job at a time.
+Optional FastAPI service that runs Python SeqSeg from one seed on a CPU, one job at
+a time. The `/tools/seqseg/` page does not use it: that page traces in the browser.
 
 ## Run locally
 

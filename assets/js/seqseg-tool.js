@@ -1,13 +1,13 @@
 const NIIVUE_URL = "https://cdn.jsdelivr.net/npm/@niivue/niivue@0.69.0/dist/index.js";
-const CROP_SIZE_MM = 80;
+const ORT_VERSION = "1.31.1";
+const ORT_BASE = `https://cdn.jsdelivr.net/npm/onnxruntime-web@${ORT_VERSION}/dist/`;
 const MM_PER_UNIT = { mm: 1, cm: 10 };
-const POLL_MS = 1500;
 const MARKER_RADIUS_MM = 1.2;
 const LABEL_START = 2;
 const LABEL_DIRECTION = 3;
 
 const root = document.getElementById("seqseg");
-const apiUrl = root.dataset.api.replace(/\/$/, "");
+const modelUrl = root.dataset.model;
 const el = (name) => document.getElementById(`seqseg-${name}`);
 
 let nv;
@@ -16,9 +16,11 @@ let scan;
 let start = null;
 let direction = null;
 let busy = false;
-let currentJob = null;
+let ort;
+let session;
+let backend = "";
+let maskUrl = null;
 let overlay = null;
-let mesh = null;
 let showing3d = false;
 let ctHidden = false;
 
@@ -59,59 +61,78 @@ function columnLength(affine, column) {
   return Math.hypot(affine[0][column], affine[1][column], affine[2][column]);
 }
 
-// Copies the voxels around the seed into a new array, in the file's voxel order.
-function cropAroundSeed(volume, seed, unit) {
-  const { hdr, img } = volume;
-  const dims = hdr.dims.slice(1, 4);
-  const affine = hdr.affine;
-  const centre = worldToVoxel(seed, invertAffine(affine));
-  const halfWidth = CROP_SIZE_MM / 2 / MM_PER_UNIT[unit];
-  const low = [];
-  const size = [];
-  for (let axis = 0; axis < 3; axis++) {
-    const half = Math.ceil(halfWidth / columnLength(affine, axis));
-    const from = Math.max(Math.round(centre[axis]) - half, 0);
-    const to = Math.min(Math.round(centre[axis]) + half, dims[axis]);
-    low.push(from);
-    size.push(to - from);
-  }
-  const cropped = new img.constructor(size[0] * size[1] * size[2]);
-  let target = 0;
-  for (let z = 0; z < size[2]; z++) {
-    for (let y = 0; y < size[1]; y++) {
-      const offset = low[0] + (y + low[1]) * dims[0] + (z + low[2]) * dims[0] * dims[1];
-      cropped.set(img.subarray(offset, offset + size[0]), target);
-      target += size[0];
-    }
-  }
-  const croppedAffine = affine.map((row) => [row[0], row[1], row[2], row[0] * low[0] + row[1] * low[1] + row[2] * low[2] + row[3]]);
-  return { data: cropped, size, affine: croppedAffine };
-}
-
-// Builds a NIfTI-1 file from scratch so that no header field of the original scan is sent.
-function encodeNifti(crop, volume) {
-  const { data, size, affine } = crop;
-  const { hdr } = volume;
+// Builds a NIfTI-1 file from scratch for the result mask (uint8, RAS affine).
+function encodeMask(data, size, affine) {
   const header = new ArrayBuffer(352);
   const view = new DataView(header);
   view.setInt32(0, 348, true);
   [3, size[0], size[1], size[2], 1, 1, 1, 1].forEach((value, i) => view.setInt16(40 + i * 2, value, true));
-  view.setInt16(70, hdr.datatypeCode, true);
-  view.setInt16(72, data.BYTES_PER_ELEMENT * 8, true);
+  view.setInt16(70, 2, true);
+  view.setInt16(72, 8, true);
   [1, columnLength(affine, 0), columnLength(affine, 1), columnLength(affine, 2), 1, 0, 0, 0].forEach((value, i) =>
     view.setFloat32(76 + i * 4, value, true)
   );
   view.setFloat32(108, 352, true);
-  view.setFloat32(112, hdr.scl_slope || 1, true);
-  view.setFloat32(116, hdr.scl_inter || 0, true);
+  view.setFloat32(112, 1, true);
   view.setInt16(254, 2, true);
   affine.slice(0, 3).forEach((row, r) => row.forEach((value, c) => view.setFloat32(280 + r * 16 + c * 4, value, true)));
   [0x6e, 0x2b, 0x31, 0].forEach((value, i) => view.setUint8(344 + i, value));
-  return new Blob([header, data.buffer.slice(data.byteOffset, data.byteOffset + data.byteLength)]);
+  return new Blob([header, data]);
+}
+
+// Crops the mask to its bounding box so that it stays small.
+function cropMask(seg, size, affine) {
+  const low = [Infinity, Infinity, Infinity];
+  const high = [-1, -1, -1];
+  for (let z = 0, n = 0; z < size[2]; z++) {
+    for (let y = 0; y < size[1]; y++) {
+      for (let x = 0; x < size[0]; x++, n++) {
+        if (!seg[n]) continue;
+        [x, y, z].forEach((value, axis) => {
+          low[axis] = Math.min(low[axis], value);
+          high[axis] = Math.max(high[axis], value);
+        });
+      }
+    }
+  }
+  if (high[0] < 0) return null;
+  const from = low.map((value) => Math.max(value - 2, 0));
+  const dims = high.map((value, axis) => Math.min(value + 3, size[axis]) - from[axis]);
+  const data = new Uint8Array(dims[0] * dims[1] * dims[2]);
+  for (let z = 0, n = 0; z < dims[2]; z++) {
+    for (let y = 0; y < dims[1]; y++, n += dims[0]) {
+      const offset = from[0] + size[0] * (y + from[1] + size[1] * (z + from[2]));
+      data.set(seg.subarray(offset, offset + dims[0]), n);
+    }
+  }
+  const moved = affine.map((row) => [row[0], row[1], row[2], row[0] * from[0] + row[1] * from[1] + row[2] * from[2] + row[3]]);
+  return { data, dims, affine: moved };
 }
 
 function gzip(blob) {
   return new Response(blob.stream().pipeThrough(new CompressionStream("gzip"))).blob();
+}
+
+// The tracer works in millimetres and LPS, as SeqSeg does. NiiVue gives an RAS affine.
+function toTracerVolume(volume, unit) {
+  const { hdr, img } = volume;
+  const scale = MM_PER_UNIT[unit];
+  const size = hdr.dims.slice(1, 4);
+  const lps = hdr.affine.slice(0, 3).map((row, r) => row.map((value, c) => (r < 2 ? -value : value) * (c === 3 ? scale : 1)));
+  const lengths = [0, 1, 2].map((c) => Math.hypot(lps[0][c], lps[1][c], lps[2][c]));
+  const direction = [];
+  for (let r = 0; r < 3; r++) for (let c = 0; c < 3; c++) direction.push(lps[r][c] / lengths[c]);
+  const slope = hdr.scl_slope || 1;
+  const inter = hdr.scl_inter || 0;
+  const data = new Float32Array(img.length);
+  for (let i = 0; i < img.length; i++) data[i] = img[i] * slope + inter;
+  return {
+    size,
+    spacing: lengths.map((value) => value * scale),
+    origin: [lps[0][3], lps[1][3], lps[2][3]],
+    direction,
+    data,
+  };
 }
 
 function markPoint(point, label) {
@@ -174,76 +195,68 @@ function setCtHidden(hidden) {
 
 function clearResult() {
   if (overlay) nv.removeVolume(overlay);
-  if (mesh) nv.removeMesh(mesh);
   overlay = null;
-  mesh = null;
   el("result").hidden = true;
   if (nv && scan) setView(false);
 }
 
-async function apiError(response) {
-  try {
-    return (await response.json()).detail || `Request failed (${response.status}).`;
-  } catch {
-    return `Request failed (${response.status}).`;
+async function ensureModel() {
+  if (session) return;
+  setStatus("Loading the model...");
+  const useGpu = Boolean(navigator.gpu);
+  ort = await import(`${ORT_BASE}${useGpu ? "ort.webgpu.bundle.min.mjs" : "ort.wasm.min.mjs"}`);
+  ort.env.wasm.wasmPaths = ORT_BASE;
+  ort.env.wasm.numThreads = 1;
+  if (useGpu) {
+    try {
+      session = await ort.InferenceSession.create(modelUrl, { executionProviders: ["webgpu"] });
+      backend = "WebGPU";
+      return;
+    } catch {
+      session = null;
+    }
   }
-}
-
-async function waitForJob(id) {
-  for (;;) {
-    const response = await fetch(`${apiUrl}/api/jobs/${id}`);
-    if (!response.ok) throw new Error(await apiError(response));
-    const job = await response.json();
-    if (job.status === "done") return job;
-    if (job.status === "failed") throw new Error(job.error || "The run failed.");
-    setStatus(job.status === "queued" ? "Waiting for the server..." : "Tracing the vessel...");
-    await new Promise((resolve) => setTimeout(resolve, POLL_MS));
-  }
-}
-
-async function showResult(id, job) {
-  const base = `${apiUrl}/api/jobs/${id}`;
-  overlay = await nv.addVolumeFromUrl({ url: `${base}/mask.nii.gz`, name: "mask.nii.gz", colormap: "green", opacity: 0.55 });
-  mesh = await nv.addMeshFromUrl({ url: `${base}/mesh.stl`, name: "mesh.stl", rgba255: [64, 220, 120, 255] });
-  el("download-mask").href = `${base}/mask.nii.gz`;
-  el("download-mesh").href = `${base}/mesh.vtp`;
-  const millilitres = (job.volume * MM_PER_UNIT[job.unit] ** 3) / 1000;
-  el("summary").textContent = `${job.steps} steps, ${millilitres.toFixed(2)} mL. Downloads expire in 15 minutes.`;
-  el("result").hidden = false;
+  session = await ort.InferenceSession.create(modelUrl, { executionProviders: ["wasm"] });
+  backend = "CPU";
 }
 
 async function run() {
   busy = true;
   refreshRunButton();
   clearResult();
-  if (currentJob) {
-    fetch(`${apiUrl}/api/jobs/${currentJob}`, { method: "DELETE" }).catch(() => {});
-    currentJob = null;
-  }
   try {
+    await ensureModel();
     const unit = el("unit").value;
-    setStatus("Preparing the cropped region...");
-    const crop = cropAroundSeed(scan, start, unit);
-    const image = await gzip(encodeNifti(crop, scan));
-    const seed = { start, direction, radius: Number(el("radius").value) / MM_PER_UNIT[unit] };
-    const form = new FormData();
-    form.append("image", image, "crop.nii.gz");
-    form.append("seed", JSON.stringify(seed));
-    form.append("steps", el("steps").value);
-    form.append("unit", unit);
-
-    setStatus(`Uploading ${(image.size / 1e6).toFixed(1)} MB...`);
-    const response = await fetch(`${apiUrl}/api/jobs`, { method: "POST", body: form });
-    if (!response.ok) throw new Error(await apiError(response));
-    const { id } = await response.json();
-    currentJob = id;
-    const job = await waitForJob(id);
-    await showResult(id, job);
-    const seconds = job.finished - job.started;
-    setStatus(`Finished in ${seconds.toFixed(0)} seconds.`);
+    const scale = MM_PER_UNIT[unit];
+    const lps = (point) => [-point[0] * scale, -point[1] * scale, point[2] * scale];
+    const seed = { start: lps(start), direction: lps(direction), radius: Number(el("radius").value) };
+    const steps = Number(el("steps").value);
+    const volume = toTracerVolume(scan, unit);
+    const began = performance.now();
+    let done = 0;
+    setStatus(`Tracing with ${backend}...`);
+    await new Promise((resolve) => setTimeout(resolve));
+    const { trace } = await import(el("tracer").dataset.src);
+    const result = await trace(ort, session, volume, seed, steps, (event) => {
+      if (!event.stopped) {
+        done += 1;
+        setStatus(`Tracing with ${backend}: step ${done} of ${steps}`);
+      }
+    });
+    const seconds = (performance.now() - began) / 1000;
+    const mask = cropMask(result.seg, volume.size, scan.hdr.affine);
+    if (!mask) throw new Error("No vessel was found from this seed. Try moving the points or changing the radius.");
+    maskUrl = URL.createObjectURL(await gzip(encodeMask(mask.data, mask.dims, mask.affine)));
+    overlay = await nv.addVolumeFromUrl({ url: maskUrl, name: "mask.nii.gz", colormap: "green", opacity: 0.55 });
+    el("download-mask").href = maskUrl;
+    el("download-mask").download = "seqseg_mask.nii.gz";
+    const voxels = result.seg.reduce((sum, value) => sum + value, 0);
+    const millilitres = (voxels * volume.spacing[0] * volume.spacing[1] * volume.spacing[2]) / 1000;
+    el("summary").textContent = `${result.steps.length} steps, ${millilitres.toFixed(2)} mL.`;
+    el("result").hidden = false;
+    setStatus(`Finished in ${seconds.toFixed(1)} seconds with ${backend}.`);
   } catch (error) {
-    const offline = error instanceof TypeError;
-    setStatus(offline ? "The SeqSeg server could not be reached. Please try again later." : error.message, true);
+    setStatus(error.message || "The trace failed.", true);
   } finally {
     busy = false;
     refreshRunButton();
@@ -322,6 +335,3 @@ el("set-direction").addEventListener("click", () => setPoint("direction"));
 el("run").addEventListener("click", run);
 el("toggle-view").addEventListener("click", () => setView(!showing3d));
 el("toggle-ct").addEventListener("click", () => setCtHidden(!ctHidden));
-window.addEventListener("pagehide", () => {
-  if (currentJob) fetch(`${apiUrl}/api/jobs/${currentJob}`, { method: "DELETE", keepalive: true }).catch(() => {});
-});
