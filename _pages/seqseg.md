@@ -32,15 +32,14 @@ _styles: |
   .seqseg-status { margin: 0; }
   .seqseg-status:empty { display: none; }
   .seqseg-status.is-error { color: var(--global-danger-block-title); }
+  .seqseg + .seqseg-credit { margin-top: 1.5rem; }
   .seqseg [hidden] { display: none !important; }
-  .seqseg-credit { margin-top: 1.5rem; font-size: 0.85rem; color: var(--global-text-color-light); }
+  .seqseg-credit { margin: 0.5rem 0 0; font-size: 0.85rem; color: var(--global-text-color-light); }
 ---
 
 <div class="seqseg" id="seqseg" data-model="{{ '/assets/models/seqseg_coronary.onnx' | relative_url }}">
   <div class="seqseg-notice">
     <p>This research demo is not for clinical use and has not been validated for diagnosis or treatment.</p>
-    <p>The trace runs on your computer, and this tool does not upload your scan. The page does load code from outside services, and the site uses Google Analytics, so please do not use it with identifiable patient data.</p>
-    <p>This is a browser version of <a href="https://github.com/numisveinsson/SeqSeg">SeqSeg</a> and is still being validated. Its results can differ from the Python version, and it can occasionally follow the wrong vessel.</p>
   </div>
 
   <label class="seqseg-drop" id="seqseg-drop">
@@ -98,6 +97,8 @@ _styles: |
   </div>
 </div>
 
+<p class="seqseg-credit">The trace runs on your computer, and this tool does not upload your scan. The page does load code from outside services, and the site uses Google Analytics, so please do not use it with identifiable patient data.</p>
+<p class="seqseg-credit">This is a browser version of <a href="https://github.com/numisveinsson/SeqSeg">SeqSeg</a> and is still being validated. Its results can differ from the Python version, and it can occasionally follow the wrong vessel.</p>
 <p class="seqseg-credit">Model weights: <a href="https://doi.org/10.5281/zenodo.23813298">SeqSeg nnU-Net weights, CT coronary segmentation</a> (CC BY 4.0). Method: <a href="https://doi.org/10.1007/s10439-024-03611-z">Sveinsson Cepero and Shadden, Annals of Biomedical Engineering, 2024</a>. Built on <a href="https://github.com/MIC-DKFZ/nnUNet">nnU-Net</a>, <a href="https://github.com/niivue/niivue">NiiVue</a> and <a href="https://onnxruntime.ai">ONNX Runtime</a>.</p>
 
 <div id="seqseg-tracer" data-src="{{ '/assets/js/seqseg-tracer.js' | relative_url }}" hidden></div>
