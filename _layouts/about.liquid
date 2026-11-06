@@ -23,7 +23,7 @@ layout: default
           camera-controls
           disable-zoom
           interaction-prompt="auto"
-          camera-orbit="0deg 80deg auto"
+          camera-orbit="0deg 80deg 84%"
           exposure="1.05"
           tone-mapping="neutral"
         ></model-viewer>
@@ -215,7 +215,7 @@ layout: default
         toggle.setAttribute("aria-checked", on ? "true" : "false");
         toggle.textContent = on ? "Hide CT scan" : "Show CT scan";
         frame.classList.toggle("is-ct", on);
-        viewer.cameraOrbit = on ? "30deg 68deg auto" : "0deg 80deg auto";
+        viewer.cameraOrbit = on ? "30deg 68deg auto" : "0deg 80deg 84%";
       });
     });
     function load() {

@@ -158,7 +158,7 @@ h6,
   column-gap: 3rem;
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
-  padding-top: 5rem;
+  padding-top: 2.5rem;
 
   &__model {
     margin: 0;
@@ -834,9 +834,9 @@ h6,
   font-size: 0.85rem;
   font-weight: 600;
   padding: 0.45rem 0.95rem;
+  bottom: 0.75rem;
   position: absolute;
   right: 0.75rem;
-  top: 0.75rem;
   z-index: 1;
 
   &:hover {
@@ -883,6 +883,40 @@ h6,
 @media (max-width: 767px) {
   .model-frame {
     height: 22rem;
+  }
+}
+
+// Beside the intro, the viewer takes its height from the intro column, so its
+// bottom edge stays level with the buttons at every width.
+@media (min-width: 768px) {
+  .hero {
+    grid-template-rows: auto auto;
+  }
+
+  .hero__intro,
+  .hero .model-frame {
+    grid-row: 1;
+  }
+
+  .hero__model {
+    display: contents;
+  }
+
+  .hero .model-frame {
+    align-self: stretch;
+    grid-column: 2;
+    height: auto;
+
+    model-viewer {
+      height: 100%;
+      inset: 0;
+      position: absolute;
+    }
+  }
+
+  .hero figcaption {
+    grid-column: 2;
+    grid-row: 2;
   }
 }
 
