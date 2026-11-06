@@ -887,14 +887,17 @@ h6,
   }
 }
 
-// Beside the intro, the viewer takes its height from the intro column, so its
-// bottom edge stays level with the buttons at every width.
+// The intro is centered against the viewer and its caption together.
 @media (min-width: 768px) {
   .hero {
     grid-template-rows: auto auto;
   }
 
-  .hero__intro,
+  .hero__intro {
+    align-self: center;
+    grid-row: 1 / span 2;
+  }
+
   .hero .model-frame {
     grid-row: 1;
   }
@@ -904,9 +907,8 @@ h6,
   }
 
   .hero .model-frame {
-    align-self: stretch;
     grid-column: 2;
-    height: auto;
+    height: 22rem;
 
     model-viewer {
       height: 100%;
