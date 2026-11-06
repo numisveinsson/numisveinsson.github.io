@@ -152,32 +152,16 @@ h6,
   }
 }
 
+// The model's top edge lines up with the role line beside it.
 .hero {
   align-items: start;
-  column-gap: 3.5rem;
+  column-gap: 3rem;
   display: grid;
-  grid-template-areas:
-    "intro aside"
-    "bio aside";
-  grid-template-columns: minmax(0, 1fr) 20rem;
-  grid-template-rows: auto 1fr;
-  padding-top: 1.5rem;
-  row-gap: 2rem;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+  padding-top: 5rem;
 
-  &__intro {
-    grid-area: intro;
-  }
-
-  &__aside {
-    grid-area: aside;
-  }
-
-  &__bio {
-    grid-area: bio;
-
-    p:last-child {
-      margin-bottom: 0;
-    }
+  &__model {
+    margin: 0;
   }
 
   &__role {
@@ -200,14 +184,6 @@ h6,
     margin-bottom: 2rem;
   }
 
-  &__photo img {
-    aspect-ratio: 4 / 5;
-    border-radius: $radius;
-    display: block;
-    object-fit: cover;
-    object-position: 50% 20%;
-    width: 100%;
-  }
 }
 
 .cta-row {
@@ -256,12 +232,36 @@ h6,
   }
 }
 
+.hero-about {
+  align-items: start;
+  column-gap: 3.5rem;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 20rem;
+  margin-top: 3rem;
+
+  p:last-child {
+    margin-bottom: 0;
+  }
+
+  .hero__photo img {
+    aspect-ratio: 4 / 5;
+    border-radius: $radius;
+    display: block;
+    object-fit: cover;
+    object-position: 50% 20%;
+    width: 100%;
+  }
+}
+
 .profile-facts {
   border-top: 1px solid var(--global-divider-color);
-  font-size: 0.92rem;
+  display: grid;
+  font-size: 0.95rem;
+  gap: 2rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   line-height: 1.5;
-  margin-top: 0.8rem;
-  padding-top: 0.9rem;
+  margin-top: 2.5rem;
+  padding-top: 1.25rem;
 
   h2 {
     color: var(--global-text-color-light);
@@ -274,15 +274,7 @@ h6,
   }
 
   p {
-    margin-bottom: 0.7rem;
-  }
-
-  p:last-child {
-    margin-bottom: 0;
-  }
-
-  p + h2 {
-    margin-top: 1rem;
+    margin-bottom: 0.25rem;
   }
 
   span {
@@ -462,10 +454,17 @@ h6,
     margin-top: 3.5rem;
   }
 
+  .hero-about {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 1.75rem;
+    margin-top: 2rem;
+  }
+
   .hero__aside {
     align-items: center;
     column-gap: 1.5rem;
     display: grid;
+    grid-row: 1;
     grid-template-columns: 9rem minmax(0, 1fr);
   }
 
@@ -476,17 +475,18 @@ h6,
   }
 
   .profile-facts {
-    display: none;
+    gap: 1.25rem;
+    grid-template-columns: 1fr;
+  }
+
+  .model-legend {
+    grid-template-columns: repeat(2, auto);
   }
 
   .hero {
-    grid-template-areas:
-      "intro"
-      "aside"
-      "bio";
+    gap: 1.5rem;
     grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: auto;
-    padding-top: 1rem;
+    padding-top: 0.5rem;
 
     h1 {
       font-size: 2.5rem;
@@ -496,9 +496,6 @@ h6,
       font-size: 1.35rem;
     }
 
-    &__photo {
-      max-width: 11rem;
-    }
   }
 
   .theme-grid,
@@ -798,19 +795,21 @@ h6,
 
 // Interactive 3D model
 
-.model-grid {
-  align-items: center;
-  display: grid;
-  gap: 2rem;
-  grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
-}
-
 .model-frame {
   background: #ffffff;
   border: 1px solid var(--global-divider-color);
   border-radius: $radius;
-  height: 32rem;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 29rem;
   overflow: hidden;
+  position: relative;
+  transition: background-color 0.2s ease;
+
+  &.is-ct {
+    background-color: #0e1014;
+  }
 
   model-viewer {
     --poster-color: transparent;
@@ -826,13 +825,38 @@ h6,
   }
 }
 
+.model-toggle {
+  background: var(--global-theme-color);
+  border: 0;
+  border-radius: 999px;
+  color: var(--global-hover-text-color);
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 0.45rem 0.95rem;
+  position: absolute;
+  right: 0.75rem;
+  top: 0.75rem;
+  z-index: 1;
+
+  &:hover {
+    background: var(--global-hover-color);
+  }
+
+  &:disabled {
+    cursor: default;
+    opacity: 0.5;
+  }
+}
+
 .model-legend {
   display: grid;
-  font-size: 0.92rem;
-  gap: 0.35rem 1rem;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  font-size: 0.82rem;
+  gap: 0.2rem 1.1rem;
+  grid-template-columns: repeat(3, auto);
+  justify-content: start;
   list-style: none;
-  margin: 0 0 1rem;
+  margin: 0.7rem 0 0.4rem;
   padding: 0;
 
   li {
@@ -852,16 +876,18 @@ h6,
 
 .model-hint {
   color: var(--global-text-color-light);
-  font-size: 0.9rem;
+  font-size: 0.82rem;
   margin: 0;
 }
 
 @media (max-width: 767px) {
-  .model-grid {
-    grid-template-columns: 1fr;
-  }
-
   .model-frame {
-    height: 24rem;
+    height: 22rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .model-legend {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }

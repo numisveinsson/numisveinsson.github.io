@@ -14,12 +14,42 @@ layout: default
         <a class="cta" href="{{ '/contact/' | relative_url }}">Get in touch</a>
       </div>
     </div>
+    <figure class="hero__model">
+      <div class="model-frame" id="heart-model-frame" style="background-image: url('{{ home.model.poster | relative_url }}')">
+        <model-viewer
+          id="heart-model"
+          data-src="{{ home.model.src | relative_url }}"
+          alt="{{ home.model.alt }}"
+          camera-controls
+          disable-zoom
+          interaction-prompt="auto"
+          camera-orbit="0deg 80deg auto"
+          exposure="1.05"
+          tone-mapping="neutral"
+        ></model-viewer>
+        <button class="model-toggle" id="ct-toggle" type="button" role="switch" aria-checked="false" disabled>Show CT scan</button>
+      </div>
+      <figcaption>
+        <ul class="model-legend">
+          {% for item in home.model.legend %}
+            <li><span style="background: {{ item.color }}"></span>{{ item.name }}</li>
+          {% endfor %}
+        </ul>
+        <p class="model-hint">{{ home.model.text }}</p>
+      </figcaption>
+    </figure>
+  </section>
+
+  <section class="hero-about">
+    <div class="hero__bio">
+      {{ content }}
+    </div>
     <aside class="hero__aside">
       <div class="hero__photo">
         <img
           src="{{ home.portrait | relative_url }}"
           alt="Portrait of {{ site.first_name }} {{ site.last_name }}"
-          fetchpriority="high"
+          loading="lazy"
         >
       </div>
       <ul class="profile-links">
@@ -29,20 +59,19 @@ layout: default
         <li><a href="https://github.com/{{ site.data.socials.github_username }}">GitHub</a></li>
         <li><a href="https://www.linkedin.com/in/{{ site.data.socials.linkedin_username }}">LinkedIn</a></li>
       </ul>
-      <div class="profile-facts">
-        <h2>Research interests</h2>
-        <p>{{ home.interests }}</p>
-        <h2>Education</h2>
-        {% for item in home.education %}
-          <p>
-            {{ item.degree }}<br>
-            <span>{{ item.place }}</span>
-          </p>
-        {% endfor %}
-      </div>
     </aside>
-    <div class="hero__bio">
-      {{ content }}
+  </section>
+
+  <section class="profile-facts">
+    <div>
+      <h2>Research interests</h2>
+      <p>{{ home.interests }}</p>
+    </div>
+    <div>
+      <h2>Education</h2>
+      {% for item in home.education %}
+        <p>{{ item.degree }} <span>· {{ item.place }}</span></p>
+      {% endfor %}
     </div>
   </section>
 
@@ -62,36 +91,6 @@ layout: default
           <a href="{{ theme.link | relative_url }}">{{ theme.link_text }} &rarr;</a>
         </article>
       {% endfor %}
-    </div>
-  </section>
-
-  <section class="home-section" aria-labelledby="model-heading">
-    <div class="section-title"><h2 id="model-heading">Explore a model in 3D</h2></div>
-    <div class="model-grid">
-      <div class="model-frame">
-        <model-viewer
-          id="heart-model"
-          data-src="{{ home.model.src | relative_url }}"
-          alt="{{ home.model.alt }}"
-          camera-controls
-          disable-zoom
-          interaction-prompt="auto"
-          camera-orbit="0deg 80deg auto"
-          shadow-intensity="0.5"
-          exposure="1.05"
-          tone-mapping="neutral"
-        ></model-viewer>
-        <noscript><img src="{{ '/assets/img/home/work-meshgrow.jpg' | relative_url }}" alt="MeshGrow model of the heart and aorta"></noscript>
-      </div>
-      <div class="model-side">
-        <p>{{ home.model.text }}</p>
-        <ul class="model-legend">
-          {% for item in home.model.legend %}
-            <li><span style="background: {{ item.color }}"></span>{{ item.name }}</li>
-          {% endfor %}
-        </ul>
-        <p class="model-hint">Drag the model to rotate it.</p>
-      </div>
     </div>
   </section>
 
@@ -200,6 +199,25 @@ layout: default
   // Load the 3D viewer only when a visitor gets near it, so the page stays light.
   (function () {
     var viewer = document.getElementById("heart-model");
+    var frame = document.getElementById("heart-model-frame");
+    var toggle = document.getElementById("ct-toggle");
+    viewer.addEventListener("load", function () {
+      frame.style.backgroundImage = "none";
+      var slices = viewer.model.materials.filter(function (material) {
+        return material.name.indexOf("CT") === 0;
+      });
+      toggle.disabled = false;
+      toggle.addEventListener("click", function () {
+        var on = toggle.getAttribute("aria-checked") !== "true";
+        slices.forEach(function (material) {
+          material.pbrMetallicRoughness.setBaseColorFactor([1, 1, 1, on ? 1 : 0]);
+        });
+        toggle.setAttribute("aria-checked", on ? "true" : "false");
+        toggle.textContent = on ? "Hide CT scan" : "Show CT scan";
+        frame.classList.toggle("is-ct", on);
+        viewer.cameraOrbit = on ? "30deg 68deg auto" : "0deg 80deg auto";
+      });
+    });
     function load() {
       var script = document.createElement("script");
       script.type = "module";
@@ -209,19 +227,26 @@ layout: default
       document.head.appendChild(script);
       viewer.setAttribute("src", viewer.dataset.src);
     }
-    if (!("IntersectionObserver" in window)) {
-      load();
-      return;
+    function start() {
+      if (!("IntersectionObserver" in window)) {
+        load();
+        return;
+      }
+      var observer = new IntersectionObserver(
+        function (entries) {
+          if (entries[0].isIntersecting) {
+            observer.disconnect();
+            load();
+          }
+        },
+        { rootMargin: "400px" }
+      );
+      observer.observe(viewer);
     }
-    var observer = new IntersectionObserver(
-      function (entries) {
-        if (entries[0].isIntersecting) {
-          observer.disconnect();
-          load();
-        }
-      },
-      { rootMargin: "400px" }
-    );
-    observer.observe(viewer);
+    if (document.readyState === "complete") {
+      start();
+    } else {
+      window.addEventListener("load", start);
+    }
   })();
 </script>

@@ -29,7 +29,8 @@ themes:
 model:
   src: assets/models/meshgrow_heart.glb
   alt: Interactive 3D model of the heart chambers connected to the aorta and pulmonary artery, built by MeshGrow
-  text: MeshGrow connects the vasculature to the rest of the cardiovascular system, here the cardiac chambers, to create one complete anatomical model. This example was built automatically from a medical image and simplified for the web.
+  poster: assets/models/meshgrow_heart.jpg
+  text: A MeshGrow model connecting the vessels to the heart, simplified for the web. Drag to rotate, and turn on the CT scan it was built from.
   legend:
     - { name: Aorta, color: "#c9644b" }
     - { name: Pulmonary artery, color: "#a11d33" }
