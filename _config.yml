@@ -189,6 +189,7 @@ exclude:
   - purgecss.config.js
   - README.md
   - readme_preview/
+  - seqseg-backend/
   - vendor
 keep_files:
   - CNAME
@@ -230,6 +231,12 @@ sass:
 jekyll-minifier:
   compress_javascript: false # set to false since we are using terser as the js minifier
   exclude: ["robots.txt", "assets/js/search/*.js"]
+
+# -----------------------------------------------------------------------------
+# SeqSeg demo backend (see seqseg-backend/README.md)
+# -----------------------------------------------------------------------------
+
+seqseg_api_url: http://localhost:7860
 
 # -----------------------------------------------------------------------------
 # Terser
