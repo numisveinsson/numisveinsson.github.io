@@ -30,6 +30,13 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/software/";
           },
+        },{id: "nav-try-seqseg",
+          title: "Try SeqSeg",
+          description: "Trace a coronary artery from a single seed, right in your browser.",
+          section: "Navigation",
+          handler: () => {
+            window.location.href = "/tools/seqseg/";
+          },
         },{id: "nav-talks",
           title: "Talks",
           description: "Keynotes, conference presentations, workshops and other speaking.",
