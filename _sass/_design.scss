@@ -925,3 +925,34 @@ h6,
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
+
+// Accessibility
+
+// Links inside running text need more than color to stand out.
+[role="main"] p a:not(.btn):not(.cta),
+[role="main"] ol li a:not(.btn),
+[role="main"] .cv-document li a {
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+.publications h2.bibliography {
+  color: var(--global-text-color-light);
+}
+
+.card .card-body p.card-text {
+  color: var(--global-text-color-light);
+}
+
+.btn-submit.btn-primary {
+  background-color: var(--global-theme-color) !important;
+  color: var(--global-hover-text-color) !important;
+
+  span {
+    color: inherit;
+  }
+
+  &:hover {
+    background-color: var(--global-hover-color) !important;
+  }
+}

@@ -17,6 +17,7 @@
     <p class="mb-2">Here are some more articles you might like to read next:</p>
   {% endunless %}
 
+  {% if forloop.first %}<ul>{% endif %}
   <li class="my-2">
     {% if post.redirect == blank %}
       <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="{{ post.url | relative_url }}">{{ post.title }}</a>
@@ -29,6 +30,7 @@
       <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="{{ post.redirect | relative_url }}">{{ post.title }}</a>
     {% endif %}
   </li>
+  {% if forloop.last %}</ul>{% endif %}
 {% endfor %}
 {% if site.newsletter.enabled and site.footer_fixed %}
   <p class="mb-2" style="margin-top: 1.5rem !important">Subscribe to be notified of future articles:</p>
