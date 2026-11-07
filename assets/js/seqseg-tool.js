@@ -18,8 +18,6 @@ let scan;
 let start = null;
 let direction = null;
 let busy = false;
-let ort;
-let session;
 let backend = "";
 let maskUrl = null;
 let radiusUnit = "mm";
@@ -215,24 +213,28 @@ function clearResult() {
   if (nv && scan) setView(false);
 }
 
-async function ensureModel() {
-  if (session) return;
-  setStatus("Loading the model...");
-  const useGpu = Boolean(navigator.gpu);
-  ort = await import(`${ORT_BASE}${useGpu ? "ort.webgpu.bundle.min.mjs" : "ort.wasm.min.mjs"}`);
-  ort.env.wasm.wasmPaths = ORT_BASE;
-  ort.env.wasm.numThreads = 1;
-  if (useGpu) {
-    try {
-      session = await ort.InferenceSession.create(modelUrl, { executionProviders: ["webgpu"] });
-      backend = "WebGPU";
-      return;
-    } catch {
-      session = null;
-    }
-  }
-  session = await ort.InferenceSession.create(modelUrl, { executionProviders: ["wasm"] });
-  backend = "CPU";
+let worker = null;
+let stopTrace = null;
+
+// Runs the trace in a worker. The volume buffer is transferred, not copied.
+function traceInWorker(message, onStep) {
+  return new Promise((resolve, reject) => {
+    worker ??= new Worker(root.dataset.worker, { type: "module" });
+    const fail = (error) => {
+      worker?.terminate();
+      worker = null;
+      reject(error);
+    };
+    stopTrace = () => fail(new Error("Stopped."));
+    worker.onmessage = ({ data }) => {
+      if (data.type === "backend") backend = data.backend;
+      else if (data.type === "step") onStep();
+      else if (data.type === "done") resolve(data);
+      else if (data.type === "error") fail(new Error(data.message));
+    };
+    worker.onerror = () => fail(new Error("The trace could not start in this browser."));
+    worker.postMessage(message, [message.volume.data.buffer]);
+  });
 }
 
 async function run() {
@@ -240,7 +242,6 @@ async function run() {
   refreshRunButton();
   clearResult();
   try {
-    await ensureModel();
     const unit = el("unit").value;
     const scale = MM_PER_UNIT[unit];
     const lps = (point) => [-point[0] * scale, -point[1] * scale, point[2] * scale];
@@ -249,15 +250,24 @@ async function run() {
     const volume = toTracerVolume(scan, unit);
     const began = performance.now();
     let done = 0;
-    setStatus(`Tracing with ${backend}...`);
-    await new Promise((resolve) => setTimeout(resolve));
-    const { trace } = await import(el("tracer").dataset.src);
-    const result = await trace(ort, session, volume, seed, steps, (event) => {
-      if (!event.stopped) {
+    setStatus("Loading the model...");
+    el("stop").hidden = false;
+    const absolute = (url) => new URL(url, location.href).href;
+    const result = await traceInWorker(
+      {
+        volume,
+        seed,
+        steps,
+        useGpu: Boolean(navigator.gpu),
+        ortBase: ORT_BASE,
+        modelUrl: absolute(modelUrl),
+        tracerUrl: absolute(el("tracer").dataset.src),
+      },
+      () => {
         done += 1;
         setStatus(`Tracing with ${backend}: step ${done} of ${steps}`);
       }
-    });
+    );
     const seconds = (performance.now() - began) / 1000;
     const mask = cropMask(result.seg, volume.size, scan.hdr.affine);
     if (!mask) throw new Error("No vessel was found from this seed. Try moving the points or changing the radius.");
@@ -267,13 +277,15 @@ async function run() {
     el("download-mask").download = "seqseg_mask.nii.gz";
     const voxels = result.seg.reduce((sum, value) => sum + value, 0);
     const millilitres = (voxels * volume.spacing[0] * volume.spacing[1] * volume.spacing[2]) / 1000;
-    el("summary").textContent = `${result.steps.length} steps, ${millilitres.toFixed(2)} mL.`;
+    el("summary").textContent = `${result.steps} steps, ${millilitres.toFixed(2)} mL.`;
     el("result").hidden = false;
     setStatus(`Finished in ${seconds.toFixed(1)} seconds with ${backend}.`);
   } catch (error) {
     setStatus(error.message || "The trace failed.", true);
   } finally {
     busy = false;
+    stopTrace = null;
+    el("stop").hidden = true;
     refreshRunButton();
   }
 }
@@ -371,6 +383,7 @@ el("set-start").addEventListener("click", () => setPoint("start"));
 el("set-direction").addEventListener("click", () => setPoint("direction"));
 el("example").addEventListener("click", loadExample);
 el("run").addEventListener("click", run);
+el("stop").addEventListener("click", () => stopTrace?.());
 el("unit").addEventListener("change", syncRadiusUnit);
 el("toggle-view").addEventListener("click", () => setView(!showing3d));
 el("toggle-ct").addEventListener("click", () => setCtHidden(!ctHidden));

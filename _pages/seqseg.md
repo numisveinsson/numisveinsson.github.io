@@ -38,7 +38,7 @@ _styles: |
   .seqseg-credit { margin: 0.5rem 0 0; font-size: 0.85rem; color: var(--global-text-color-light); }
 ---
 
-<div class="seqseg" id="seqseg" data-model="{{ '/assets/models/seqseg_coronary.onnx' | relative_url }}" data-example="{{ '/assets/data/seqseg_example.nii.gz' | relative_url }}">
+<div class="seqseg" id="seqseg" data-model="{{ '/assets/models/seqseg_coronary.onnx' | relative_url }}" data-example="{{ '/assets/data/seqseg_example.nii.gz' | relative_url }}" data-worker="{{ '/assets/js/seqseg-worker.js' | relative_url }}">
   <div class="seqseg-notice">
     <p>This research demo is not for clinical use and has not been validated for diagnosis or treatment.</p>
   </div>
@@ -84,6 +84,7 @@ _styles: |
     <div class="seqseg-group">
       <h2>3. Run</h2>
       <button type="button" class="seqseg-primary" id="seqseg-run" disabled>Trace vessel</button>
+      <button type="button" id="seqseg-stop" hidden>Stop</button>
       <p class="seqseg-status" id="seqseg-status" role="status"></p>
     </div>
     <div class="seqseg-group" id="seqseg-result" hidden>
