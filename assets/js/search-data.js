@@ -37,6 +37,13 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/tools/seqseg/";
           },
+        },{id: "nav-ccta-contrast",
+          title: "CCTA contrast",
+          description: "Measure aortic root attenuation, noise and SNR in a coronary CT angiogram, right in your browser.",
+          section: "Navigation",
+          handler: () => {
+            window.location.href = "/tools/ccta-contrast/";
+          },
         },{id: "nav-talks",
           title: "Talks",
           description: "Keynotes, conference presentations, workshops and other speaking.",
