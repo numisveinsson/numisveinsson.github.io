@@ -4,7 +4,8 @@
 
 const AORTA = { erosion: 3, roi: 12, search: 25, recenter: 20, minBright: 120, fallback: 8, sigma: 1, depthTie: 0.01 };
 const LUMEN = { ball: 0.7, percentile: 75, minRadius: 0.3 };
-const CALCIUM_SD = 3;
+const CALCIUM_SD = 4; // aortic noise SDs above the local lumen
+const CALCIUM_WINDOW_MM = 10; // half-width of the running lumen reference
 const CALCIUM_BALL_MM = 1.5; // fixed, so the result does not depend on how radius was estimated
 const FAT_RANGE = [-190, -30];
 const FAT_SHELL = [1, 3];
@@ -478,11 +479,13 @@ const pathLength = (points) => {
   return total;
 };
 
-export function extractMainVessels(lines, rawOstia) {
+// With sides = { right, left: [...] }, the caller says which ostium is which, so either
+// side may be missing. Otherwise ostia are ranked by x + y and the lowest is the RCA.
+export function extractMainVessels(lines, rawOstia, sides = null) {
   const { points, radii, adjacency } = buildGraph(lines);
   const ostia = [...rawOstia].sort((a, b) => a[0] + a[1] - (b[0] + b[1]));
-  const right = ostia[0];
-  const left = ostia.slice(1);
+  const right = sides ? sides.right : ostia[0];
+  const left = sides ? sides.left : ostia.slice(1);
   // Returns -1 when nothing was traced from this ostium, so one tree cannot be named twice.
   const nearest = (p) => {
     let best = -1;
@@ -506,7 +509,7 @@ export function extractMainVessels(lines, rawOstia) {
     const root = nearest(o);
     return root < 0 ? [] : leafPaths(adjacency, root);
   };
-  const rightPaths = paths(right);
+  const rightPaths = right ? paths(right) : [];
   if (rightPaths.length) vessels.push(vessel("RCA", rightPaths[0].ids));
   if (!left.length) return vessels;
 
@@ -558,12 +561,27 @@ export function isLost(points) {
   return length >= MIN_REACH_LENGTH_MM && reach / length < MIN_REACH_RATIO;
 }
 
+// Per-point calcium threshold: the brighter of the aorta and the nearby lumen, plus a margin,
+// so a vessel brighter than the aortic root is not read as calcium. Matches calcium_thresholds.
+function calciumThresholds(vol, points, aorta) {
+  const raw = points.map((p) => {
+    const values = pick(vol, ball(vol, p, LUMEN.ball));
+    return values.length ? percentile(values, LUMEN.percentile) : NaN;
+  });
+  return raw.map((_, i) => {
+    const window = raw.slice(Math.max(0, i - CALCIUM_WINDOW_MM), i + CALCIUM_WINDOW_MM + 1).filter(Number.isFinite);
+    const local = window.length ? median(window) : aorta.median_hu;
+    return Math.max(aorta.median_hu, local) + CALCIUM_SD * aorta.noise_sd;
+  });
+}
+
 export function vesselProfile(vol, vessel, aorta) {
   const n = vessel.points.length;
-  const threshold = aorta.median_hu + CALCIUM_SD * aorta.noise_sd;
+  const thresholds = calciumThresholds(vol, vessel.points, aorta);
   const profile = { name: vessel.name, points: vessel.points, radius: [], lumen: [], fat: [], calcified: [], valid: [] };
   for (let i = 0; i < n; i++) {
     const point = vessel.points[i];
+    const threshold = thresholds[i];
     const r = Number.isFinite(vessel.radius[i]) ? vessel.radius[i] : 0;
     const clean = pick(vol, ball(vol, point, LUMEN.ball)).filter((v) => v < threshold);
     const lumen = clean.length ? percentile(clean, LUMEN.percentile) : NaN;
@@ -699,4 +717,102 @@ export function assess(vol, lines, ostia, aortaSeed) {
     scored.push(scoreVessel(vessel.name, thirdMetrics(profile, aorta), findFocalDips(profile), vessel.length_mm, calcifiedMm));
   }
   return { report: { exam: scoreExam(aorta, scored), aorta, vessels: scored }, profiles };
+}
+
+// Band-based quality score and per-segment diagnostic flags. Matches src/iqa_tool/quality.py.
+// Proximal CNR (10 to 20) and noise (45 to 20 HU) ramps are from the user's threshold table,
+// the lumen ramp reaches 1 at the SCCT 250 HU target with no upper limit, and the flags
+// follow the CAD-RADS 2.0 N modifier. Provisional: not validated against reader grades.
+export const QUALITY = {
+  noise: [45, 20], // decreasing: 0 at 45 HU, 1 at 20 HU
+  cnr: { proximal: [10, 20], mid: [8, 16], distal: [5, 12] },
+  lumen: [150, 250],
+  heavyCalciumShare: 0.5,
+  parts: { cnr: 0.4, noise: 0.3, lumen: 0.3 },
+  bands: [["proximal", 0, 40, 0.4], ["mid", 40, 80, 0.35], ["distal", 80, null, 0.25]],
+  labels: { proximal: "0-40 mm", mid: "40-80 mm", distal: "80+ mm" },
+  minBandMm: 10,
+  minValidMm: 5,
+  minValidFraction: 0.3,
+  minCoverage: 0.4,
+  weakestWeight: 0.6,
+  minAortaRoiMl: 3,
+  minAortaHu: 150,
+};
+
+const unitRamp = (value, zero, one) => Math.min(Math.max((value - zero) / (one - zero), 0), 1);
+const lumenPart = (hu) => unitRamp(hu, ...QUALITY.lumen);
+
+export function aortaProblems(aorta) {
+  const problems = [];
+  if (!Number.isFinite(aorta.noise_sd) || aorta.noise_sd <= 0) problems.push("Aortic noise could not be measured");
+  if (aorta.source === "fixed_ball") problems.push("The aortic lumen could not be outlined");
+  else if (aorta.roi_ml < QUALITY.minAortaRoiMl) problems.push("The aortic region is too small for the aortic root");
+  if (aorta.median_hu < QUALITY.minAortaHu) problems.push("Aortic attenuation is too low for a contrast-filled aorta");
+  return problems;
+}
+
+export function bandScores(profile, aorta, dips = []) {
+  const n = profile.lumen.length;
+  const fats = profile.fat.filter(Number.isFinite);
+  const fat = fats.length ? median(fats) : null;
+  const noisePart = unitRamp(aorta.noise_sd, ...QUALITY.noise);
+  return QUALITY.bands.map(([name, start, end, weight]) => {
+    const stop = end === null ? n : Math.min(end, n);
+    const length = Math.max(stop - start, 0);
+    const band = { band: name, start_mm: start, end_mm: stop, weight, median_hu: null, hu_ratio: null, snr: null, cnr: null, parts: null, score: null, note: null, flags: [] };
+    if (length < QUALITY.minBandMm) return { ...band, note: "not traced" };
+    let calcified = 0;
+    for (let i = start; i < stop; i++) if (profile.calcified[i]) calcified += 1;
+    if (calcified / length >= QUALITY.heavyCalciumShare) band.flags.push("heavy calcium, so blooming may hide the lumen");
+    for (const dip of dips) {
+      if (dip.start_mm < stop && dip.end_mm >= start) band.flags.push(`focal HU dip at ${dip.start_mm}-${dip.end_mm} mm, possibly motion`);
+    }
+    const keep = [];
+    for (let i = start; i < stop; i++) if (profile.valid[i]) keep.push(profile.lumen[i]);
+    if (keep.length < QUALITY.minValidMm || keep.length / length < QUALITY.minValidFraction) return { ...band, note: "too calcified or thin to measure" };
+    const hu = median(keep);
+    Object.assign(band, { median_hu: hu, hu_ratio: hu / aorta.median_hu, snr: hu / aorta.noise_sd });
+    if (hu < QUALITY.lumen[0]) band.flags.push(`poor opacification (below ${QUALITY.lumen[0]} HU)`);
+    if (fat === null) return { ...band, note: "no perivascular fat found, so CNR is unknown" };
+    const cnr = (hu - fat) / aorta.noise_sd;
+    const ramp = QUALITY.cnr[name];
+    if (cnr < ramp[0]) band.flags.push(`low CNR (below ${ramp[0]})`);
+    const parts = { cnr: unitRamp(cnr, ...ramp), noise: noisePart, lumen: lumenPart(hu) };
+    const score = Object.entries(parts).reduce((sum, [k, v]) => sum + QUALITY.parts[k] * v, 0);
+    return { ...band, cnr, parts, score };
+  });
+}
+
+export function vesselQuality(name, profile, aorta, lost = false, dips = []) {
+  if (lost) return { name, score: null, coverage: 0, bands: [], review: true, reasons: ["The trace curls back on itself, so it may have left the vessel"] };
+  const bands = bandScores(profile, aorta, dips);
+  const scored = bands.filter((b) => b.score !== null);
+  const coverage = scored.reduce((sum, b) => sum + b.weight, 0);
+  const reasons = bands.filter((b) => b.flags.length).map((b) => `${QUALITY.labels[b.band]} may be non-diagnostic: ${b.flags.join("; ")}`);
+  reasons.push(...bands.filter((b) => b.note && b.note !== "not traced").map((b) => `${QUALITY.labels[b.band]}: ${b.note}`));
+  const flagged = bands.some((b) => b.flags.length);
+  if (coverage < QUALITY.minCoverage - 1e-9) {
+    reasons.push("Too little of the vessel could be scored");
+    return { name, score: null, coverage, bands, review: true, reasons };
+  }
+  const score = scored.reduce((sum, b) => sum + b.weight * b.score, 0) / coverage;
+  return { name, score, coverage, bands, review: flagged, reasons };
+}
+
+export function scanQuality(aorta, vessels, expected) {
+  const problems = aortaProblems(aorta);
+  if (problems.length) return { score: null, status: "cannot score", reasons: problems };
+  const found = Object.fromEntries(vessels.map((v) => [v.name, v]));
+  const missing = expected.filter((name) => !found[name] || found[name].score === null);
+  const scores = expected.filter((name) => found[name] && found[name].score !== null).map((name) => found[name].score);
+  const reasons = missing.map((name) => `${name}: not assessed`);
+  const noisy = aorta.noise_sd > QUALITY.noise[0];
+  if (noisy) reasons.unshift(`Aortic noise is above ${QUALITY.noise[0]} HU`);
+  for (const name of expected) if (found[name]) reasons.push(...found[name].reasons.map((r) => `${name}: ${r}`));
+  if (!scores.length) return { score: null, status: "cannot score", reasons: reasons.length ? reasons : ["No vessel could be scored"] };
+  const mean = scores.reduce((a, b) => a + b, 0) / scores.length;
+  const score = QUALITY.weakestWeight * Math.min(...scores) + (1 - QUALITY.weakestWeight) * mean;
+  const review = noisy || missing.length > 0 || expected.some((name) => found[name]?.review);
+  return { score, status: review ? "manual review" : "pass", reasons };
 }
