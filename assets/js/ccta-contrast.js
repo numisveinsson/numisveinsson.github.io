@@ -1,10 +1,19 @@
 const NIIVUE_URL = "https://cdn.jsdelivr.net/npm/@niivue/niivue@0.69.0/dist/index.js";
 const MM_PER_UNIT = { mm: 1, cm: 10 };
-const LABEL_ROI = 2;
+const LABEL_AORTA = 2;
 const LABEL_CLICK = 3;
+const LABEL_FAT = 4;
 const MARKER_RADIUS_MM = 1.2;
 // Aortic root of the example scan (Vascular Model Repository 0066_H_CORO_H), in RAS and the image's unit (cm).
-const EXAMPLE_POINT = [25.88, 4.88, -14.5];
+const EXAMPLE_AORTA = [25.88, 4.88, -14.5];
+// Epicardial fat beside the proximal LAD of the same scan.
+const EXAMPLE_FAT = [21.58, 4.847, -12.6975];
+// Every aortic root ROI in the CAS-X test set was at least 4 mL, so a smaller one is
+// probably a smaller vessel or a chamber edge, not the aorta.
+const MIN_ROI_ML = 3;
+const MIN_LUMEN_HU = 150;
+const MIN_FAT_ML = 0.005;
+const MAX_FAT_HU = -50;
 
 const root = document.getElementById("snr");
 const el = (name) => document.getElementById(`snr-${name}`);
@@ -15,7 +24,9 @@ let nv;
 let SLICE_TYPE;
 let scan;
 let volume = null; // the scan in LPS mm, built once per scan and unit
-let lastReport = null;
+let aorta = null; // { report, click, warnings }
+let fat = null;
+let example = false;
 
 function setStatus(message, isError = false) {
   el("status").textContent = message;
@@ -72,13 +83,7 @@ function drawVoxel(ras) {
   return v[0] + v[1] * dims[1] + v[2] * dims[1] * dims[2];
 }
 
-function showRoi(report, click) {
-  const bitmap = nv.drawBitmap;
-  bitmap.fill(0);
-  for (const n of report.voxels) {
-    const at = drawVoxel(lpsToRas(lpsOfIndex(volume, n)));
-    if (at !== null) bitmap[at] = LABEL_ROI;
-  }
+function drawMarker(bitmap, click) {
   const dims = nv.back.dimsRAS;
   const spacing = nv.back.pixDimsRAS;
   const frac = nv.mm2frac(click);
@@ -94,6 +99,20 @@ function showRoi(report, click) {
       }
     }
   }
+}
+
+// Redraws both regions and their click markers.
+function redraw() {
+  const bitmap = nv.drawBitmap;
+  bitmap.fill(0);
+  for (const [measured, label] of [[aorta, LABEL_AORTA], [fat, LABEL_FAT]]) {
+    if (!measured) continue;
+    for (const n of measured.report.voxels) {
+      const at = drawVoxel(lpsToRas(lpsOfIndex(volume, n)));
+      if (at !== null) bitmap[at] = label;
+    }
+  }
+  for (const measured of [aorta, fat]) if (measured) drawMarker(bitmap, measured.click);
   nv.refreshDrawing(true);
 }
 
@@ -104,20 +123,9 @@ function rank(values, value) {
   return Math.round((100 * below) / values.length);
 }
 
-function describe(values, value) {
-  const share = rank(values, value);
-  return `Above ${share}% of CAS-X scans`;
-}
+const describe = (values, value) => `Above ${rank(values, value)}% of CAS-X scans`;
 
-// Every aortic root ROI in the CAS-X test set was at least 4 mL, so a smaller one is
-// probably a smaller vessel or a chamber edge, not the aorta.
-const MIN_ROI_ML = 3;
-const MIN_LUMEN_HU = 150;
-
-function showReport(report) {
-  el("hu").textContent = `${Math.round(report.median_hu)} HU`;
-  el("noise").textContent = `${report.noise_sd.toFixed(1)} HU`;
-  el("snr").textContent = report.snr.toFixed(1);
+function aortaWarnings(report) {
   const warnings = [];
   if (report.source === "fixed_ball") {
     warnings.push("The lumen could not be outlined here, so this is a plain 8 mm sphere around the point.");
@@ -125,46 +133,97 @@ function showReport(report) {
     warnings.push("The bright region found here is too small for the aortic root.");
   }
   if (report.median_hu < MIN_LUMEN_HU) warnings.push("This is low for a contrast-filled aorta.");
-  const trusted = !warnings.length;
-  el("hu-ref").textContent = trusted ? describe(reference.median_hu, report.median_hu) : "";
-  el("noise-ref").textContent = trusted ? describe(reference.noise_sd, report.noise_sd) : "";
-  el("snr-ref").textContent = trusted ? describe(reference.snr, report.snr) : "";
-  const roi = `Measured in ${report.roi_ml.toFixed(1)} mL of lumen, shown in red.`;
-  el("summary").textContent = trusted ? roi : `${warnings.join(" ")} Check that the point is inside the aortic root and measure again. ${roi}`;
-  el("summary").classList.toggle("is-error", !trusted);
-  el("result").hidden = false;
   return warnings;
 }
 
-async function measure(rasPoint) {
-  el("run").disabled = true;
-  el("result").hidden = true;
+function fatWarnings(report) {
+  const warnings = [];
+  if (report.roi_ml < MIN_FAT_ML) warnings.push("The fat region here is very small.");
+  if (report.median_hu > MAX_FAT_HU) warnings.push("This is high for fat, so heart muscle or vessel wall may be mixed in.");
+  return warnings;
+}
+
+function showResults() {
+  const rows = { aorta: Boolean(aorta), fat: Boolean(fat), cnr: Boolean(aorta && fat) };
+  document.querySelectorAll("[data-snr-row]").forEach((row) => (row.hidden = !rows[row.dataset.snrRow]));
+  const notes = [];
+  const problems = [];
+  if (aorta) {
+    const { report, warnings } = aorta;
+    const trusted = !warnings.length;
+    el("hu").textContent = `${Math.round(report.median_hu)} HU`;
+    el("noise").textContent = `${report.noise_sd.toFixed(1)} HU`;
+    el("snr").textContent = report.snr.toFixed(1);
+    el("hu-ref").textContent = trusted ? describe(reference.median_hu, report.median_hu) : "";
+    el("noise-ref").textContent = trusted ? describe(reference.noise_sd, report.noise_sd) : "";
+    el("snr-ref").textContent = trusted ? describe(reference.snr, report.snr) : "";
+    notes.push(`Aorta: ${report.roi_ml.toFixed(1)} mL of lumen, in red.`);
+    if (!trusted) problems.push(`${warnings.join(" ")} Check that the aortic point is inside the aortic root.`);
+  }
+  if (fat) {
+    const { report, warnings } = fat;
+    el("fat").textContent = `${Math.round(report.median_hu)} HU`;
+    notes.push(`Fat: ${Math.round(report.roi_ml * 1000)} mm³, in blue.`);
+    if (warnings.length) problems.push(`${warnings.join(" ")} Try a larger patch of fat.`);
+  }
+  if (rows.cnr) el("cnr").textContent = cnr().toFixed(1);
+  el("summary").textContent = [...problems, ...notes].join(" ");
+  el("summary").classList.toggle("is-error", problems.length > 0);
+  el("result").hidden = !aorta && !fat;
+}
+
+function cnr() {
+  return (aorta.report.median_hu - fat.report.median_hu) / aorta.report.noise_sd;
+}
+
+async function measure(kind, rasPoint) {
+  el("run-aorta").disabled = true;
+  el("run-fat").disabled = true;
   setStatus("Measuring...");
   await new Promise((resolve) => setTimeout(resolve));
   try {
     const core = await corePromise;
     volume ??= toMetricVolume(scan, el("unit").value);
     core.checkImage(volume);
-    const report = core.aortaMetrics(volume, rasToLps(rasPoint));
-    if (!Number.isFinite(report.snr)) throw new core.InvalidImage("The noise could not be measured at this point. Try a point inside the aortic root.");
-    showRoi(report, rasPoint);
-    const warnings = showReport(report);
-    lastReport = {
-      point_lps_mm: rasToLps(rasPoint),
-      lumen_center_lps_mm: report.center,
-      median_hu: report.median_hu,
-      noise_sd_hu: report.noise_sd,
-      snr: report.snr,
-      roi_ml: report.roi_ml,
-      roi_source: report.source,
-      warnings,
-    };
+    if (kind === "aorta") {
+      const report = core.aortaMetrics(volume, rasToLps(rasPoint));
+      if (!Number.isFinite(report.snr)) throw new core.InvalidImage("The noise could not be measured at this point. Try a point inside the aortic root.");
+      aorta = { report, click: rasPoint, warnings: aortaWarnings(report) };
+    } else {
+      const report = core.fatMetrics(volume, rasToLps(rasPoint));
+      if (!report) throw new Error("There is no fat within 3 mm of this point. Move the crosshair into fat, which looks almost black here, and measure again.");
+      fat = { report, click: rasPoint, warnings: fatWarnings(report) };
+    }
+    redraw();
+    showResults();
     setStatus("");
+    return true;
   } catch (error) {
     setStatus(error.message || "The measurement failed.", true);
+    return false;
   } finally {
-    el("run").disabled = false;
+    el("run-aorta").disabled = false;
+    el("run-fat").disabled = false;
   }
+}
+
+function report() {
+  const out = {};
+  if (aorta) {
+    const r = aorta.report;
+    out.aorta = { point_lps_mm: rasToLps(aorta.click), lumen_center_lps_mm: r.center, median_hu: r.median_hu, noise_sd_hu: r.noise_sd, snr: r.snr, roi_ml: r.roi_ml, roi_source: r.source, warnings: aorta.warnings };
+  }
+  if (fat) {
+    const r = fat.report;
+    out.fat = { point_lps_mm: rasToLps(fat.click), fat_center_lps_mm: r.center, median_hu: r.median_hu, noise_sd_hu: r.noise_sd, roi_mm3: r.roi_ml * 1000, warnings: fat.warnings };
+  }
+  if (aorta && fat) out.cnr = { value: cnr(), definition: "(aortic lumen HU - fat HU) / aortic noise SD" };
+  return out;
+}
+
+function moveCrosshair(point) {
+  nv.scene.crosshairPos = nv.mm2frac(point);
+  nv.drawScene();
 }
 
 function crosshairWorld() {
@@ -185,7 +244,9 @@ async function loadScan(file) {
     }
     scan = null;
     volume = null;
-    lastReport = null;
+    aorta = null;
+    fat = null;
+    example = false;
     el("result").hidden = true;
     nv.closeDrawing();
     await nv.loadVolumes([]);
@@ -196,7 +257,13 @@ async function loadScan(file) {
     }
     nv.setSliceType(SLICE_TYPE.MULTIPLANAR);
     nv.createEmptyDrawing();
-    nv.setDrawColormap({ R: [0, 0, 230, 255], G: [0, 0, 60, 215], B: [0, 0, 60, 0], A: [0, 255, 140, 255], labels: ["", "", "ROI", "Point"] });
+    nv.setDrawColormap({
+      R: [0, 0, 230, 255, 40],
+      G: [0, 0, 60, 215, 170],
+      B: [0, 0, 60, 0, 255],
+      A: [0, 255, 140, 255, 160],
+      labels: ["", "", "Aorta", "Point", "Fat"],
+    });
     nv.setDrawOpacity(0.6);
     scan.cal_min = -100;
     scan.cal_max = 800;
@@ -222,10 +289,10 @@ async function loadExample() {
     const response = await fetch(root.dataset.example);
     if (!response.ok) throw new Error("Download failed.");
     await loadScan(new File([await response.blob()], "example.nii.gz"));
-    if (!scan || !EXAMPLE_POINT) return;
-    nv.scene.crosshairPos = nv.mm2frac(EXAMPLE_POINT);
-    nv.drawScene();
-    setStatus("Example ready. The crosshair is in the aortic root. Press Measure here.");
+    if (!scan) return;
+    example = true;
+    moveCrosshair(EXAMPLE_AORTA);
+    setStatus("Example ready. The crosshair is in the aortic root. Press Measure aorta here.");
   } catch {
     setLoadStatus("The example scan could not be loaded. Please try again.", true);
   } finally {
@@ -253,15 +320,26 @@ drop.addEventListener("drop", (event) => {
   if (event.dataTransfer.files[0]) loadScan(event.dataTransfer.files[0]);
 });
 el("example").addEventListener("click", loadExample);
-el("run").addEventListener("click", () => measure(crosshairWorld()));
+el("run-aorta").addEventListener("click", async () => {
+  const done = await measure("aorta", crosshairWorld());
+  // In the example, lead on to the fat point once the aorta is done.
+  if (done && example && !fat) {
+    moveCrosshair(EXAMPLE_FAT);
+    setStatus("The crosshair is now in epicardial fat beside the left anterior descending artery. Press Measure fat here.");
+  }
+});
+el("run-fat").addEventListener("click", () => measure("fat", crosshairWorld()));
 el("unit").addEventListener("change", () => {
   volume = null;
+  aorta = null;
+  fat = null;
+  if (nv) redraw();
   el("result").hidden = true;
 });
 el("copy").addEventListener("click", async () => {
-  if (!lastReport) return;
+  if (!aorta && !fat) return;
   try {
-    await navigator.clipboard.writeText(JSON.stringify(lastReport, null, 2));
+    await navigator.clipboard.writeText(JSON.stringify(report(), null, 2));
     setStatus("Copied.");
   } catch {
     setStatus("The browser did not allow copying.", true);

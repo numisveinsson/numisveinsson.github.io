@@ -2,7 +2,7 @@
 layout: page
 title: CCTA contrast
 permalink: /tools/ccta-contrast/
-description: Measure aortic root attenuation, noise and SNR in a coronary CT angiogram, right in your browser.
+description: Measure aortic root attenuation, noise, SNR and CNR in a coronary CT angiogram, right in your browser.
 nav: true
 nav_order: 3.6
 _styles: |
@@ -43,12 +43,13 @@ _styles: |
   .snr-ref { display: block; font-weight: normal; color: var(--global-text-color-light); font-size: 0.85rem; }
 ---
 
-<div class="seqseg" id="snr" data-example="{{ '/assets/data/seqseg_example.nii.gz' | relative_url }}" data-core="{{ '/assets/js/iqa-core.js' | relative_url }}?v=1">
+<div class="seqseg" id="snr" data-example="{{ '/assets/data/seqseg_example.nii.gz' | relative_url }}" data-core="{{ '/assets/js/iqa-core.js' | relative_url }}?v=2">
   <div class="seqseg-notice">
     <p>This research tool is not for clinical use and has not been validated for diagnosis or treatment.</p>
   </div>
 
-  <p>Click inside the aortic root, just above the valve, and the tool measures how bright the contrast is and how noisy the image is there. It finds the contrast-filled lumen near your click, grows a region inside it, keeps the part at least 3 mm from the wall within 12 mm of the lumen centre, and reports the median HU, the noise (a robust standard deviation) and their ratio.</p>
+  <p>Click inside the aortic root, just above the valve, and the tool measures how bright the contrast is and how noisy the image is there. It finds the contrast-filled lumen near your click, grows a region inside it, keeps the part at least 3 mm from the wall within 12 mm of the lumen centre, and reports the median HU, the noise (a robust standard deviation) and their ratio, the SNR.</p>
+  <p>Then click fat for the contrast-to-noise ratio. Epicardial fat beside a proximal coronary artery is the usual choice, since that is the contrast a reader sees around the vessel. The tool takes the patch of fat (−190 to −30 HU) connected to your click within 5 mm, trims 1 mm off its edges, and reports its median HU. CNR is the lumen HU minus the fat HU, divided by the aortic noise.</p>
 
   <label class="seqseg-drop" id="snr-drop">
     <input type="file" id="snr-file" accept=".nii,.gz,.mha,.nrrd">
@@ -66,24 +67,28 @@ _styles: |
 
   <div class="seqseg-panel" id="snr-panel" hidden>
     <div class="seqseg-group">
-      <h2>1. Click the aortic root</h2>
-      <p>Move the crosshair into the bright aortic root, then measure.</p>
+      <h2>Measure</h2>
+      <p>1. Move the crosshair into the bright aortic root, then measure the aorta.</p>
+      <button type="button" class="seqseg-primary" id="snr-run-aorta">Measure aorta here</button>
+      <p>2. Move it into fat, ideally beside a proximal coronary artery, then measure the fat.</p>
+      <button type="button" id="snr-run-fat">Measure fat here</button>
       <label>Image units
         <select id="snr-unit">
           <option value="mm">mm</option>
           <option value="cm">cm</option>
         </select>
       </label>
-      <button type="button" class="seqseg-primary" id="snr-run">Measure here</button>
       <p class="seqseg-status" id="snr-status" role="status"></p>
     </div>
     <div class="seqseg-group" id="snr-result" hidden>
       <h2>Result</h2>
       <table class="snr-table">
         <tbody>
-          <tr><th scope="row">Lumen attenuation<span class="snr-ref" id="snr-hu-ref"></span></th><td id="snr-hu"></td></tr>
-          <tr><th scope="row">Noise<span class="snr-ref" id="snr-noise-ref"></span></th><td id="snr-noise"></td></tr>
-          <tr><th scope="row">SNR<span class="snr-ref" id="snr-snr-ref"></span></th><td id="snr-snr"></td></tr>
+          <tr data-snr-row="aorta"><th scope="row">Lumen attenuation<span class="snr-ref" id="snr-hu-ref"></span></th><td id="snr-hu"></td></tr>
+          <tr data-snr-row="aorta"><th scope="row">Noise<span class="snr-ref" id="snr-noise-ref"></span></th><td id="snr-noise"></td></tr>
+          <tr data-snr-row="aorta"><th scope="row">SNR<span class="snr-ref" id="snr-snr-ref"></span></th><td id="snr-snr"></td></tr>
+          <tr data-snr-row="fat"><th scope="row">Fat attenuation</th><td id="snr-fat"></td></tr>
+          <tr data-snr-row="cnr"><th scope="row">CNR<span class="snr-ref">Lumen minus fat, over aortic noise</span></th><td id="snr-cnr"></td></tr>
         </tbody>
       </table>
       <p id="snr-summary"></p>
@@ -94,9 +99,9 @@ _styles: |
   </div>
 </div>
 
-<p class="seqseg-credit">The comparison under each value places it among 158 scans from the test set of the CAS-X coronary CT dataset, measured the same way. It is not a quality threshold, and the tool gives no pass or fail. Noise and SNR depend on the scanner, dose and reconstruction kernel, so compare scans from similar protocols.</p>
+<p class="seqseg-credit">The comparison under the aortic values places each among 158 scans from the test set of the CAS-X coronary CT dataset, measured the same way. CNR has no such comparison yet, because it depends on where the fat click goes. It is not a quality threshold, and the tool gives no pass or fail. Noise and SNR depend on the scanner, dose and reconstruction kernel, so compare scans from similar protocols.</p>
 <p class="seqseg-credit">The measurement runs on your computer, and this tool does not upload your scan. The page does load code from outside services, and the site uses Google Analytics, so please do not use it with identifiable patient data.</p>
 <p class="seqseg-credit">Example scan: cropped from case 0066_H_CORO_H of the <a href="https://www.vascularmodel.com">Vascular Model Repository</a> (Wilson, Ortiz and Johnson, J. Med. Devices 7(4), 2013), provided for research and development use. See its <a href="{{ '/assets/data/seqseg_example_LICENSE.txt' | relative_url }}">license</a>. The data was provided in whole or in part with Federal funds from the National Library of Medicine under Grant No. R01LM013120, and the National Heart, Lung, and Blood Institute, National Institutes of Health, Department of Health and Human Services, under Contract No. HHSN268201100035C. Viewer: <a href="https://github.com/niivue/niivue">NiiVue</a>.</p>
 
 <script id="snr-reference" type="application/json">{"median_hu":[322.0,339.0,342.0,343.0,344.0,358.0,362.0,363.0,363.0,363.0,364.0,365.0,367.0,370.0,373.0,376.0,380.0,381.0,387.0,389.0,390.0,391.0,393.0,393.0,394.0,395.0,398.0,399.0,401.0,401.0,401.0,403.0,405.0,414.0,414.0,415.0,416.0,421.0,421.0,422.0,427.0,431.0,434.0,435.0,438.0,440.0,441.0,441.0,442.0,443.0,444.0,445.0,448.0,448.0,449.0,449.0,451.0,453.0,453.0,456.0,457.0,457.0,457.0,461.0,463.0,463.0,466.0,466.0,466.0,467.0,471.0,471.0,474.0,474.0,474.0,480.0,482.0,482.0,482.0,485.0,486.0,488.0,488.0,500.0,500.0,500.0,502.0,503.0,503.0,503.0,503.0,504.0,505.0,510.0,512.0,512.0,513.0,516.0,516.0,517.0,518.0,519.0,519.0,519.0,522.0,537.0,537.0,537.0,540.0,544.0,544.0,546.0,546.0,548.0,552.0,552.0,553.0,554.0,554.0,554.0,555.0,556.0,557.0,559.0,559.0,560.0,562.0,571.0,571.0,571.0,573.0,577.0,583.0,585.0,594.0,594.0,602.0,602.0,602.0,607.0,615.0,619.0,624.0,629.0,645.0,662.0,668.0,669.0,676.0,681.0,708.0,734.0,739.0,744.0,801.0,827.0,849.0,882.0],"noise_sd":[22.2,22.2,23.7,23.7,23.7,23.7,23.7,25.2,25.2,25.2,25.2,25.2,25.2,25.2,25.2,25.2,26.7,26.7,26.7,26.7,26.7,26.7,26.7,26.7,26.7,26.7,26.7,26.7,26.7,28.2,28.2,28.2,28.2,28.2,28.2,28.2,28.2,28.2,28.2,28.2,28.2,28.2,29.7,29.7,29.7,29.7,29.7,29.7,29.7,29.7,29.7,29.7,29.7,29.7,29.7,29.7,29.7,29.7,31.1,31.1,31.1,31.1,31.1,31.1,31.1,31.1,31.1,31.1,31.1,31.1,31.1,31.1,31.1,31.1,31.1,31.1,31.1,32.6,32.6,32.6,32.6,32.6,32.6,32.6,32.6,32.6,32.6,32.6,32.6,32.6,32.6,32.6,34.1,34.1,34.1,34.1,34.1,34.1,34.1,34.1,34.1,34.1,34.1,34.1,35.6,35.6,35.6,35.6,35.6,35.6,35.6,37.1,37.1,37.1,37.1,37.1,37.1,38.5,38.5,38.5,38.5,38.5,38.5,38.5,38.5,38.5,40.0,40.0,40.0,40.0,40.0,41.5,41.5,41.5,41.5,41.5,41.5,41.5,43.0,43.0,43.0,44.5,44.5,44.5,44.5,44.5,44.5,47.4,48.9,50.4,50.4,51.9,51.9,53.4,54.9,54.9,59.3,59.3],"snr":[8.2,9.1,10.1,10.3,10.5,10.7,10.9,10.9,10.9,11.3,11.4,11.5,11.6,11.7,12.0,12.1,12.1,12.1,12.2,12.2,12.3,12.4,12.5,12.5,12.5,12.7,12.8,12.8,12.9,12.9,12.9,12.9,12.9,13.0,13.0,13.0,13.0,13.0,13.0,13.1,13.1,13.2,13.4,13.4,13.5,13.5,13.6,13.7,13.8,13.8,13.8,13.8,13.9,13.9,14.0,14.0,14.0,14.0,14.1,14.1,14.1,14.2,14.2,14.3,14.3,14.3,14.3,14.3,14.4,14.4,14.8,14.8,14.8,14.9,15.0,15.0,15.0,15.0,15.1,15.1,15.1,15.2,15.2,15.3,15.3,15.4,15.4,15.4,15.5,15.5,15.5,15.6,15.6,15.7,15.7,15.7,15.7,15.9,15.9,15.9,15.9,15.9,16.0,16.0,16.1,16.1,16.2,16.2,16.2,16.2,16.3,16.3,16.4,16.4,16.4,16.4,16.5,16.5,16.5,16.6,16.6,16.6,16.7,16.7,16.8,16.8,16.8,16.8,16.9,17.0,17.1,17.1,17.2,17.3,17.3,17.4,17.5,17.5,17.5,17.5,17.6,17.7,17.8,17.8,17.8,18.0,18.4,18.4,18.6,18.6,18.6,18.7,18.8,18.9,19.2,19.8,21.0,22.3]}</script>
-<script type="module" src="{{ '/assets/js/ccta-contrast.js' | relative_url }}?v=1"></script>
+<script type="module" src="{{ '/assets/js/ccta-contrast.js' | relative_url }}?v=2"></script>

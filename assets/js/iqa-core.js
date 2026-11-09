@@ -8,6 +8,7 @@ const CALCIUM_SD = 3;
 const CALCIUM_BALL_MM = 1.5; // fixed, so the result does not depend on how radius was estimated
 const FAT_RANGE = [-190, -30];
 const FAT_SHELL = [1, 3];
+const FAT = { snap: 3, roi: 5, erosion: 1, minVoxels: 30 };
 const MIN_PATH_FRACTION = 0.3;
 const DIP = { ratio: 0.7, minMm: 2, windowMm: 15, guardMm: 3 };
 const SEPARATION_MM = 2;
@@ -314,6 +315,84 @@ export function aortaMetrics(vol, rawSeed) {
   if (values.length >= 50) return roiStats(vol, values, voxelMl, "region_growing", seed);
   return roiStats(vol, ball(vol, seed, AORTA.fallback), voxelMl, "fixed_ball", seed);
 }
+
+// A fat region connected to the clicked point, or null if there is no fat near it.
+export function fatMetrics(vol, seed) {
+  const voxelMl = (vol.spacing[0] * vol.spacing[1] * vol.spacing[2]) / 1000;
+  const indices = ball(vol, seed, FAT.roi + FAT.snap);
+  if (!indices.length) return null;
+  const { data, dims, low } = cropBox(vol, indices);
+  const smooth = gaussian(data, dims, AORTA.sigma);
+  const [nx, ny, nz] = dims;
+  const sp = vol.spacing;
+  const isFat = (i) => smooth[i] >= FAT_RANGE[0] && smooth[i] <= FAT_RANGE[1];
+  const dist2 = (x, y, z, c) => ((x - c[0]) * sp[0]) ** 2 + ((y - c[1]) * sp[1]) ** 2 + ((z - c[2]) * sp[2]) ** 2;
+  const s = toIndex(vol, seed).map((v, a) => v - low[a]);
+  let center = null;
+  let nearest = FAT.snap ** 2;
+  for (let z = 0, i = 0; z < nz; z++) {
+    for (let y = 0; y < ny; y++) {
+      for (let x = 0; x < nx; x++, i++) {
+        if (!isFat(i)) continue;
+        const d = dist2(x, y, z, s);
+        if (d < nearest || (center === null && d <= nearest)) {
+          nearest = d;
+          center = [x, y, z];
+        }
+      }
+    }
+  }
+  if (!center) return null;
+  const region = new Uint8Array(smooth.length);
+  const first = center[0] + nx * (center[1] + ny * center[2]);
+  region[first] = 1;
+  const stack = [first];
+  const visit = (i, x, y, z) => {
+    if (!region[i] && isFat(i) && dist2(x, y, z, center) <= FAT.roi ** 2) {
+      region[i] = 1;
+      stack.push(i);
+    }
+  };
+  while (stack.length) {
+    const i = stack.pop();
+    const z = Math.floor(i / (nx * ny));
+    const y = Math.floor((i - z * nx * ny) / nx);
+    const x = i - nx * (y + ny * z);
+    if (x > 0) visit(i - 1, x - 1, y, z);
+    if (x < nx - 1) visit(i + 1, x + 1, y, z);
+    if (y > 0) visit(i - nx, x, y - 1, z);
+    if (y < ny - 1) visit(i + nx, x, y + 1, z);
+    if (z > 0) visit(i - nx * ny, x, y, z - 1);
+    if (z < nz - 1) visit(i + nx * ny, x, y, z + 1);
+  }
+  const depth = depthInside(region, dims, sp);
+  const collect = (minDepth) => {
+    const out = [];
+    for (let z = 0, i = 0; z < nz; z++) {
+      for (let y = 0; y < ny; y++) {
+        for (let x = 0; x < nx; x++, i++) {
+          if (region[i] && depth[i] >= minDepth) out.push(x + low[0] + vol.size[0] * (y + low[1] + vol.size[1] * (z + low[2])));
+        }
+      }
+    }
+    return out;
+  };
+  let voxels = collect(FAT.erosion);
+  if (voxels.length < FAT.minVoxels) voxels = collect(0);
+  const values = pick(vol, voxels);
+  const middle = median(values);
+  const stats = {
+    median_hu: middle,
+    noise_sd: 1.4826 * median(values.map((v) => Math.abs(v - middle))),
+    roi_ml: values.length * voxelMl,
+    center: toWorld(vol, center.map((v, a) => v + low[a])),
+  };
+  Object.defineProperty(stats, "voxels", { value: voxels });
+  return stats;
+}
+
+// Lumen minus fat, over the aortic noise, as CCTA studies usually define CNR.
+export const contrastToNoise = (aorta, fat) => (aorta.noise_sd ? (aorta.median_hu - fat.median_hu) / aorta.noise_sd : NaN);
 
 function buildGraph(lines) {
   const nodes = new Map();
