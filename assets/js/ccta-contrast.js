@@ -27,6 +27,10 @@ const MIN_ROI_ML = 3;
 const MIN_LUMEN_HU = 150;
 const MIN_FAT_ML = 0.005;
 const MAX_FAT_HU = -50;
+// At 1 mm or more between slices, partial volume along the slice axis lowers small-vessel HU.
+const THICK_SLICE_MM = 1;
+// Display windows as [level, width] in HU.
+const WINDOWS = { vessels: [350, 900], soft: [40, 400], fat: [-100, 300], calcium: [500, 2000] };
 
 const root = document.getElementById("snr");
 const el = (name) => document.getElementById(`snr-${name}`);
@@ -248,6 +252,7 @@ async function measure(kind, rasPoint) {
 
 function report() {
   const out = {};
+  if (scan) out.scan = { ...scanGeometry(), thick_slices: thickSlices() };
   if (aorta) {
     const r = aorta.report;
     out.aorta = { point_lps_mm: rasToLps(aorta.click), lumen_center_lps_mm: r.center, median_hu: r.median_hu, noise_sd_hu: r.noise_sd, snr: r.snr, roi_ml: r.roi_ml, roi_source: r.source, warnings: aorta.warnings };
@@ -283,6 +288,83 @@ function moveCrosshair(point) {
   nv.drawScene();
 }
 
+// Voxel size in mm and image size, from the header and the chosen unit.
+function scanGeometry() {
+  const spacing = [0, 1, 2].map((c) => columnLength(scan.hdr.affine, c) * unitScale());
+  return { size: scan.hdr.dims.slice(1, 4), spacing_mm: spacing, slice_spacing_mm: Math.max(...spacing) };
+}
+
+const thickSlices = () => scan && scanGeometry().slice_spacing_mm >= THICK_SLICE_MM - 1e-6;
+
+function showScanInfo() {
+  const { size, spacing_mm: spacing, slice_spacing_mm: slice } = scanGeometry();
+  el("scan-info").textContent = `Scan: ${size.join(" × ")} voxels of ${spacing.map((v) => v.toFixed(2)).join(" × ")} mm`;
+  const warning = el("scan-warning");
+  warning.hidden = !thickSlices();
+  warning.textContent = `Slices are ${slice.toFixed(2)} mm apart. At 1 mm or more, small vessels read darker than they are, so the vessel HU, CNR and score are less reliable. Thin reconstructions of 0.5 to 0.75 mm are recommended.`;
+}
+
+function applyWindow(level, width) {
+  if (!scan || !Number.isFinite(level) || !Number.isFinite(width) || width <= 0) return;
+  scan.cal_min = level - width / 2;
+  scan.cal_max = level + width / 2;
+  nv.updateGLVolume();
+}
+
+function setWindowPreset(name) {
+  el("window-preset").value = name;
+  if (!WINDOWS[name]) return;
+  const [level, width] = WINDOWS[name];
+  el("window-level").value = String(level);
+  el("window-width").value = String(width);
+  applyWindow(level, width);
+}
+
+// A drag on the image changes the window, as in most DICOM viewers: dragging up raises
+// the level and dragging right widens the window. A click without moving still places
+// the crosshair, and a shift-drag sweeps it. Touch keeps Niivue's crosshair drag.
+const CLICK_SLOP_PX = 4;
+const LEVEL_HU_PER_PX = 2;
+const WIDTH_HU_PER_PX = 4;
+
+function setUpWindowDrag(DRAG_MODE) {
+  nv.opts.mouseEventConfig = {
+    leftButton: { primary: DRAG_MODE.none, withShift: DRAG_MODE.crosshair },
+    rightButton: DRAG_MODE.none,
+    centerButton: DRAG_MODE.none,
+  };
+  const canvas = el("canvas");
+  let press = null;
+  canvas.addEventListener("mousedown", (event) => {
+    press = scan && !event.shiftKey
+      ? { button: event.button, x: event.clientX, y: event.clientY, moved: false,
+          level: (scan.cal_min + scan.cal_max) / 2, width: scan.cal_max - scan.cal_min }
+      : null;
+  });
+  window.addEventListener("mousemove", (event) => {
+    if (!press) return;
+    const dx = event.clientX - press.x;
+    const dy = event.clientY - press.y;
+    if (!press.moved && Math.hypot(dx, dy) <= CLICK_SLOP_PX) return;
+    press.moved = true;
+    const level = Math.round(press.level - dy * LEVEL_HU_PER_PX);
+    const width = Math.max(Math.round(press.width + dx * WIDTH_HU_PER_PX), 1);
+    el("window-preset").value = "custom";
+    el("window-level").value = String(level);
+    el("window-width").value = String(width);
+    applyWindow(level, width);
+  });
+  window.addEventListener("mouseup", (event) => {
+    const click = press && !press.moved && press.button === 0 && event.target === canvas;
+    press = null;
+    if (!click) return;
+    const pos = nv.getNoPaddingNoBorderCanvasRelativeMousePosition(event, canvas);
+    nv.mouseDown(pos.x, pos.y);
+    nv.mouseClick(pos.x, pos.y);
+    nv.drawScene();
+  });
+}
+
 function crosshairWorld() {
   const mm = nv.frac2mm(nv.scene.crosshairPos);
   return [mm[0], mm[1], mm[2]];
@@ -298,6 +380,7 @@ async function loadScan(file) {
       nv = new niivue.Niivue({ backColor: [0, 0, 0, 1], crosshairColor: [1, 0.85, 0.2, 1], crosshairWidth: 1, isResizeCanvas: true });
       await nv.attachToCanvas(el("canvas"));
       nv.opts.multiplanarShowRender = 0;
+      setUpWindowDrag(niivue.DRAG_MODE);
     }
     scan = null;
     volume = null;
@@ -324,11 +407,10 @@ async function loadScan(file) {
       labels: ["", "", "Aorta", "Point", "Fat", "Centreline", "Calcium"],
     });
     nv.setDrawOpacity(0.6);
-    scan.cal_min = -100;
-    scan.cal_max = 800;
-    nv.updateGLVolume();
+    setWindowPreset("vessels");
     const spacing = Math.min(columnLength(scan.hdr.affine, 0), columnLength(scan.hdr.affine, 1));
     el("unit").value = spacing < 0.15 ? "cm" : "mm";
+    showScanInfo();
     el("panel").hidden = false;
     el("coronary").hidden = false;
     setStatus("");
@@ -381,6 +463,13 @@ drop.addEventListener("drop", (event) => {
   if (event.dataTransfer.files[0]) loadScan(event.dataTransfer.files[0]);
 });
 el("example").addEventListener("click", loadExample);
+el("window-preset").addEventListener("change", (event) => setWindowPreset(event.target.value));
+for (const name of ["window-level", "window-width"]) {
+  el(name).addEventListener("input", () => {
+    el("window-preset").value = "custom";
+    applyWindow(Number(el("window-level").value), Number(el("window-width").value));
+  });
+}
 el("run-aorta").addEventListener("click", async () => {
   const done = await measure("aorta", crosshairWorld());
   // In the example, lead on to the fat point once the aorta is done.
@@ -399,6 +488,7 @@ el("run-fat").addEventListener("click", async () => {
   }
 });
 el("unit").addEventListener("change", () => {
+  if (scan) showScanInfo();
   volume = null;
   aorta = null;
   fat = null;
@@ -612,6 +702,7 @@ function showCoronary() {
   el("quality-status").dataset.status = q.status;
   const qualityNotes = [...q.reasons];
   if (coronary.traced.length === 1) qualityNotes.unshift(`Scored from the ${coronary.traced[0]} coronary only.`);
+  if (thickSlices()) qualityNotes.unshift(`Slices are ${scanGeometry().slice_spacing_mm.toFixed(2)} mm apart, so small-vessel values read low.`);
   el("quality-reasons").replaceChildren(...qualityNotes.map((text) => Object.assign(document.createElement("li"), { textContent: text })));
 
   const calcium = [];
