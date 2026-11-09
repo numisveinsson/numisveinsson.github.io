@@ -320,48 +320,36 @@ function setWindowPreset(name) {
   applyWindow(level, width);
 }
 
-// A drag on the image changes the window, as in most DICOM viewers: dragging up raises
-// the level and dragging right widens the window. A click without moving still places
-// the crosshair, and a shift-drag sweeps it. Touch keeps Niivue's crosshair drag.
-const CLICK_SLOP_PX = 4;
+// A shift-drag (or a right or middle drag) on the image changes the window: dragging up
+// raises the level and dragging right widens the window. A plain click or drag moves the
+// crosshair as before. Touch keeps Niivue's crosshair drag.
 const LEVEL_HU_PER_PX = 2;
 const WIDTH_HU_PER_PX = 4;
 
 function setUpWindowDrag(DRAG_MODE) {
   nv.opts.mouseEventConfig = {
-    leftButton: { primary: DRAG_MODE.none, withShift: DRAG_MODE.crosshair },
+    leftButton: { primary: DRAG_MODE.crosshair, withShift: DRAG_MODE.none },
     rightButton: DRAG_MODE.none,
     centerButton: DRAG_MODE.none,
   };
-  const canvas = el("canvas");
   let press = null;
-  canvas.addEventListener("mousedown", (event) => {
-    press = scan && !event.shiftKey
-      ? { button: event.button, x: event.clientX, y: event.clientY, moved: false,
-          level: (scan.cal_min + scan.cal_max) / 2, width: scan.cal_max - scan.cal_min }
+  el("canvas").addEventListener("mousedown", (event) => {
+    const windowing = event.button === 0 ? event.shiftKey : true;
+    press = scan && windowing
+      ? { x: event.clientX, y: event.clientY, level: (scan.cal_min + scan.cal_max) / 2, width: scan.cal_max - scan.cal_min }
       : null;
   });
   window.addEventListener("mousemove", (event) => {
     if (!press) return;
-    const dx = event.clientX - press.x;
-    const dy = event.clientY - press.y;
-    if (!press.moved && Math.hypot(dx, dy) <= CLICK_SLOP_PX) return;
-    press.moved = true;
-    const level = Math.round(press.level - dy * LEVEL_HU_PER_PX);
-    const width = Math.max(Math.round(press.width + dx * WIDTH_HU_PER_PX), 1);
+    const level = Math.round(press.level - (event.clientY - press.y) * LEVEL_HU_PER_PX);
+    const width = Math.max(Math.round(press.width + (event.clientX - press.x) * WIDTH_HU_PER_PX), 1);
     el("window-preset").value = "custom";
     el("window-level").value = String(level);
     el("window-width").value = String(width);
     applyWindow(level, width);
   });
-  window.addEventListener("mouseup", (event) => {
-    const click = press && !press.moved && press.button === 0 && event.target === canvas;
+  window.addEventListener("mouseup", () => {
     press = null;
-    if (!click) return;
-    const pos = nv.getNoPaddingNoBorderCanvasRelativeMousePosition(event, canvas);
-    nv.mouseDown(pos.x, pos.y);
-    nv.mouseClick(pos.x, pos.y);
-    nv.drawScene();
   });
 }
 
