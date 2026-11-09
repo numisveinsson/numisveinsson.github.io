@@ -519,7 +519,8 @@ export async function trace(ort, session, vol, seeds, maxSteps, onStep) {
         [nx, ny, nz] = s,
         tn = performance.now();
       const { labels, sizes } = components(bin, s);
-      const c = s.map(rint),
+      // Keep the piece at the box centre (the step point), as SeqSeg's remove_other_vessels does.
+      const c = s.map((v) => rint(v / 2)),
         lab = labels[Math.min(c[0], nx - 1) + nx * (Math.min(c[1], ny - 1) + ny * Math.min(c[2], nz - 1))];
       const keep = lab || sizes.indexOf(Math.max(...sizes.slice(1)));
       if (keep <= 0) throw new Error("empty prediction");
