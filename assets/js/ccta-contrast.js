@@ -365,7 +365,7 @@ async function loadScan(file) {
     if (!nv) {
       const niivue = await import(NIIVUE_URL);
       SLICE_TYPE = niivue.SLICE_TYPE;
-      nv = new niivue.Niivue({ backColor: [0, 0, 0, 1], crosshairColor: [1, 0.85, 0.2, 1], crosshairWidth: 1, isResizeCanvas: true });
+      nv = new niivue.Niivue({ backColor: [0, 0, 0, 1], crosshairColor: [1, 0.85, 0.2, 1], crosshairWidth: 1, isResizeCanvas: true, isRadiologicalConvention: true, sagittalNoseLeft: true });
       await nv.attachToCanvas(el("canvas"));
       nv.opts.multiplanarShowRender = 0;
       setUpWindowDrag(niivue.DRAG_MODE);
