@@ -30,19 +30,12 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/software/";
           },
-        },{id: "nav-try-seqseg",
-          title: "Try SeqSeg",
-          description: "Trace a coronary artery from a single seed, right in your browser.",
+        },{id: "nav-tools",
+          title: "Tools",
+          description: "Research tools for medical images that run in your browser. Your scan stays on your computer and is never uploaded.",
           section: "Navigation",
           handler: () => {
-            window.location.href = "/tools/seqseg/";
-          },
-        },{id: "nav-ccta-contrast",
-          title: "CCTA contrast",
-          description: "Measure aortic root attenuation, noise, SNR and CNR, and trace the coronaries to measure contrast along them, right in your browser.",
-          section: "Navigation",
-          handler: () => {
-            window.location.href = "/tools/ccta-contrast/";
+            window.location.href = "/tools/";
           },
         },{id: "nav-talks",
           title: "Talks",
