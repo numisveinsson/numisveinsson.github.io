@@ -3,8 +3,7 @@ layout: page
 title: Scan check
 permalink: /tools/scan-check/
 description: Check any CT or MRI scan for basic quality problems, such as missing or clipped values, empty or duplicate slices, thick or tilted slices, cut-off anatomy, noise and metal, right in your browser.
-nav: true
-nav_order: 3.7
+nav: false
 _styles: |
   .seqseg { display: grid; gap: 1.25rem; }
   .seqseg-notice { border-left: 3px solid var(--global-theme-color); padding: 0.5rem 0 0.5rem 1rem; color: var(--global-text-color-light); font-size: 0.95rem; }
@@ -78,6 +77,8 @@ _styles: |
     .sc-value { grid-column: 2; text-align: left; white-space: normal; }
   }
 ---
+
+<p class="tools-back"><a href="{{ '/tools/' | relative_url }}">← All tools</a></p>
 
 <div class="seqseg" id="sc" data-example="{{ '/assets/data/seqseg_example.nii.gz' | relative_url }}" data-core="{{ '/assets/js/scan-checks.js' | relative_url }}?v=4">
   <div class="seqseg-notice">

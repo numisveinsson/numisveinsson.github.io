@@ -3,8 +3,7 @@ layout: page
 title: Try SeqSeg
 permalink: /tools/seqseg/
 description: Trace a coronary artery from a single seed, right in your browser.
-nav: true
-nav_order: 3.5
+nav: false
 _styles: |
   .seqseg { display: grid; gap: 1.25rem; }
   .seqseg-notice { border-left: 3px solid var(--global-theme-color); padding: 0.5rem 0 0.5rem 1rem; color: var(--global-text-color-light); font-size: 0.95rem; }
@@ -37,6 +36,8 @@ _styles: |
   .seqseg-example { margin: -0.5rem 0 0; text-align: center; color: var(--global-text-color-light); }
   .seqseg-credit { margin: 0.5rem 0 0; font-size: 0.85rem; color: var(--global-text-color-light); }
 ---
+
+<p class="tools-back"><a href="{{ '/tools/' | relative_url }}">← All tools</a></p>
 
 <div class="seqseg" id="seqseg" data-model="{{ '/assets/models/seqseg_coronary.onnx' | relative_url }}" data-example="{{ '/assets/data/seqseg_example.nii.gz' | relative_url }}" data-worker="{{ '/assets/js/seqseg-worker.js' | relative_url }}?v=2">
   <div class="seqseg-notice">

@@ -3,8 +3,7 @@ layout: page
 title: CCTA contrast
 permalink: /tools/ccta-contrast/
 description: Measure aortic root attenuation, noise, SNR and CNR, and trace the coronaries to measure contrast along them, right in your browser.
-nav: true
-nav_order: 3.6
+nav: false
 _styles: |
   .seqseg { display: grid; gap: 1.25rem; }
   .seqseg-notice { border-left: 3px solid var(--global-theme-color); padding: 0.5rem 0 0.5rem 1rem; color: var(--global-text-color-light); font-size: 0.95rem; }
@@ -105,6 +104,8 @@ _styles: |
   .snr-key .swatch.calcium { width: 3px; height: 0.8rem; border: 0; background: var(--global-warning-block-title); }
   .snr-ref { display: block; font-weight: normal; color: var(--global-text-color-light); font-size: 0.85rem; }
 ---
+
+<p class="tools-back"><a href="{{ '/tools/' | relative_url }}">← All tools</a></p>
 
 <div class="seqseg" id="snr" data-example="{{ '/assets/data/seqseg_example.nii.gz' | relative_url }}" data-core="{{ '/assets/js/iqa-core.js' | relative_url }}?v=7" data-model="{{ '/assets/models/seqseg_coronary.onnx' | relative_url }}" data-worker="{{ '/assets/js/seqseg-worker.js' | relative_url }}?v=4" data-tracer="{{ '/assets/js/seqseg-tracer.js' | relative_url }}?v=2">
   <div class="seqseg-notice">

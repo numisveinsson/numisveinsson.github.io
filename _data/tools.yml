@@ -1,0 +1,18 @@
+# Browser tools shown on /tools/. Each runs locally; scans never leave the viewer's computer.
+groups:
+  - name: Check image quality
+    tools:
+      - name: Scan check
+        url: /tools/scan-check/
+        text: Check any CT or MRI scan for basic quality problems, such as missing or clipped values, empty or duplicate slices, thick or tilted slices, cut-off anatomy, noise and metal.
+        needs: Any CT or MRI volume (NIfTI)
+      - name: CCTA contrast
+        url: /tools/ccta-contrast/
+        text: Measure aortic root attenuation, noise, SNR and CNR, then trace the coronaries to measure contrast along each vessel.
+        needs: A coronary CT angiogram (NIfTI) and five marked points
+  - name: Segment and trace
+    tools:
+      - name: Try SeqSeg
+        url: /tools/seqseg/
+        text: Trace a coronary artery from a single seed point with a browser version of SeqSeg.
+        needs: A coronary CT angiogram (NIfTI) and one seed point
