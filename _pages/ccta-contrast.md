@@ -1,6 +1,6 @@
 ---
 layout: page
-title: CCTA contrast
+title: CCTA Quality Assessment
 permalink: /tools/ccta-contrast/
 description: Measure aortic root attenuation, noise, SNR and CNR, and trace the coronaries to measure contrast along them, right in your browser.
 nav: false
@@ -103,11 +103,27 @@ _styles: |
   .snr-key .swatch.aorta { border-top: 2px dashed var(--global-text-color-light); }
   .snr-key .swatch.calcium { width: 3px; height: 0.8rem; border: 0; background: var(--global-warning-block-title); }
   .snr-ref { display: block; font-weight: normal; color: var(--global-text-color-light); font-size: 0.85rem; }
+  #snr-series { margin-left: 0.4rem; padding: 0.15rem 0.35rem; border: 1px solid var(--global-divider-color); border-radius: 6px; background: var(--global-card-bg-color); color: var(--global-text-color); font: inherit; }
+  .snr-mode { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem 0.6rem; margin: 0 0 0.2rem; font-weight: 600; font-size: 0.95rem; }
+  .snr-mode select { padding: 0.15rem 0.35rem; border: 1px solid var(--global-divider-color); border-radius: 6px; background: var(--global-card-bg-color); color: var(--global-text-color); font: inherit; font-weight: normal; }
+  .snr-mode span { font-weight: normal; font-size: 0.85rem; color: var(--global-text-color-light); }
+  .seqseg .snr-step-actions button.snr-clear { min-width: 0; }
+  .seqseg .snr-rois { font-size: 0.9rem; }
+  .seqseg .snr-rois thead th { font-size: 0.85rem; color: var(--global-text-color-light); font-weight: normal; }
+  .seqseg .snr-rois thead th:nth-child(n+3) { text-align: right; }
+  .seqseg .snr-rois td { font-size: 0.9rem; }
+  .seqseg .snr-rois th[scope="row"] { white-space: nowrap; }
+  .seqseg .snr-rois td:nth-child(2) { text-align: left; }
+  .seqseg button.snr-remove { padding: 0 0.45rem; line-height: 1.4; }
+  #snr-sweep h3 { font-size: 1rem; margin: 0.5rem 0 0; }
+  .snr-mini-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: 0 1rem; }
+  .snr-mini { margin-top: 0.5rem; }
+  .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 ---
 
 <p class="tools-back"><a href="{{ '/tools/' | relative_url }}">← All tools</a></p>
 
-<div class="seqseg" id="snr" data-example="{{ '/assets/data/seqseg_example.nii.gz' | relative_url }}" data-core="{{ '/assets/js/iqa-core.js' | relative_url }}?v=7" data-model="{{ '/assets/models/seqseg_coronary.onnx' | relative_url }}" data-worker="{{ '/assets/js/seqseg-worker.js' | relative_url }}?v=4" data-tracer="{{ '/assets/js/seqseg-tracer.js' | relative_url }}?v=2">
+<div class="seqseg" id="snr" data-example="{{ '/assets/data/seqseg_example.nii.gz' | relative_url }}" data-core="{{ '/assets/js/iqa-core.js' | relative_url }}?v=8" data-model="{{ '/assets/models/seqseg_coronary.onnx' | relative_url }}" data-worker="{{ '/assets/js/seqseg-worker.js' | relative_url }}?v=4" data-tracer="{{ '/assets/js/seqseg-tracer.js' | relative_url }}?v=2" data-dcm2niix="{{ '/assets/js/dcm2niix/index.jpeg.js' | relative_url }}">
   <div class="seqseg-notice">
     <p>This research tool is not for clinical use and has not been validated for diagnosis or treatment.</p>
   </div>
@@ -116,18 +132,21 @@ _styles: |
 
   <details class="snr-how">
     <summary>How it works</summary>
-  <p>Click inside the aortic root, just above the valve, and the tool measures how bright the contrast is and how noisy the image is there. It finds the contrast-filled lumen near your click, grows a region inside it, keeps the part at least 3 mm from the wall within 12 mm of the lumen centre, and reports the median HU, the noise (a robust standard deviation) and their ratio, the SNR.</p>
+  <p>Click inside the aortic root, just above the valve, and the tool measures how bright the contrast is and how noisy the image is there. It finds the contrast-filled lumen near your click, grows a region inside it, keeps the part at least 3 mm from the wall within 12 mm of the lumen centre, and reports the median HU, the noise (a robust standard deviation) and their ratio, the SNR. A size check repeats this for radii from 4 to 20 mm, to show how much the values depend on the region.</p>
+  <p>Regions are 3D by default. Choose 2D axial, coronal or sagittal to keep each region within the slice through your click, as a drawn ROI would be; the 3 mm margin and the radius are then measured within the slice. You can measure several aortic or fat regions, for example at the root and in the ascending aorta. Their mean is used for SNR, CNR and the coronary values, and each is listed with its own values.</p>
   <p>Then click fat for the contrast-to-noise ratio. Epicardial fat beside a proximal coronary artery is the usual choice, since that is the contrast a reader sees around the vessel. The tool takes the patch of fat (−190 to −30 HU) connected to your click within 5 mm, trims 1 mm off its edges, and reports its median HU. CNR is the lumen HU minus the fat HU, divided by the aortic noise.</p>
   <p>For each coronary, set a start point at its origin from the aorta and a direction point a few millimetres down the vessel. SeqSeg then traces up to 80 steps down the left coronary and 40 down the right, with at most 40 steps on any one branch, and the tool samples the lumen every millimetre along the left main, LAD, LCx and RCA. You can trace one coronary or both.</p>
   </details>
 
   <label class="seqseg-drop" id="snr-drop">
-    <input type="file" id="snr-file" accept=".nii,.gz,.mha,.nrrd">
+    <input type="file" id="snr-file" multiple>
     <strong>Choose a coronary CT angiography scan</strong>
-    <small>Or drop it here. NIfTI, MHA or NRRD, in Hounsfield units.</small>
+    <small>Or drop it here. NIfTI, MHA or NRRD in Hounsfield units, or the DICOM files of one series (or drop their folder).</small>
   </label>
 
-  <p class="seqseg-example">No scan? <button type="button" id="snr-example">Try an example scan</button></p>
+  <p class="seqseg-example">DICOM in a folder? <button type="button" id="snr-folder">Choose a folder</button> · No scan? <button type="button" id="snr-example">Try an example scan</button></p>
+  <input type="file" id="snr-folder-input" webkitdirectory multiple hidden>
+  <p class="seqseg-example" id="snr-series-row" hidden><label>Series <select id="snr-series"></select></label></p>
 
   <p class="seqseg-status" id="snr-load-status" role="status"></p>
 
@@ -156,14 +175,23 @@ _styles: |
       </div>
       <p class="snr-hint">Click a slice to move the crosshair, then press a button to use that point. Shift-drag on the image to change the window: up and down for level, left and right for width.</p>
       <div class="snr-steps">
+        <label class="snr-mode">Regions
+          <select id="snr-roi-mode">
+            <option value="3d">3D</option>
+            <option value="axial">2D axial</option>
+            <option value="coronal">2D coronal</option>
+            <option value="sagittal">2D sagittal</option>
+          </select>
+          <span>Each press adds a region; the results use their mean.</span>
+        </label>
         <div class="snr-step">
           <span class="snr-step-name">1. Aortic root</span>
-          <div class="snr-step-actions"><button type="button" class="seqseg-primary" id="snr-run-aorta">Measure aorta</button></div>
+          <div class="snr-step-actions"><button type="button" class="seqseg-primary" id="snr-run-aorta">Measure aorta</button><button type="button" class="snr-clear" id="snr-clear-aorta" hidden>Clear</button></div>
           <span class="snr-chip" id="snr-chip-aorta">not measured</span>
         </div>
         <div class="snr-step">
           <span class="snr-step-name">2. Fat</span>
-          <div class="snr-step-actions"><button type="button" id="snr-run-fat">Measure fat</button></div>
+          <div class="snr-step-actions"><button type="button" id="snr-run-fat">Measure fat</button><button type="button" class="snr-clear" id="snr-clear-fat" hidden>Clear</button></div>
           <span class="snr-chip" id="snr-chip-fat">optional, for CNR</span>
         </div>
         <div class="snr-step">
@@ -205,7 +233,18 @@ _styles: |
       </tbody>
     </table>
     <p id="snr-summary"></p>
+    <table class="snr-table snr-rois">
+      <thead><tr><th scope="col">Region</th><th scope="col">Type</th><th scope="col">Size</th><th scope="col">HU</th><th scope="col">Noise</th><th scope="col">SNR</th><th scope="col"><span class="visually-hidden">Remove</span></th></tr></thead>
+      <tbody id="snr-roi-rows"></tbody>
+    </table>
+    <div id="snr-sweep" hidden>
+      <h3 id="snr-sweep-title"></h3>
+      <div class="snr-mini-row" id="snr-sweep-charts"></div>
+      <p class="snr-key" id="snr-sweep-summary"></p>
+    </div>
     <div class="seqseg-row">
+      <button type="button" id="snr-export-csv">Download CSV</button>
+      <button type="button" id="snr-export-pdf">Download PDF report</button>
       <button type="button" id="snr-copy">Copy as JSON</button>
     </div>
   </div>
@@ -232,9 +271,9 @@ _styles: |
 </div>
 
 <p class="seqseg-credit">The comparison under the aortic values places each among 158 scans from the test set of the CAS-X coronary CT dataset, measured the same way. CNR has no such comparison yet, because it depends on where the fat click goes. That comparison is not a quality threshold. Noise and SNR depend on the scanner, dose and reconstruction kernel, so compare scans from similar protocols.</p>
-<p class="seqseg-credit">The measurement runs on your computer, and this tool does not upload your scan.</p>
+<p class="seqseg-credit">The measurement runs on your computer, and this tool does not upload your scan. DICOM files are converted in the browser with <a href="https://github.com/rordenlab/dcm2niix">dcm2niix</a> (BSD-2-Clause), in its WebAssembly build from NiiVue.</p>
 <p class="seqseg-credit">Example scan: cropped from case 0066_H_CORO_H of the <a href="https://www.vascularmodel.com">Vascular Model Repository</a> (Wilson, Ortiz and Johnson, J. Med. Devices 7(4), 2013), provided for research and development use. See its <a href="{{ '/assets/data/seqseg_example_LICENSE.txt' | relative_url }}">license</a>. The data was provided in whole or in part with Federal funds from the National Library of Medicine under Grant No. R01LM013120, and the National Heart, Lung, and Blood Institute, National Institutes of Health, Department of Health and Human Services, under Contract No. HHSN268201100035C. Viewer: <a href="https://github.com/niivue/niivue">NiiVue</a>.</p>
 <p class="seqseg-credit">Coronary tracing uses the browser version of <a href="{{ '/tools/seqseg/' | relative_url }}">SeqSeg</a> with the <a href="https://doi.org/10.5281/zenodo.23813298">SeqSeg nnU-Net weights for CT coronary segmentation</a> (CC BY 4.0), run with <a href="https://onnxruntime.ai">ONNX Runtime</a>. Method: <a href="https://doi.org/10.1007/s10439-024-03611-z">Sveinsson Cepero and Shadden, Annals of Biomedical Engineering, 2024</a>.</p>
 
 <script id="snr-reference" type="application/json">{"median_hu":[322.0,339.0,342.0,343.0,344.0,358.0,362.0,363.0,363.0,363.0,364.0,365.0,367.0,370.0,373.0,376.0,380.0,381.0,387.0,389.0,390.0,391.0,393.0,393.0,394.0,395.0,398.0,399.0,401.0,401.0,401.0,403.0,405.0,414.0,414.0,415.0,416.0,421.0,421.0,422.0,427.0,431.0,434.0,435.0,438.0,440.0,441.0,441.0,442.0,443.0,444.0,445.0,448.0,448.0,449.0,449.0,451.0,453.0,453.0,456.0,457.0,457.0,457.0,461.0,463.0,463.0,466.0,466.0,466.0,467.0,471.0,471.0,474.0,474.0,474.0,480.0,482.0,482.0,482.0,485.0,486.0,488.0,488.0,500.0,500.0,500.0,502.0,503.0,503.0,503.0,503.0,504.0,505.0,510.0,512.0,512.0,513.0,516.0,516.0,517.0,518.0,519.0,519.0,519.0,522.0,537.0,537.0,537.0,540.0,544.0,544.0,546.0,546.0,548.0,552.0,552.0,553.0,554.0,554.0,554.0,555.0,556.0,557.0,559.0,559.0,560.0,562.0,571.0,571.0,571.0,573.0,577.0,583.0,585.0,594.0,594.0,602.0,602.0,602.0,607.0,615.0,619.0,624.0,629.0,645.0,662.0,668.0,669.0,676.0,681.0,708.0,734.0,739.0,744.0,801.0,827.0,849.0,882.0],"noise_sd":[22.2,22.2,23.7,23.7,23.7,23.7,23.7,25.2,25.2,25.2,25.2,25.2,25.2,25.2,25.2,25.2,26.7,26.7,26.7,26.7,26.7,26.7,26.7,26.7,26.7,26.7,26.7,26.7,26.7,28.2,28.2,28.2,28.2,28.2,28.2,28.2,28.2,28.2,28.2,28.2,28.2,28.2,29.7,29.7,29.7,29.7,29.7,29.7,29.7,29.7,29.7,29.7,29.7,29.7,29.7,29.7,29.7,29.7,31.1,31.1,31.1,31.1,31.1,31.1,31.1,31.1,31.1,31.1,31.1,31.1,31.1,31.1,31.1,31.1,31.1,31.1,31.1,32.6,32.6,32.6,32.6,32.6,32.6,32.6,32.6,32.6,32.6,32.6,32.6,32.6,32.6,32.6,34.1,34.1,34.1,34.1,34.1,34.1,34.1,34.1,34.1,34.1,34.1,34.1,35.6,35.6,35.6,35.6,35.6,35.6,35.6,37.1,37.1,37.1,37.1,37.1,37.1,38.5,38.5,38.5,38.5,38.5,38.5,38.5,38.5,38.5,40.0,40.0,40.0,40.0,40.0,41.5,41.5,41.5,41.5,41.5,41.5,41.5,43.0,43.0,43.0,44.5,44.5,44.5,44.5,44.5,44.5,47.4,48.9,50.4,50.4,51.9,51.9,53.4,54.9,54.9,59.3,59.3],"snr":[8.2,9.1,10.1,10.3,10.5,10.7,10.9,10.9,10.9,11.3,11.4,11.5,11.6,11.7,12.0,12.1,12.1,12.1,12.2,12.2,12.3,12.4,12.5,12.5,12.5,12.7,12.8,12.8,12.9,12.9,12.9,12.9,12.9,13.0,13.0,13.0,13.0,13.0,13.0,13.1,13.1,13.2,13.4,13.4,13.5,13.5,13.6,13.7,13.8,13.8,13.8,13.8,13.9,13.9,14.0,14.0,14.0,14.0,14.1,14.1,14.1,14.2,14.2,14.3,14.3,14.3,14.3,14.3,14.4,14.4,14.8,14.8,14.8,14.9,15.0,15.0,15.0,15.0,15.1,15.1,15.1,15.2,15.2,15.3,15.3,15.4,15.4,15.4,15.5,15.5,15.5,15.6,15.6,15.7,15.7,15.7,15.7,15.9,15.9,15.9,15.9,15.9,16.0,16.0,16.1,16.1,16.2,16.2,16.2,16.2,16.3,16.3,16.4,16.4,16.4,16.4,16.5,16.5,16.5,16.6,16.6,16.6,16.7,16.7,16.8,16.8,16.8,16.8,16.9,17.0,17.1,17.1,17.2,17.3,17.3,17.4,17.5,17.5,17.5,17.5,17.6,17.7,17.8,17.8,17.8,18.0,18.4,18.4,18.6,18.6,18.6,18.7,18.8,18.9,19.2,19.8,21.0,22.3]}</script>
-<script type="module" src="{{ '/assets/js/ccta-contrast.js' | relative_url }}?v=21"></script>
+<script type="module" src="{{ '/assets/js/ccta-contrast.js' | relative_url }}?v=25"></script>

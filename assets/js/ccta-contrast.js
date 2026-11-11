@@ -7,6 +7,8 @@ const LABEL_LINE = 5;
 const LABEL_CALCIUM = 6;
 const MARKER_RADIUS_MM = 1.2;
 const LINE_RADIUS_MM = 0.5;
+const JSPDF_URL = "https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js";
+const AUTOTABLE_URL = "https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js";
 const ORT_BASE = "https://cdn.jsdelivr.net/npm/onnxruntime-web@1.31.1/dist/";
 const SEED_RADIUS_MM = 2; // sizes only the first prediction box
 const STEPS_PER_TREE = { left: 80, right: 40 }; // the left tree has two main branches
@@ -24,8 +26,15 @@ const EXAMPLE_LEFT_NEXT = [23.1268, 3.5709, -13.4975];
 // Every aortic root ROI in the CAS-X test set was at least 4 mL, so a smaller one is
 // probably a smaller vessel or a chamber edge, not the aorta.
 const MIN_ROI_ML = 3;
+// The same check for a 2D region: about a 7 mm wide disc after the 3 mm margin.
+const MIN_ROI_MM2 = 40;
 const MIN_LUMEN_HU = 150;
 const MIN_FAT_ML = 0.005;
+const MIN_FAT_MM2 = 3;
+// Radii for the aortic ROI size check; the measurement itself uses 12 mm.
+const SWEEP_RADII_MM = [4, 6, 8, 10, 12, 14, 16, 18, 20];
+const ROI_RADIUS_MM = 12;
+const PLANE_TEXT = { "3d": "3D", axial: "2D axial", coronal: "2D coronal", sagittal: "2D sagittal" };
 const MAX_FAT_HU = -50;
 // At 1 mm or more between slices, partial volume along the slice axis lowers small-vessel HU.
 const THICK_SLICE_MM = 1;
@@ -41,8 +50,13 @@ let nv;
 let SLICE_TYPE;
 let scan;
 let volume = null; // the scan in LPS mm, built once per scan and unit
-let aorta = null; // { report, click, warnings }
+// Each measured region is { n, report, click, warnings, plane }. Several can be measured,
+// and the values used downstream are their mean, kept in `aorta` and `fat` as { report, warnings, count }.
+let aortaRois = [];
+let fatRois = [];
+let aorta = null;
 let fat = null;
+let sweep = null; // { n, plane, rows } for the latest aortic region
 let example = false;
 let seeds = { left: null, leftNext: null, right: null, rightNext: null }; // RAS, image unit
 let coronary = null; // { vessels, profiles, summary }
@@ -127,11 +141,12 @@ function drawMarker(bitmap, click, label = LABEL_CLICK, radiusMm = MARKER_RADIUS
 function redraw() {
   const bitmap = nv.drawBitmap;
   bitmap.fill(0);
-  for (const [measured, label] of [[aorta, LABEL_AORTA], [fat, LABEL_FAT]]) {
-    if (!measured) continue;
-    for (const n of measured.report.voxels) {
-      const at = drawVoxel(lpsToRas(lpsOfIndex(volume, n)));
-      if (at !== null) bitmap[at] = label;
+  for (const [rois, label] of [[aortaRois, LABEL_AORTA], [fatRois, LABEL_FAT]]) {
+    for (const roi of rois) {
+      for (const n of roi.report.voxels) {
+        const at = drawVoxel(lpsToRas(lpsOfIndex(volume, n)));
+        if (at !== null) bitmap[at] = label;
+      }
     }
   }
   if (coronary?.profiles) {
@@ -139,7 +154,7 @@ function redraw() {
       profile.points.forEach((p, i) => drawMarker(bitmap, lpsToRas(p), profile.calcified[i] ? LABEL_CALCIUM : LABEL_LINE, LINE_RADIUS_MM));
     }
   }
-  for (const measured of [aorta, fat]) if (measured) drawMarker(bitmap, measured.click);
+  for (const roi of [...aortaRois, ...fatRois]) drawMarker(bitmap, roi.click);
   for (const kind of SEED_KINDS) if (seeds[kind]) drawMarker(bitmap, seeds[kind]);
   nv.refreshDrawing(true);
 }
@@ -157,7 +172,7 @@ function aortaWarnings(report) {
   const warnings = [];
   if (report.source === "fixed_ball") {
     warnings.push("The lumen could not be outlined here, so this is a plain 8 mm sphere around the point.");
-  } else if (report.roi_ml < MIN_ROI_ML) {
+  } else if (report.area_mm2 !== undefined ? report.area_mm2 < MIN_ROI_MM2 : report.roi_ml < MIN_ROI_ML) {
     warnings.push("The bright region found here is too small for the aortic root.");
   }
   if (report.median_hu < MIN_LUMEN_HU) warnings.push("This is low for a contrast-filled aorta.");
@@ -166,20 +181,111 @@ function aortaWarnings(report) {
 
 function fatWarnings(report) {
   const warnings = [];
-  if (report.roi_ml < MIN_FAT_ML) warnings.push("The fat region here is very small.");
+  if (report.area_mm2 !== undefined ? report.area_mm2 < MIN_FAT_MM2 : report.roi_ml < MIN_FAT_ML) warnings.push("The fat region here is very small.");
   if (report.median_hu > MAX_FAT_HU) warnings.push("This is high for fat, so heart muscle or vessel wall may be mixed in.");
   return warnings;
 }
 
 function refreshChips() {
   const aortaChip = el("chip-aorta");
-  aortaChip.textContent = aorta ? `${Math.round(aorta.report.median_hu)} HU · SNR ${aorta.report.snr.toFixed(1)}` : "not measured";
+  const regions = (count) => (count > 1 ? `${count} ROIs · ` : "");
+  aortaChip.textContent = aorta ? `${regions(aorta.count)}${Math.round(aorta.report.median_hu)} HU · SNR ${aorta.report.snr.toFixed(1)}` : "not measured";
   aortaChip.classList.toggle("is-done", Boolean(aorta) && !aorta.warnings.length);
   aortaChip.classList.toggle("is-warning", Boolean(aorta?.warnings.length));
   const fatChip = el("chip-fat");
-  fatChip.textContent = fat ? `${String(Math.round(fat.report.median_hu)).replace("-", "−")} HU${aorta ? ` · CNR ${cnr().toFixed(1)}` : ""}` : "optional, for CNR";
+  fatChip.textContent = fat ? `${regions(fat.count)}${String(Math.round(fat.report.median_hu)).replace("-", "−")} HU${aorta ? ` · CNR ${cnr().toFixed(1)}` : ""}` : "optional, for CNR";
   fatChip.classList.toggle("is-done", Boolean(fat) && !fat.warnings.length);
   fatChip.classList.toggle("is-warning", Boolean(fat?.warnings.length));
+  el("run-aorta").textContent = aortaRois.length ? "Add aortic ROI" : "Measure aorta";
+  el("run-fat").textContent = fatRois.length ? "Add fat ROI" : "Measure fat";
+  el("clear-aorta").hidden = !aortaRois.length;
+  el("clear-fat").hidden = !fatRois.length;
+}
+
+const sizeRatio = (r, ml, mm2) => (r.area_mm2 !== undefined ? r.area_mm2 / mm2 : r.roi_ml / ml);
+const mean = (values) => values.reduce((a, b) => a + b, 0) / values.length;
+const roiName = (kind, roi) => `${kind === "aorta" ? "Aorta" : "Fat"} ${roi.n}`;
+
+// Mean of the regions' values. The region smallest for its limit stands in for the size checks.
+function combine() {
+  aorta = null;
+  fat = null;
+  if (aortaRois.length) {
+    const reports = aortaRois.map((r) => r.report);
+    const median_hu = mean(reports.map((r) => r.median_hu));
+    const noise_sd = mean(reports.map((r) => r.noise_sd));
+    const tightest = reports.reduce((a, b) => (sizeRatio(b, MIN_ROI_ML, MIN_ROI_MM2) < sizeRatio(a, MIN_ROI_ML, MIN_ROI_MM2) ? b : a));
+    const report = { median_hu, noise_sd, snr: noise_sd ? median_hu / noise_sd : NaN, roi_ml: tightest.roi_ml, source: reports.some((r) => r.source === "fixed_ball") ? "fixed_ball" : "region_growing" };
+    if (tightest.area_mm2 !== undefined) report.area_mm2 = tightest.area_mm2;
+    const several = aortaRois.length > 1;
+    aorta = { report, count: aortaRois.length, warnings: aortaRois.flatMap((r) => r.warnings.map((w) => (several ? `${roiName("aorta", r)}: ${w}` : w))) };
+  }
+  if (fatRois.length) {
+    const several = fatRois.length > 1;
+    fat = {
+      report: { median_hu: mean(fatRois.map((r) => r.report.median_hu)) },
+      count: fatRois.length,
+      warnings: fatRois.flatMap((r) => r.warnings.map((w) => (several ? `${roiName("fat", r)}: ${w}` : w))),
+    };
+  }
+}
+
+const roiSize = (report) => (report.area_mm2 !== undefined ? `${Math.round(report.area_mm2)} mm²` : report.roi_ml >= 0.1 ? `${report.roi_ml.toFixed(1)} mL` : `${Math.round(report.roi_ml * 1000)} mm³`);
+
+function showRois() {
+  const rows = [];
+  const cell = (tag, text, attrs = {}) => Object.assign(document.createElement(tag), { textContent: text }, attrs);
+  for (const [kind, rois] of [["aorta", aortaRois], ["fat", fatRois]]) {
+    for (const roi of rois) {
+      const r = roi.report;
+      const tr = document.createElement("tr");
+      const name = cell("th", roiName(kind, roi), { scope: "row" });
+      if (roi.warnings.length) name.append(Object.assign(document.createElement("span"), { className: "snr-ref snr-flag", textContent: "check", title: roi.warnings.join(" ") }));
+      const remove = cell("button", "×", { type: "button", className: "snr-remove", title: `Remove ${roiName(kind, roi)}` });
+      remove.setAttribute("aria-label", `Remove ${roiName(kind, roi)}`);
+      remove.addEventListener("click", () => removeRoi(kind, roi));
+      const removeCell = document.createElement("td");
+      removeCell.append(remove);
+      tr.append(
+        name,
+        cell("td", PLANE_TEXT[roi.plane]),
+        cell("td", roiSize(r)),
+        cell("td", `${String(Math.round(r.median_hu)).replace("-", "−")}`),
+        cell("td", r.noise_sd.toFixed(1)),
+        cell("td", kind === "aorta" ? r.snr.toFixed(1) : "–"),
+        removeCell
+      );
+      rows.push(tr);
+    }
+  }
+  el("roi-rows").replaceChildren(...rows);
+}
+
+async function removeRoi(kind, roi) {
+  if (kind === "aorta") aortaRois = aortaRois.filter((r) => r !== roi);
+  else fatRois = fatRois.filter((r) => r !== roi);
+  if (kind === "aorta" && sweep?.n === roi.n) sweep = null;
+  await afterRoisChanged();
+}
+
+async function clearRois(kind) {
+  if (kind === "aorta") {
+    aortaRois = [];
+    sweep = null;
+  } else fatRois = [];
+  await afterRoisChanged();
+}
+
+// Vessel values are relative to the aorta and fat, so they follow any change of region.
+async function afterRoisChanged() {
+  combine();
+  if (coronary?.vessels) {
+    if (aorta) measureCoronaries(await corePromise);
+    else el("coronary-result").hidden = true;
+  }
+  redraw();
+  showResults();
+  refreshTraceButton();
 }
 
 function showResults() {
@@ -194,21 +300,25 @@ function showResults() {
     el("hu").textContent = `${Math.round(report.median_hu)} HU`;
     el("noise").textContent = `${report.noise_sd.toFixed(1)} HU`;
     el("snr").textContent = report.snr.toFixed(1);
-    el("hu-ref").textContent = trusted ? describe(reference.median_hu, report.median_hu) : "";
-    el("noise-ref").textContent = trusted ? describe(reference.noise_sd, report.noise_sd) : "";
-    el("snr-ref").textContent = trusted ? describe(reference.snr, report.snr) : "";
-    notes.push(`Aorta: ${report.roi_ml.toFixed(1)} mL of lumen, in red.`);
+    // The CAS-X comparison was measured with one 3D region, so it is shown only for those.
+    const comparable = trusted && aortaRois.every((r) => r.plane === "3d");
+    el("hu-ref").textContent = comparable ? describe(reference.median_hu, report.median_hu) : "";
+    el("noise-ref").textContent = comparable ? describe(reference.noise_sd, report.noise_sd) : "";
+    el("snr-ref").textContent = comparable ? describe(reference.snr, report.snr) : "";
+    notes.push(aorta.count > 1 ? `Aorta: the mean of ${aorta.count} regions, in red.` : `Aorta: ${roiSize(aortaRois[0].report)} of lumen, in red.`);
     if (!trusted) problems.push(`${warnings.join(" ")} Check that the aortic point is inside the aortic root.`);
   }
   if (fat) {
     const { report, warnings } = fat;
     el("fat").textContent = `${String(Math.round(report.median_hu)).replace("-", "−")} HU`;
-    notes.push(`Fat: ${Math.round(report.roi_ml * 1000)} mm³, in blue.`);
+    notes.push(fat.count > 1 ? `Fat: the mean of ${fat.count} regions, in blue.` : `Fat: ${roiSize(fatRois[0].report)}, in blue.`);
     if (warnings.length) problems.push(`${warnings.join(" ")} Try a larger patch of fat.`);
   }
   if (rows.cnr) el("cnr").textContent = cnr().toFixed(1);
   el("summary").textContent = [...problems, ...notes].join(" ");
   el("summary").classList.toggle("is-error", problems.length > 0);
+  showRois();
+  showSweep();
   el("result").hidden = !aorta && !fat;
 }
 
@@ -225,19 +335,20 @@ async function measure(kind, rasPoint) {
     const core = await corePromise;
     volume ??= toMetricVolume(scan, el("unit").value);
     core.checkImage(volume);
+    const mode = el("roi-mode").value;
+    const options = mode === "3d" ? {} : { plane: mode };
     if (kind === "aorta") {
-      const report = core.aortaMetrics(volume, rasToLps(rasPoint));
+      const report = core.aortaMetrics(volume, rasToLps(rasPoint), options);
       if (!Number.isFinite(report.snr)) throw new core.InvalidImage("The noise could not be measured at this point. Try a point inside the aortic root.");
-      aorta = { report, click: rasPoint, warnings: aortaWarnings(report) };
-      // Vessel values are relative to the aorta, so they follow a new aortic measurement.
-      if (coronary?.vessels) measureCoronaries(core);
+      const roi = { n: aortaRois.length ? Math.max(...aortaRois.map((r) => r.n)) + 1 : 1, report, click: rasPoint, warnings: aortaWarnings(report), plane: mode };
+      aortaRois.push(roi);
+      sweep = { n: roi.n, plane: mode, rows: core.aortaRoiSweep(volume, rasToLps(rasPoint), SWEEP_RADII_MM, options) };
     } else {
-      const report = core.fatMetrics(volume, rasToLps(rasPoint));
-      if (!report) throw new Error("There is no fat within 3 mm of this point. Move the crosshair into fat, which looks almost black here, and measure again.");
-      fat = { report, click: rasPoint, warnings: fatWarnings(report) };
+      const report = core.fatMetrics(volume, rasToLps(rasPoint), options);
+      if (!report) throw new Error(`There is no fat within 3 mm of this point${mode === "3d" ? "" : " in this slice"}. Move the crosshair into fat, which looks almost black here, and measure again.`);
+      fatRois.push({ n: fatRois.length ? Math.max(...fatRois.map((r) => r.n)) + 1 : 1, report, click: rasPoint, warnings: fatWarnings(report), plane: mode });
     }
-    redraw();
-    showResults();
+    await afterRoisChanged();
     setStatus("");
     return true;
   } catch (error) {
@@ -253,13 +364,22 @@ async function measure(kind, rasPoint) {
 function report() {
   const out = {};
   if (scan) out.scan = { ...scanGeometry(), thick_slices: thickSlices() };
+  const regionOf = (roi, centreKey) => {
+    const r = roi.report;
+    const out = { region: roi.n, type: PLANE_TEXT[roi.plane], point_lps_mm: rasToLps(roi.click), [centreKey]: r.center, median_hu: r.median_hu, noise_sd_hu: r.noise_sd };
+    if (r.snr !== undefined) Object.assign(out, { snr: r.snr, roi_source: r.source });
+    if (r.area_mm2 !== undefined) out.area_mm2 = r.area_mm2;
+    else out.volume_ml = r.roi_ml;
+    out.warnings = roi.warnings;
+    return out;
+  };
   if (aorta) {
     const r = aorta.report;
-    out.aorta = { point_lps_mm: rasToLps(aorta.click), lumen_center_lps_mm: r.center, median_hu: r.median_hu, noise_sd_hu: r.noise_sd, snr: r.snr, roi_ml: r.roi_ml, roi_source: r.source, warnings: aorta.warnings };
+    out.aorta = { median_hu: r.median_hu, noise_sd_hu: r.noise_sd, snr: r.snr, combined: aorta.count > 1 ? "mean over regions" : "single region", regions: aortaRois.map((roi) => regionOf(roi, "lumen_center_lps_mm")), warnings: aorta.warnings };
+    if (sweep) out.aorta.roi_size_check = { region: sweep.n, type: PLANE_TEXT[sweep.plane], used_radius_mm: ROI_RADIUS_MM, rows: sweep.rows };
   }
   if (fat) {
-    const r = fat.report;
-    out.fat = { point_lps_mm: rasToLps(fat.click), fat_center_lps_mm: r.center, median_hu: r.median_hu, noise_sd_hu: r.noise_sd, roi_mm3: r.roi_ml * 1000, warnings: fat.warnings };
+    out.fat = { median_hu: fat.report.median_hu, combined: fat.count > 1 ? "mean over regions" : "single region", regions: fatRois.map((roi) => regionOf(roi, "fat_center_lps_mm")), warnings: fat.warnings };
   }
   if (aorta && fat) out.cnr = { value: cnr(), definition: "(aortic lumen HU - fat HU) / aortic noise SD" };
   if (coronary?.summary) {
@@ -372,8 +492,10 @@ async function loadScan(file) {
     }
     scan = null;
     volume = null;
-    aorta = null;
-    fat = null;
+    aortaRois = [];
+    fatRois = [];
+    sweep = null;
+    combine();
     example = false;
     resetCoronary(true);
     refreshChips();
@@ -408,7 +530,7 @@ async function loadScan(file) {
     el("viewer").hidden = true;
     el("panel").hidden = true;
     el("coronary").hidden = true;
-    const message = error.isScanError ? error.message : "This file could not be opened. Please use a NIfTI, MHA or NRRD scan.";
+    const message = error.isScanError ? error.message : "This file could not be opened. Please use a NIfTI, MHA, NRRD or DICOM scan.";
     setLoadStatus(message, true);
   }
 }
@@ -431,9 +553,84 @@ async function loadExample() {
   }
 }
 
-el("file").addEventListener("change", (event) => {
-  if (event.target.files[0]) loadScan(event.target.files[0]);
-});
+// DICOM files are converted to NIfTI in the browser with dcm2niix (WebAssembly), then
+// loaded like any other scan. A folder may hold several series; the largest is shown first.
+const VOLUME_FILE = /\.(nii|nii\.gz|mha|mhd|nrrd|nhdr)$/i;
+// dcm2niix exit codes that still leave usable output: 0 done, 8 some files failed, 10 incomplete volumes.
+const DICOM_USABLE_EXITS = [0, 8, 10];
+
+// Runs dcm2niix in its own worker. The worker's file system keeps its folders after a run,
+// so each conversion gets a fresh one.
+async function runDcm2niix(files, args) {
+  const { Dcm2niix } = await import(new URL(root.dataset.dcm2niix, location.href).href);
+  const converter = new Dcm2niix();
+  await converter.init();
+  try {
+    return await new Promise((resolve, reject) => {
+      converter.worker.onmessage = ({ data }) => {
+        if (data.type === "error") reject(new Error(data.message || "dcm2niix failed"));
+        else if (DICOM_USABLE_EXITS.includes(data.exitCode)) resolve(data.convertedFiles);
+        else reject(new Error(`dcm2niix exit code ${data.exitCode}`));
+      };
+      converter.worker.postMessage({ fileList: converter.conformFileList(files), cmd: args });
+    });
+  } finally {
+    converter.worker.terminate();
+  }
+}
+
+async function convertDicom(files) {
+  setLoadStatus(`Converting ${files.length} DICOM file${files.length > 1 ? "s" : ""}...`);
+  el("series-row").hidden = true;
+  try {
+    // No BIDS sidecar, no compression, skip localizers, and name files by series number only.
+    const converted = await runDcm2niix(files, ["-b", "n", "-z", "n", "-i", "y", "-f", "series_%s"]);
+    const volumes = converted.filter((f) => /\.nii$/i.test(f.name)).sort((a, b) => b.size - a.size);
+    if (!volumes.length) throw new Error("No image series was found in these DICOM files.");
+    const select = el("series");
+    select.replaceChildren(...volumes.map((f, i) => Object.assign(document.createElement("option"), { value: String(i), textContent: `${f.name.replace(/\.nii$/i, "").replace(/_/g, " ")} (${(f.size / 1e6).toFixed(0)} MB)` })));
+    select.onchange = () => loadScan(volumes[Number(select.value)]);
+    el("series-row").hidden = volumes.length < 2;
+    await loadScan(volumes[0]);
+  } catch (error) {
+    setLoadStatus(error.message?.startsWith("No image series") ? error.message : "These DICOM files could not be converted. Please check they are one CT series.", true);
+  }
+}
+
+function openFiles(files) {
+  if (!files.length) return;
+  if (files.length === 1 && VOLUME_FILE.test(files[0].name)) {
+    el("series-row").hidden = true;
+    loadScan(files[0]);
+  } else convertDicom(files);
+}
+
+// Files from a dropped folder, with their relative paths, which dcm2niix uses to group series.
+async function droppedFiles(transfer) {
+  const entries = [...transfer.items].map((item) => item.webkitGetAsEntry?.()).filter(Boolean);
+  if (!entries.some((entry) => entry.isDirectory)) return [...transfer.files];
+  const out = [];
+  const walk = async (entry, path) => {
+    if (entry.isFile) {
+      const file = await new Promise((resolve, reject) => entry.file(resolve, reject));
+      file._webkitRelativePath = `${path}${file.name}`;
+      out.push(file);
+      return;
+    }
+    const reader = entry.createReader();
+    for (;;) {
+      const batch = await new Promise((resolve, reject) => reader.readEntries(resolve, reject));
+      if (!batch.length) break;
+      for (const child of batch) await walk(child, `${path}${entry.name}/`);
+    }
+  };
+  for (const entry of entries) await walk(entry, "");
+  return out;
+}
+
+el("file").addEventListener("change", (event) => openFiles([...event.target.files]));
+el("folder").addEventListener("click", () => el("folder-input").click());
+el("folder-input").addEventListener("change", (event) => openFiles([...event.target.files]));
 const drop = el("drop");
 ["dragenter", "dragover"].forEach((name) =>
   drop.addEventListener(name, (event) => {
@@ -447,9 +644,7 @@ const drop = el("drop");
     drop.classList.remove("is-over");
   })
 );
-drop.addEventListener("drop", (event) => {
-  if (event.dataTransfer.files[0]) loadScan(event.dataTransfer.files[0]);
-});
+drop.addEventListener("drop", async (event) => openFiles(await droppedFiles(event.dataTransfer)));
 el("example").addEventListener("click", loadExample);
 el("window-preset").addEventListener("change", (event) => setWindowPreset(event.target.value));
 for (const name of ["window-level", "window-width"]) {
@@ -461,7 +656,7 @@ for (const name of ["window-level", "window-width"]) {
 el("run-aorta").addEventListener("click", async () => {
   const done = await measure("aorta", crosshairWorld());
   // In the example, lead on to the fat point once the aorta is done.
-  if (done && example && !fat) {
+  if (done && example && !fatRois.length) {
     moveCrosshair(EXAMPLE_FAT);
     setStatus("The crosshair is now in epicardial fat beside the left anterior descending artery. Press Measure fat.");
   }
@@ -475,11 +670,15 @@ el("run-fat").addEventListener("click", async () => {
     setTraceStatus("The left coronary points are set. The example scan is cropped close to the right coronary, so only the left is traced. Press Trace and measure.");
   }
 });
+el("clear-aorta").addEventListener("click", () => clearRois("aorta"));
+el("clear-fat").addEventListener("click", () => clearRois("fat"));
 el("unit").addEventListener("change", () => {
   if (scan) showScanInfo();
   volume = null;
-  aorta = null;
-  fat = null;
+  aortaRois = [];
+  fatRois = [];
+  sweep = null;
+  combine();
   resetCoronary(true);
   refreshChips();
   if (nv) redraw();
@@ -744,7 +943,8 @@ function profileChart(name, profile, summary) {
   }
   const xStep = xMax > 80 ? 20 : 10;
   for (let tick = 0; tick <= xMax; tick += xStep) {
-    svg("text", { x: x(tick), y: height - 6, "text-anchor": "middle" }, chart).textContent = `${tick} mm`;
+    const anchor = tick === 0 ? "start" : x(tick) > width - right - 24 ? "end" : "middle";
+    svg("text", { x: x(tick), y: height - 6, "text-anchor": anchor }, chart).textContent = `${tick} mm`;
   }
   [40, 80].filter((at) => at < n).forEach((at) => {
     svg("line", { x1: x(at), x2: x(at), y1: top, y2: height - bottom, class: "third" }, chart);
@@ -799,6 +999,75 @@ function profileChart(name, profile, summary) {
     tip.style.left = `${Math.max(place, 0)}px`;
   });
   chart.addEventListener("pointerleave", hide);
+  return figure;
+}
+
+// How the aortic median HU and noise change with the ROI radius, for the latest region.
+function showSweep() {
+  const rows = sweep?.rows.filter((r) => r.median_hu !== null) ?? [];
+  const box = el("sweep");
+  if (!aorta || !sweep || rows.length < 2) {
+    box.hidden = true;
+    return;
+  }
+  const span = (key) => [Math.min(...rows.map((r) => r[key])), Math.max(...rows.map((r) => r[key]))];
+  const [huLow, huHigh] = span("median_hu");
+  const sizeText = (size) => (sweep.plane === "3d" ? `${size.toFixed(1)} mL` : `${Math.round(size)} mm²`);
+  const [noiseLow, noiseHigh] = span("noise_sd");
+  el("sweep-title").textContent = `ROI size check, ${roiName("aorta", sweep)} (${PLANE_TEXT[sweep.plane]})`;
+  el("sweep-summary").textContent =
+    `From ${rows[0].radius_mm} to ${rows.at(-1).radius_mm} mm, the median ranges over ${Math.round(huHigh - huLow)} HU (${Math.round(huLow)} to ${Math.round(huHigh)}) ` +
+    `and the noise over ${(noiseHigh - noiseLow).toFixed(1)} HU (${noiseLow.toFixed(1)} to ${noiseHigh.toFixed(1)}). The measurement uses ${ROI_RADIUS_MM} mm. ` +
+    `The region holds ${sizeText(rows[0].size)} at ${rows[0].radius_mm} mm and ${sizeText(rows.at(-1).size)} at ${rows.at(-1).radius_mm} mm; it keeps 3 mm from the wall, so it stops growing once it fills the lumen.`;
+  el("sweep-charts").replaceChildren(miniChart("Median HU", rows, "median_hu", 0), miniChart("Noise, HU", rows, "noise_sd", 1));
+  box.hidden = false;
+}
+
+function niceStep(span) {
+  const raw = span / 3 || 1;
+  const power = 10 ** Math.floor(Math.log10(raw));
+  return [1, 2, 5, 10].map((m) => m * power).find((v) => v >= raw);
+}
+
+// A small line chart of one value against ROI radius, with the radius in use marked.
+function miniChart(title, rows, key, digits) {
+  const figure = Object.assign(document.createElement("figure"), { className: "snr-chart snr-mini" });
+  figure.append(Object.assign(document.createElement("figcaption"), { textContent: title }));
+  const [width, height, left, right, top, bottom] = [320, 150, 40, 10, 10, 24];
+  const values = rows.map((r) => r[key]);
+  const step = niceStep(Math.max(...values) - Math.min(...values));
+  const yMin = Math.floor(Math.min(...values) / step) * step - (Math.max(...values) === Math.min(...values) ? step : 0);
+  const yMax = Math.ceil(Math.max(...values) / step) * step + (Math.max(...values) === Math.min(...values) ? step : 0);
+  const xMin = rows[0].radius_mm;
+  const xMax = rows.at(-1).radius_mm;
+  const x = (v) => left + ((v - xMin) / (xMax - xMin)) * (width - left - right);
+  const y = (v) => top + (1 - (v - yMin) / (yMax - yMin || 1)) * (height - top - bottom);
+  const chart = svg("svg", { viewBox: `0 0 ${width} ${height}`, role: "img", "aria-label": `${title} by aortic ROI radius` }, figure);
+  for (let tick = yMin; tick <= yMax + 1e-9; tick += step) {
+    svg("line", { x1: left, x2: width - right, y1: y(tick), y2: y(tick), class: "grid" }, chart);
+    svg("text", { x: left - 6, y: y(tick) + 4, "text-anchor": "end" }, chart).textContent = tick.toFixed(step < 1 ? 1 : 0);
+  }
+  for (const r of rows) {
+    if (r.radius_mm % 4) continue;
+    const anchor = r.radius_mm === xMax ? "end" : r.radius_mm === xMin ? "start" : "middle";
+    svg("text", { x: x(r.radius_mm), y: height - 6, "text-anchor": anchor }, chart).textContent = `${r.radius_mm} mm`;
+  }
+  if (ROI_RADIUS_MM >= xMin && ROI_RADIUS_MM <= xMax) svg("line", { x1: x(ROI_RADIUS_MM), x2: x(ROI_RADIUS_MM), y1: top, y2: height - bottom, class: "aorta" }, chart);
+  svg("path", { d: rows.map((r, i) => `${i ? "L" : "M"}${x(r.radius_mm).toFixed(1)} ${y(r[key]).toFixed(1)}`).join(""), class: "lumen" }, chart);
+  for (const r of rows) svg("circle", { cx: x(r.radius_mm), cy: y(r[key]), r: 4, class: "dot" }, chart);
+  const tip = Object.assign(document.createElement("div"), { className: "snr-tip", hidden: true });
+  figure.append(tip);
+  chart.addEventListener("pointermove", (event) => {
+    const box = chart.getBoundingClientRect();
+    const scale = width / box.width;
+    const at = (event.clientX - box.left) * scale;
+    const r = rows.reduce((a, b) => (Math.abs(x(b.radius_mm) - at) < Math.abs(x(a.radius_mm) - at) ? b : a));
+    const size = sweep.plane === "3d" ? `${r.size.toFixed(1)} mL` : `${Math.round(r.size)} mm²`;
+    tip.textContent = `${r.radius_mm} mm: ${r[key].toFixed(digits)} HU, ${size}`;
+    tip.hidden = false;
+    tip.style.left = `${Math.max(Math.min(x(r.radius_mm) / scale + 8, box.width - tip.offsetWidth), 0)}px`;
+  });
+  chart.addEventListener("pointerleave", () => (tip.hidden = true));
   return figure;
 }
 
@@ -859,6 +1128,271 @@ async function traceCoronaries() {
     refreshTraceButton();
   }
 }
+
+// Reports. Both exports are built from report(), so they hold the same values as the JSON.
+
+// Problems worth reading first, in plain sentences.
+function findings() {
+  const out = [];
+  if (thickSlices()) out.push(`Slices are ${scanGeometry().slice_spacing_mm.toFixed(2)} mm apart, so small-vessel values read low.`);
+  if (aorta?.warnings.length) out.push(...aorta.warnings.map((w) => `Aorta: ${w}`));
+  if (fat?.warnings.length) out.push(...fat.warnings.map((w) => `Fat: ${w}`));
+  if (coronary?.quality) {
+    const q = coronary.quality;
+    out.push(`Quality score ${q.score === null ? "not available" : q.score.toFixed(2)}: ${q.status}.`);
+    out.push(...q.reasons);
+    for (const v of coronary.summary) {
+      if (v.calcium_segments_mm.length) out.push(`${v.name}: calcium at ${v.calcium_segments_mm.map(([a, b]) => (a === b ? `${a}` : `${a}-${b}`)).join(", ")} mm.`);
+    }
+  }
+  return out;
+}
+
+const today = () => new Date().toISOString().slice(0, 10);
+
+function download(blob, name) {
+  const url = URL.createObjectURL(blob);
+  const link = Object.assign(document.createElement("a"), { href: url, download: name });
+  document.body.append(link);
+  link.click();
+  link.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+const round = (value, digits = 1) => (value === null || value === undefined || !Number.isFinite(value) ? "" : Number(value.toFixed(digits)));
+
+// One long table: section, item, measure, value, unit.
+function csvReport() {
+  const r = report();
+  const rows = [["section", "item", "measure", "value", "unit"]];
+  const add = (...row) => rows.push(row);
+  if (r.scan) {
+    add("scan", "", "size", r.scan.size.join(" x "), "voxels");
+    add("scan", "", "voxel spacing", r.scan.spacing_mm.map((v) => v.toFixed(3)).join(" x "), "mm");
+    add("scan", "", "thick slices (1 mm or more)", r.scan.thick_slices ? "yes" : "no", "");
+  }
+  for (const [kind, data] of [["aorta", r.aorta], ["fat", r.fat]]) {
+    if (!data) continue;
+    add(kind, "combined", "median", round(data.median_hu, 1), "HU");
+    if (kind === "aorta") {
+      add(kind, "combined", "noise (robust SD)", round(data.noise_sd_hu, 2), "HU");
+      add(kind, "combined", "SNR", round(data.snr, 2), "");
+    }
+    add(kind, "combined", "regions", data.regions.length, "");
+    for (const g of data.regions) {
+      const item = `${kind} ${g.region} (${g.type})`;
+      add(kind, item, "median", round(g.median_hu, 1), "HU");
+      add(kind, item, "noise (robust SD)", round(g.noise_sd_hu, 2), "HU");
+      if (g.snr !== undefined) add(kind, item, "SNR", round(g.snr, 2), "");
+      if (g.area_mm2 !== undefined) add(kind, item, "area", round(g.area_mm2, 1), "mm2");
+      else add(kind, item, "volume", round(g.volume_ml, 3), "mL");
+      add(kind, item, "point (LPS)", g.point_lps_mm.map((v) => v.toFixed(1)).join(" "), "mm");
+      for (const w of g.warnings) add(kind, item, "warning", w, "");
+    }
+  }
+  if (r.cnr) add("cnr", "", "CNR", round(r.cnr.value, 2), "");
+  for (const row of r.aorta?.roi_size_check?.rows ?? []) {
+    const item = `aorta ${r.aorta.roi_size_check.region} radius ${row.radius_mm} mm`;
+    add("roi size check", item, "median", round(row.median_hu, 1), "HU");
+    add("roi size check", item, "noise (robust SD)", round(row.noise_sd, 2), "HU");
+  }
+  if (r.coronaries) {
+    const q = r.coronaries.quality;
+    add("quality", "scan", "score", round(q.score, 3), "0-1");
+    add("quality", "scan", "status", q.status, "");
+    for (const reason of q.reasons) add("quality", "scan", "reason", reason, "");
+    for (const v of r.coronaries.vessels) {
+      add("vessel", v.name, "length", round(v.length_mm, 1), "mm");
+      if (v.name !== "LM") add("vessel", v.name, "score", round(v.score, 3), "0-1");
+      add("vessel", v.name, "perivascular fat", round(v.perivascular_fat_hu, 1), "HU");
+      add("vessel", v.name, "calcified length", v.calcified_mm, "mm");
+      for (const [a, b] of v.calcium_segments_mm) add("vessel", v.name, "calcium", `${a}-${b}`, "mm from origin");
+      for (const d of v.focal_dips) add("vessel", v.name, "focal HU dip", `${d.start_mm}-${d.end_mm}`, "mm from origin");
+      for (const b of v.bands) {
+        const item = `${v.name} ${BAND_LABELS[b.band] ?? b.band}`.replace("–", "-");
+        if (b.median_hu !== null) {
+          add("segment", item, "median lumen", round(b.median_hu, 1), "HU");
+          add("segment", item, "ratio to aorta", round(b.hu_ratio, 3), "");
+          add("segment", item, "SNR", round(b.snr, 2), "");
+          add("segment", item, "CNR", round(b.cnr, 2), "");
+          add("segment", item, "score", round(b.score, 3), "0-1");
+        }
+        if (b.note) add("segment", item, "note", b.note, "");
+        for (const f of b.flags) add("segment", item, "flag", f, "");
+      }
+      v.per_mm.lumen_hu.forEach((hu, i) => add("profile", v.name, `lumen at ${i} mm`, hu ?? "", v.per_mm.calcified[i] ? "HU, calcium" : "HU"));
+    }
+  }
+  const cellText = (value) => {
+    const text = String(value ?? "").replace(/−/g, "-");
+    return /[",\n]/.test(text) ? `"${text.replace(/"/g, '""')}"` : text;
+  };
+  return rows.map((row) => row.map(cellText).join(",")).join("\n");
+}
+
+function loadScript(url) {
+  return new Promise((resolve, reject) => {
+    const tag = Object.assign(document.createElement("script"), { src: url, onload: resolve, onerror: () => reject(new Error(`Could not load ${url}`)) });
+    document.head.append(tag);
+  });
+}
+
+// An inline chart as a PNG, with the page's colours written into it.
+async function chartImage(chart, scale = 2) {
+  const copy = chart.cloneNode(true);
+  const source = [chart, ...chart.querySelectorAll("*")];
+  [copy, ...copy.querySelectorAll("*")].forEach((node, i) => {
+    const style = getComputedStyle(source[i]);
+    for (const key of ["fill", "stroke", "stroke-width", "stroke-dasharray", "font-size", "font-family", "visibility"]) node.style.setProperty(key, style.getPropertyValue(key));
+  });
+  const [, , width, height] = chart.getAttribute("viewBox").split(" ").map(Number);
+  copy.setAttribute("width", width);
+  copy.setAttribute("height", height);
+  const url = URL.createObjectURL(new Blob([new XMLSerializer().serializeToString(copy)], { type: "image/svg+xml" }));
+  try {
+    const image = await new Promise((resolve, reject) => Object.assign(new Image(), { onload() { resolve(this); }, onerror: reject, src: url }));
+    const canvas = Object.assign(document.createElement("canvas"), { width: width * scale, height: height * scale });
+    const context = canvas.getContext("2d");
+    context.fillStyle = "#fff";
+    context.fillRect(0, 0, canvas.width, canvas.height);
+    context.drawImage(image, 0, 0, canvas.width, canvas.height);
+    return { data: canvas.toDataURL("image/png"), ratio: height / width };
+  } finally {
+    URL.revokeObjectURL(url);
+  }
+}
+
+// The viewer as it is now, with the regions and centrelines drawn.
+function viewerImage() {
+  nv.drawScene();
+  const canvas = el("canvas");
+  return { data: canvas.toDataURL("image/jpeg", 0.9), ratio: canvas.height / canvas.width };
+}
+
+// Helvetica in jsPDF has no minus sign or "at least" sign.
+const pdfText = (text) => String(text).replace(/−/g, "-").replace(/≥/g, ">=").replace(/–/g, "-");
+
+async function pdfReport() {
+  if (!window.jspdf) await loadScript(JSPDF_URL);
+  if (!window.jspdf.jsPDF.API.autoTable) await loadScript(AUTOTABLE_URL);
+  const doc = new window.jspdf.jsPDF({ unit: "pt", format: "a4" });
+  const page = { width: doc.internal.pageSize.getWidth(), height: doc.internal.pageSize.getHeight(), margin: 40 };
+  const textWidth = page.width - 2 * page.margin;
+  let y = page.margin;
+  const room = (needed) => {
+    if (y + needed > page.height - page.margin) {
+      doc.addPage();
+      y = page.margin;
+    }
+  };
+  const heading = (text) => {
+    room(40);
+    y += 8;
+    doc.setFont("helvetica", "bold").setFontSize(12).text(pdfText(text), page.margin, y);
+    y += 16;
+  };
+  const paragraph = (text, size = 9.5) => {
+    doc.setFont("helvetica", "normal").setFontSize(size);
+    for (const line of doc.splitTextToSize(pdfText(text), textWidth)) {
+      room(size * 1.4);
+      doc.text(line, page.margin, y);
+      y += size * 1.35;
+    }
+  };
+  const table = (head, body) => {
+    doc.autoTable({ head: [head.map(pdfText)], body: body.map((row) => row.map((c) => pdfText(c ?? ""))), startY: y, margin: { left: page.margin, right: page.margin }, styles: { fontSize: 8.5, cellPadding: 3 }, headStyles: { fillColor: [235, 235, 235], textColor: 20 }, theme: "grid" });
+    y = doc.lastAutoTable.finalY + 10;
+  };
+  const image = (picture, width = textWidth) => {
+    const height = width * picture.ratio;
+    room(height + 6);
+    doc.addImage(picture.data, picture.data.startsWith("data:image/png") ? "PNG" : "JPEG", page.margin, y, width, height, undefined, "FAST");
+    y += height + 8;
+  };
+
+  const r = report();
+  doc.setFont("helvetica", "bold").setFontSize(16).text("CCTA Quality Assessment", page.margin, y);
+  y += 16;
+  paragraph(`Report made ${new Date().toLocaleString()} with the browser tool at ${location.origin}${location.pathname}. Research tool, not for clinical use; the quality score is provisional.`, 8.5);
+  if (r.scan) paragraph(`Scan: ${r.scan.size.join(" x ")} voxels of ${r.scan.spacing_mm.map((v) => v.toFixed(2)).join(" x ")} mm.`);
+
+  heading("Findings");
+  const found = findings();
+  paragraph(found.length ? found.map((f) => `- ${f}`).join("\n") : "No problems found in the measured regions.");
+
+  if (scan) {
+    heading("Viewer");
+    image(viewerImage(), textWidth * 0.8);
+    paragraph("Red: aortic regions. Blue: fat regions. Green: traced centrelines. Orange: calcium.", 8);
+  }
+
+  if (r.aorta || r.fat) {
+    heading("Aorta and fat");
+    const body = [];
+    if (r.aorta) body.push(["Lumen attenuation", `${Math.round(r.aorta.median_hu)} HU`], ["Noise (robust SD)", `${r.aorta.noise_sd_hu.toFixed(1)} HU`], ["SNR", r.aorta.snr.toFixed(1)]);
+    if (r.fat) body.push(["Fat attenuation", `${Math.round(r.fat.median_hu)} HU`]);
+    if (r.cnr) body.push(["CNR (lumen minus fat, over aortic noise)", r.cnr.value.toFixed(1)]);
+    table(["Measure", "Value"], body);
+    const regions = [];
+    for (const [kind, data] of [["Aorta", r.aorta], ["Fat", r.fat]]) {
+      for (const g of data?.regions ?? []) {
+        regions.push([`${kind} ${g.region}`, g.type, g.area_mm2 !== undefined ? `${Math.round(g.area_mm2)} mm2` : `${g.volume_ml.toFixed(kind === "Fat" ? 3 : 1)} mL`, String(Math.round(g.median_hu)), g.noise_sd_hu.toFixed(1), g.snr === undefined ? "" : g.snr.toFixed(1), g.warnings.join(" ")]);
+      }
+    }
+    table(["Region", "Type", "Size", "HU", "Noise", "SNR", "Warnings"], regions);
+    if ((r.aorta?.regions.length ?? 0) > 1 || (r.fat?.regions.length ?? 0) > 1) paragraph("With several regions, the values above are their mean.", 8.5);
+  }
+
+  if (r.aorta?.roi_size_check && !el("sweep").hidden) {
+    heading(el("sweep-title").textContent);
+    for (const figure of el("sweep-charts").querySelectorAll("figure")) {
+      paragraph(figure.querySelector("figcaption").textContent, 8.5);
+      image(await chartImage(figure.querySelector("svg")), textWidth / 2);
+    }
+    paragraph(el("sweep-summary").textContent, 8.5);
+  }
+
+  if (r.coronaries) {
+    const q = r.coronaries.quality;
+    heading("Coronary arteries");
+    paragraph(`Quality score: ${q.score === null ? "not available" : q.score.toFixed(2)} (${q.status}).`, 10.5);
+    const rows = [];
+    for (const v of r.coronaries.vessels.filter((v) => v.name !== "LM")) {
+      for (const b of v.bands) {
+        rows.push([v.name, (BAND_LABELS[b.band] ?? b.band), b.median_hu === null ? "" : String(Math.round(b.median_hu)), fmt(b.hu_ratio, 2), fmt(b.snr, 1), fmt(b.cnr, 1), fmt(b.score, 2), [b.note, ...b.flags].filter(Boolean).join("; ")]);
+      }
+    }
+    table(["Vessel", "Segment", "HU", "Ratio", "SNR", "CNR", "Score", "Notes"], rows);
+    paragraph(el("calcium").textContent, 9);
+    for (const chart of el("charts").querySelectorAll("svg")) {
+      paragraph(chart.getAttribute("aria-label"), 8.5);
+      image(await chartImage(chart));
+    }
+  }
+
+  heading("Methods");
+  paragraph("Aortic regions: the contrast-filled lumen near the click, grown from it, keeping voxels at least 3 mm from the wall and within 12 mm of the lumen centre (in the slice for 2D regions). Noise is the robust SD (1.4826 x median absolute deviation). Fat: the connected patch of -190 to -30 HU within 5 mm, trimmed by 1 mm. CNR = (lumen HU - fat HU) / aortic noise. Coronary values are sampled every millimetre along SeqSeg centrelines. Segment score = 0.4 CNR part + 0.3 noise part + 0.3 lumen part; scan score = 0.6 weakest vessel + 0.4 mean. Thresholds are provisional.", 8);
+  doc.save(`ccta-quality-${today()}.pdf`);
+}
+
+el("export-csv").addEventListener("click", () => {
+  if (!aorta && !fat) return;
+  download(new Blob([csvReport()], { type: "text/csv" }), `ccta-quality-${today()}.csv`);
+  setStatus("CSV saved.");
+});
+el("export-pdf").addEventListener("click", async () => {
+  if (!aorta && !fat) return;
+  el("export-pdf").disabled = true;
+  setStatus("Making the PDF...");
+  try {
+    await pdfReport();
+    setStatus("PDF saved.");
+  } catch (error) {
+    setStatus(`The PDF could not be made: ${error.message}`, true);
+  } finally {
+    el("export-pdf").disabled = false;
+  }
+});
 
 SEED_KINDS.forEach((kind) => el(`set-${kind}`).addEventListener("click", () => setSeed(kind)));
 el("trace").addEventListener("click", traceCoronaries);

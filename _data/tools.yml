@@ -6,10 +6,10 @@ groups:
         url: /tools/scan-check/
         text: Check any CT or MRI scan for basic quality problems, such as missing or clipped values, empty or duplicate slices, thick or tilted slices, cut-off anatomy, noise and metal.
         needs: Any CT or MRI volume (NIfTI)
-      - name: CCTA contrast
+      - name: CCTA Quality Assessment
         url: /tools/ccta-contrast/
-        text: Measure aortic root attenuation, noise, SNR and CNR, then trace the coronaries to measure contrast along each vessel.
-        needs: A coronary CT angiogram (NIfTI) and five marked points
+        text: Measure aortic root attenuation, noise, SNR and CNR in one or more 2D or 3D regions, trace the coronaries to measure contrast along each vessel, and export a CSV or PDF report.
+        needs: A coronary CT angiogram (NIfTI, MHA, NRRD or DICOM) and a few marked points
   - name: Segment and trace
     tools:
       - name: Try SeqSeg

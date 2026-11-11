@@ -262,17 +262,73 @@ function roiStats(vol, voxels, voxelMl, source, seed) {
   return stats;
 }
 
-export function aortaMetrics(vol, rawSeed) {
-  const voxelMl = (vol.spacing[0] * vol.spacing[1] * vol.spacing[2]) / 1000;
-  const seed = recenterOnLumen(vol, rawSeed);
+// 2D regions lie in the image slice closest to an anatomical plane. Rows of the LPS
+// direction matrix: 0 = left, 1 = posterior, 2 = superior.
+const PLANE_NORMAL = { sagittal: 0, coronal: 1, axial: 2 };
+export const PLANES = Object.keys(PLANE_NORMAL);
+
+export function planeAxis(vol, plane) {
+  const row = PLANE_NORMAL[plane];
+  if (row === undefined) throw new Error(`Unknown plane: ${plane}`);
+  let best = 0;
+  for (let c = 1; c < 3; c++) if (Math.abs(vol.direction[row * 3 + c]) > Math.abs(vol.direction[row * 3 + best])) best = c;
+  return best;
+}
+
+// One slice of a cropped block, kept as a block one voxel thick along `axis`, so the
+// region growing and wall distance below stay within the slice.
+function sliceBlock(block, axis, index) {
+  const { data, dims, low } = block;
+  const size = [...dims];
+  size[axis] = 1;
+  const out = new Float32Array(size[0] * size[1] * size[2]);
+  const p = [0, 0, 0];
+  for (let z = 0, n = 0; z < size[2]; z++) {
+    for (let y = 0; y < size[1]; y++) {
+      for (let x = 0; x < size[0]; x++, n++) {
+        p[0] = x;
+        p[1] = y;
+        p[2] = z;
+        p[axis] = index;
+        out[n] = data[p[0] + dims[0] * (p[1] + dims[1] * p[2])];
+      }
+    }
+  }
+  const start = [...low];
+  start[axis] += index;
+  return { data: out, dims: size, low: start };
+}
+
+const voxelOf = (vol, n) => {
+  const [nx, ny] = vol.size;
+  const z = Math.floor(n / (nx * ny));
+  const y = Math.floor((n - z * nx * ny) / nx);
+  return [n - nx * (y + ny * z), y, z];
+};
+
+// The recentred point, moved back onto the clicked slice for a 2D region.
+function onSlice(vol, point, click, axis) {
+  if (axis === null) return point;
+  const idx = toIndex(vol, point);
+  idx[axis] = toIndex(vol, click)[axis];
+  return toWorld(vol, idx);
+}
+
+// The bright region connected to the seed, with each voxel's distance to its edge.
+function aortaRegion(vol, seed, axis) {
   const indices = ball(vol, seed, AORTA.search);
   if (!indices.length) throw new InvalidImage("The aortic point is outside the image.");
-  const { data, dims, low } = cropBox(vol, indices);
-  const smooth = gaussian(data, dims, AORTA.sigma);
+  const block = cropBox(vol, indices);
+  let region = { data: gaussian(block.data, block.dims, AORTA.sigma), dims: block.dims, low: block.low };
   const level = 0.6 * median(pick(vol, ball(vol, seed, 5)));
-  const c = toIndex(vol, seed).map((v, a) => v - low[a]);
+  let c = toIndex(vol, seed).map((v, a) => v - block.low[a]);
+  if (axis !== null) {
+    region = sliceBlock(region, axis, Math.trunc(c[axis]));
+    c = c.map((v, a) => (a === axis ? 0 : v));
+  }
+  const smooth = region.data;
   const start = c.map((v) => Math.trunc(v));
-  const [nx, ny, nz] = dims;
+  const [nx, ny, nz] = region.dims;
   const grown = new Uint8Array(smooth.length);
   const first = start[0] + nx * (start[1] + ny * start[2]);
   if (first >= 0 && first < smooth.length && smooth[first] >= level) {
@@ -297,38 +353,99 @@ export function aortaMetrics(vol, rawSeed) {
       if (z < nz - 1) visit(i + nx * ny);
     }
   }
-  const depth = depthInside(grown, dims, vol.spacing);
-  const select = (minDepth) => {
-    const values = [];
-    for (let z = 0, i = 0; z < nz; z++) {
-      for (let y = 0; y < ny; y++) {
-        for (let x = 0; x < nx; x++, i++) {
-          if (depth[i] < minDepth) continue;
-          const d2 = ((x - c[0]) * vol.spacing[0]) ** 2 + ((y - c[1]) * vol.spacing[1]) ** 2 + ((z - c[2]) * vol.spacing[2]) ** 2;
-          if (d2 <= AORTA.roi ** 2 && grown[i]) values.push(x + low[0] + vol.size[0] * (y + low[1] + vol.size[1] * (z + low[2])));
-        }
+  return { dims: region.dims, low: region.low, grown, depth: depthInside(grown, region.dims, vol.spacing), c };
+}
+
+// Region voxels at least minDepth from its edge and within radius of the centre.
+function selectRegion(vol, region, minDepth, radius) {
+  const { dims, low, grown, depth, c } = region;
+  const [nx, ny, nz] = dims;
+  const values = [];
+  for (let z = 0, i = 0; z < nz; z++) {
+    for (let y = 0; y < ny; y++) {
+      for (let x = 0; x < nx; x++, i++) {
+        if (depth[i] < minDepth) continue;
+        const d2 = ((x - c[0]) * vol.spacing[0]) ** 2 + ((y - c[1]) * vol.spacing[1]) ** 2 + ((z - c[2]) * vol.spacing[2]) ** 2;
+        if (d2 <= radius ** 2 && grown[i]) values.push(x + low[0] + vol.size[0] * (y + low[1] + vol.size[1] * (z + low[2])));
       }
     }
-    return values;
-  };
-  let values = select(AORTA.erosion);
-  if (values.length < 50) values = select(1);
-  if (values.length >= 50) return roiStats(vol, values, voxelMl, "region_growing", seed);
-  return roiStats(vol, ball(vol, seed, AORTA.fallback), voxelMl, "fixed_ball", seed);
+  }
+  return values;
+}
+
+function aortaSetup(vol, rawSeed, plane) {
+  const axis = plane ? planeAxis(vol, plane) : null;
+  const seed = onSlice(vol, recenterOnLumen(vol, rawSeed), rawSeed, axis);
+  return { axis, seed, region: aortaRegion(vol, seed, axis) };
+}
+
+function aortaVoxels(vol, region, radius) {
+  let values = selectRegion(vol, region, AORTA.erosion, radius);
+  if (values.length < 50) values = selectRegion(vol, region, 1, radius);
+  return values;
+}
+
+// Area of one voxel within a slice, for 2D regions.
+const pixelMm2 = (vol, axis) => [0, 1, 2].filter((a) => a !== axis).reduce((area, a) => area * vol.spacing[a], 1);
+
+// options.plane ("axial", "coronal" or "sagittal") keeps the region within the clicked
+// slice; options.roiMm sets the radius around the lumen centre.
+export function aortaMetrics(vol, rawSeed, options = {}) {
+  const { plane = null, roiMm = AORTA.roi } = options;
+  const voxelMl = (vol.spacing[0] * vol.spacing[1] * vol.spacing[2]) / 1000;
+  const { axis, seed, region } = aortaSetup(vol, rawSeed, plane);
+  const values = aortaVoxels(vol, region, roiMm);
+  let stats;
+  if (values.length >= 50) stats = roiStats(vol, values, voxelMl, "region_growing", seed);
+  else {
+    let fallback = ball(vol, seed, AORTA.fallback);
+    if (axis !== null) {
+      const k = Math.trunc(toIndex(vol, seed)[axis]);
+      fallback = fallback.filter((n) => voxelOf(vol, n)[axis] === k);
+    }
+    stats = roiStats(vol, fallback, voxelMl, "fixed_ball", seed);
+  }
+  if (axis !== null) Object.assign(stats, { plane, area_mm2: stats.voxels.length * pixelMm2(vol, axis) });
+  return stats;
+}
+
+// Median HU and noise of the aortic region at each radius, from one region growing.
+export function aortaRoiSweep(vol, rawSeed, radii, options = {}) {
+  const { axis, region } = aortaSetup(vol, rawSeed, options.plane ?? null);
+  return radii.map((radius) => {
+    const values = aortaVoxels(vol, region, radius);
+    if (values.length < 50) return { radius_mm: radius, voxels: values.length, median_hu: null, noise_sd: null };
+    const hu = pick(vol, values);
+    const middle = median(hu);
+    return {
+      radius_mm: radius,
+      voxels: values.length,
+      size: axis === null ? (values.length * vol.spacing[0] * vol.spacing[1] * vol.spacing[2]) / 1000 : values.length * pixelMm2(vol, axis),
+      median_hu: middle,
+      noise_sd: 1.4826 * median(hu.map((v) => Math.abs(v - middle))),
+    };
+  });
 }
 
 // A fat region connected to the clicked point, or null if there is no fat near it.
-export function fatMetrics(vol, seed) {
+// options.plane keeps the region within the clicked slice, as for the aorta.
+export function fatMetrics(vol, seed, options = {}) {
+  const axis = options.plane ? planeAxis(vol, options.plane) : null;
   const voxelMl = (vol.spacing[0] * vol.spacing[1] * vol.spacing[2]) / 1000;
   const indices = ball(vol, seed, FAT.roi + FAT.snap);
   if (!indices.length) return null;
-  const { data, dims, low } = cropBox(vol, indices);
-  const smooth = gaussian(data, dims, AORTA.sigma);
+  const block = cropBox(vol, indices);
+  let crop = { data: gaussian(block.data, block.dims, AORTA.sigma), dims: block.dims, low: block.low };
+  let s = toIndex(vol, seed).map((v, a) => v - block.low[a]);
+  if (axis !== null) {
+    crop = sliceBlock(crop, axis, Math.min(Math.max(Math.round(s[axis]), 0), block.dims[axis] - 1));
+    s = s.map((v, a) => (a === axis ? 0 : v));
+  }
+  const { data: smooth, dims, low } = crop;
   const [nx, ny, nz] = dims;
   const sp = vol.spacing;
   const isFat = (i) => smooth[i] >= FAT_RANGE[0] && smooth[i] <= FAT_RANGE[1];
   const dist2 = (x, y, z, c) => ((x - c[0]) * sp[0]) ** 2 + ((y - c[1]) * sp[1]) ** 2 + ((z - c[2]) * sp[2]) ** 2;
-  const s = toIndex(vol, seed).map((v, a) => v - low[a]);
   let center = null;
   let nearest = FAT.snap ** 2;
   for (let z = 0, i = 0; z < nz; z++) {
@@ -388,6 +505,7 @@ export function fatMetrics(vol, seed) {
     roi_ml: values.length * voxelMl,
     center: toWorld(vol, center.map((v, a) => v + low[a])),
   };
+  if (axis !== null) Object.assign(stats, { plane: options.plane, area_mm2: voxels.length * pixelMm2(vol, axis) });
   Object.defineProperty(stats, "voxels", { value: voxels });
   return stats;
 }
@@ -737,6 +855,7 @@ export const QUALITY = {
   minCoverage: 0.4,
   weakestWeight: 0.6,
   minAortaRoiMl: 3,
+  minAortaAreaMm2: 40, // a 2D region: about a 7 mm wide disc after the 3 mm margin
   minAortaHu: 150,
 };
 
@@ -747,7 +866,9 @@ export function aortaProblems(aorta) {
   const problems = [];
   if (!Number.isFinite(aorta.noise_sd) || aorta.noise_sd <= 0) problems.push("Aortic noise could not be measured");
   if (aorta.source === "fixed_ball") problems.push("The aortic lumen could not be outlined");
-  else if (aorta.roi_ml < QUALITY.minAortaRoiMl) problems.push("The aortic region is too small for the aortic root");
+  else if (aorta.area_mm2 !== undefined ? aorta.area_mm2 < QUALITY.minAortaAreaMm2 : aorta.roi_ml < QUALITY.minAortaRoiMl) {
+    problems.push("The aortic region is too small for the aortic root");
+  }
   if (aorta.median_hu < QUALITY.minAortaHu) problems.push("Aortic attenuation is too low for a contrast-filled aorta");
   return problems;
 }
